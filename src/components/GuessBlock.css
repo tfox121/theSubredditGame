@@ -1,0 +1,12 @@
+.ui.form > .field > input {
+  background-color: #FFFEF9;
+  max-width: 150px;
+}
+
+.ui.form {
+  padding-top: 5%;
+}
+
+.ui.button.submit {
+  margin-left: 5px;
+}
