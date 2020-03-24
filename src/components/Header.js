@@ -9,8 +9,11 @@ const Header = () => {
         Subreddit Game
       </Link>
       <div className="right menu">
-        <Link to="/" className="item">
-          Home
+        <Link to="/singleplayer" className="item">
+          Singleplayer
+        </Link>
+        <Link to="/multiplayer" className="item">
+          Multiplayer
         </Link>
       </div>
     </div>

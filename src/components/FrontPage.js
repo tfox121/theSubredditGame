@@ -7,13 +7,13 @@ const FrontPage = () => {
     <div className="ui list">
       <div className="item">
         <Link to="/singleplayer" className="ui right labeled icon button">
-          <i class="right arrow icon"></i>
+          <i className="right arrow icon"></i>
           Single Player
         </Link>
       </div>
       <div className="item">
         <Link to="/multiplayer" className="ui right labeled icon button">
-          <i class="right arrow icon"></i>
+          <i className="right arrow icon"></i>
           Multiplayer
         </Link>
       </div>

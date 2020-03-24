@@ -1,8 +1,9 @@
 import { combineReducers } from 'redux';
+import { reducer as formReducer } from 'redux-form';
 
-
+import multiplayerReducer from './multiplayerReducer';
 
 export default combineReducers({
-  replaceMe: () => 'placeholder'
+  form: formReducer,
+  multiplayer: multiplayerReducer
 });
-

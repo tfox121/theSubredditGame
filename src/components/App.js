@@ -7,7 +7,10 @@ import './SinglePlayer.css';
 
 import Header from './Header';
 import FrontPage from './FrontPage';
-import MultiplayerSelection from './MultiplayerSelection';
+import Multiplayer from './Multiplayer';
+import MultiplayerCreate from './MultiplayerCreate';
+import MultiplayerGame from './MultiplayerGame';
+import MultiplayerJoin from './MultiplayerJoin';
 import SinglePlayer from './SinglePlayer';
 
 const App = () => {
@@ -19,7 +22,10 @@ const App = () => {
           <Switch>
             <Route path="/" exact component={FrontPage} />
             <Route path="/singleplayer" component={SinglePlayer} />
-            <Route path="/multiplayer" component={MultiplayerSelection} />
+            <Route path="/multiplayer" exact component={Multiplayer} />
+            <Route path="/multiplayer/new" component={MultiplayerCreate} />
+            <Route path="/multiplayer/join" component={MultiplayerJoin} />
+            <Route path="/multiplayer/:id" component={MultiplayerGame} />
           </Switch>
         </div>
       </Router>

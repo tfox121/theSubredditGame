@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-import "./SubredditBlock.css"
+import './SubredditBlock.css';
 
 const SubredditBlock = props => {
   return (
