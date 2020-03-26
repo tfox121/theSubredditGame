@@ -4,69 +4,35 @@ import { connect } from 'react-redux';
 import {
   fetchMultiplayerGame,
   generateSubreddit,
-  submitGuess,
-  completeRound,
-  addScores
+  submitGuess
 } from '../actions';
+import history from '../history';
 
 import GuessBlock from './GuessBlock';
 import MultiplayerResultBlock from './MultiplayerResultBlock';
+import MultiplayerScoresheet from './MultiplayerScoresheet';
 import RandomButtonBlock from './RandomButtonBlock';
 import SubredditBlock from './SubredditBlock';
 
 const MultiplayerGame = props => {
   const { id } = props.match.params;
   const game = props.multiplayer[id];
+  const { fetchMultiplayerGame } = props;
 
-  setTimeout(() => {
-    console.log('Fetching games', id);
-    props.fetchMultiplayerGame(id);
-    checkRoundComplete();
-  }, 5000);
+  useEffect(() => {
+    setTimeout(() => {
+      // console.log('Fetching games TIMEOUT', id);
+      fetchMultiplayerGame(id);
+    }, 5000);
+  });
 
-  const checkRoundComplete = () => {
-    if (game && game.roundComplete !== true) {
-      console.log('Checking');
-      const players = Object.keys(game.players);
-      if (players.length < 2) {
-        console.log('Not complete');
-        return;
-      }
-      let roundComplete = true;
-      players.forEach(player => {
-        if (!game.players[player].currentGuess) {
-          roundComplete = false;
-        }
-      });
-      if (roundComplete) {
-        console.log('Finished');
-        props.completeRound(id);
-        props.fetchMultiplayerGame(id);
-      } else {
-        console.log('Not complete');
-      }
+  useEffect(() => {
+    console.log('Fetching games USEEFFECT', id);
+    if (!props.multiplayer.playerName) {
+      history.push(`/multiplayer/join`);
     }
-  };
-
-  const renderPlayers = () => {
-    const game = props.multiplayer[id];
-    if (game) {
-      return (
-        <ol>
-          {Object.keys(game.players).map(player => {
-            return (
-              <li key={player}>
-                {player} {game.players[player].currentGuess}{' '}
-                {game.players[player].score}
-              </li>
-            );
-          })}
-        </ol>
-      );
-    } else {
-      return <div>Loading...</div>;
-    }
-  };
+    fetchMultiplayerGame(id);
+  }, []);
 
   const onSubmitHandler = () => {
     props.generateSubreddit(id);
@@ -74,14 +40,11 @@ const MultiplayerGame = props => {
 
   const onGuessSubmit = num => {
     props.submitGuess(id, props.multiplayer.playerName, num);
-    props.fetchMultiplayerGame(id);
+    fetchMultiplayerGame(id);
   };
 
   const guessBlockRender = () => {
-    if (
-      props.multiplayer[id] &&
-      props.multiplayer[id].currentSub.display_name
-    ) {
+    if (props.multiplayer[id] && props.multiplayer[id].currentSub) {
       return (
         <div className="ui vertical segment">
           <SubredditBlock subredditInfo={props.multiplayer[id].currentSub} />
@@ -108,13 +71,13 @@ const MultiplayerGame = props => {
 
   const resultBlockRender = () => {
     if (game && game.roundComplete) {
-      return Object.keys(game.players).map(player => {
+      return game.players.map(player => {
         return (
-          <span key={player}>
+          <span key={player._id}>
             <MultiplayerResultBlock
-              player={player}
+              player={player.name}
               subredditInfo={props.multiplayer[id].currentSub}
-              guessNum={game.players[player].currentGuess}
+              guessNum={player.currentGuess}
             />
           </span>
         );
@@ -124,11 +87,18 @@ const MultiplayerGame = props => {
 
   return (
     <div>
-      <div>{id}</div>
-      <div>Your Name: {props.multiplayer.playerName}</div>
-      <div>{renderPlayers()}</div>
       <div>
-        Round Complete? {game ? game.roundComplete.toString() : 'Loading'}
+        {id} - Round: {game ? game.round : 'Loading'}{' '}
+        {/* \\ Begun?{' '}
+        {game ? game.gameStarted.toString() : 'Loading'}{' '} */}
+      </div>
+      <div>Your Name: {props.multiplayer.playerName}</div>
+      <MultiplayerScoresheet
+        game={game}
+        currentPlayer={props.multiplayer.playerName}
+      />
+      <div>
+        {/* Round Complete? {game ? game.roundComplete.toString() : 'Loading'} */}
       </div>
       <RandomButtonBlock onSubmit={onSubmitHandler} />
       {guessBlockRender()}
@@ -145,7 +115,5 @@ const mapStateToProps = state => {
 export default connect(mapStateToProps, {
   fetchMultiplayerGame,
   generateSubreddit,
-  submitGuess,
-  completeRound,
-  addScores
+  submitGuess
 })(MultiplayerGame);

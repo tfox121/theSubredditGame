@@ -24,7 +24,8 @@ const App = () => {
             <Route path="/singleplayer" component={SinglePlayer} />
             <Route path="/multiplayer" exact component={Multiplayer} />
             <Route path="/multiplayer/new" component={MultiplayerCreate} />
-            <Route path="/multiplayer/join" component={MultiplayerJoin} />
+            <Route path="/multiplayer/join" exact component={MultiplayerJoin} />
+            <Route path="/multiplayer/join/:id" component={MultiplayerJoin} />
             <Route path="/multiplayer/:id" component={MultiplayerGame} />
           </Switch>
         </div>

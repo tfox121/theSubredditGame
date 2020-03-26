@@ -9,7 +9,7 @@ const Multiplayer = props => {
   useEffect(() => {
     console.log('Fetching games');
     fetchMultiplayerGames();
-  }, [fetchMultiplayerGames]);
+  }, []);
 
   return (
     <div className="ui list">
