@@ -1,3 +1,4 @@
+import { Progress } from 'semantic-ui-react';
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
@@ -9,9 +10,9 @@ import {
 import history from '../history';
 
 import GuessBlock from './GuessBlock';
-import MultiplayerResultBlock from './MultiplayerResultBlock';
+import ResultBlock from './ResultBlock';
 import MultiplayerScoresheet from './MultiplayerScoresheet';
-import RandomButtonBlock from './RandomButtonBlock';
+import MultiplayerNextRoundButton from './MultiplayerNextRoundButton';
 import SubredditBlock from './SubredditBlock';
 
 const MultiplayerGame = props => {
@@ -34,8 +35,12 @@ const MultiplayerGame = props => {
     fetchMultiplayerGame(id);
   }, []);
 
+  const loadingBarHandler = () => {
+    const loader = document.querySelector('#loader');
+  };
+
   const onSubmitHandler = () => {
-    props.generateSubreddit(id);
+    props.generateSubreddit(id, props.multiplayer.playerName);
   };
 
   const onGuessSubmit = num => {
@@ -44,7 +49,7 @@ const MultiplayerGame = props => {
   };
 
   const guessBlockRender = () => {
-    if (props.multiplayer[id] && props.multiplayer[id].currentSub) {
+    if (game && game.currentSub && !game.roundComplete) {
       return (
         <div className="ui vertical segment">
           <SubredditBlock subredditInfo={props.multiplayer[id].currentSub} />
@@ -71,28 +76,44 @@ const MultiplayerGame = props => {
 
   const resultBlockRender = () => {
     if (game && game.roundComplete) {
-      return game.players.map(player => {
-        return (
-          <span key={player._id}>
-            <MultiplayerResultBlock
-              player={player.name}
-              subredditInfo={props.multiplayer[id].currentSub}
-              guessNum={player.currentGuess}
-            />
-          </span>
-        );
-      });
+      return game.players
+        .filter(player => player.name === props.multiplayer.playerName)
+        .map(player => {
+          return (
+            <span key={player._id}>
+              <ResultBlock
+                subredditInfo={props.multiplayer[id].currentSub}
+                guessNum={player.currentGuess}
+              />
+            </span>
+          );
+        });
+    }
+  };
+
+  const progressBarRender = () => {
+    if (game) {
+      return (
+        <Progress
+          value={game.currentRound}
+          total={game.rounds}
+          progress="percent"
+          label={`Round: ${game.currentRound} of ${game.rounds}`}
+          size="large"
+          color="teal"
+          active={game.currentRound !== game.rounds}
+        />
+      );
     }
   };
 
   return (
     <div>
       <div>
-        {id} - Round: {game ? game.round : 'Loading'}{' '}
+        {progressBarRender()}
         {/* \\ Begun?{' '}
         {game ? game.gameStarted.toString() : 'Loading'}{' '} */}
       </div>
-      <div>Your Name: {props.multiplayer.playerName}</div>
       <MultiplayerScoresheet
         game={game}
         currentPlayer={props.multiplayer.playerName}
@@ -100,7 +121,7 @@ const MultiplayerGame = props => {
       <div>
         {/* Round Complete? {game ? game.roundComplete.toString() : 'Loading'} */}
       </div>
-      <RandomButtonBlock onSubmit={onSubmitHandler} />
+      <MultiplayerNextRoundButton onSubmit={onSubmitHandler} />
       {guessBlockRender()}
       {answerRender()}
       {resultBlockRender()}

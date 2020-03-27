@@ -1,7 +1,7 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 
-class MultiplayerJoinForm extends React.Component {
+class MultiplayerCreateForm extends React.Component {
   renderError = ({ error, touched }) => {
     if (touched && error) {
       return (
@@ -23,6 +23,26 @@ class MultiplayerJoinForm extends React.Component {
     );
   };
 
+  renderRadio = ({ input, label, meta }) => {
+    return (
+      <div className="inline field">
+        <p>{label}</p>
+        <br />
+        <div class="ui toggle checkbox">
+          <input
+            type="checkbox"
+            id="nsfw"
+            class="hidden"
+            name="nsfw"
+            tabindex="0"
+            {...input}
+          />
+          <label for="nsfw">NSFW</label>
+        </div>
+      </div>
+    );
+  };
+
   onSubmit = formValues => {
     this.props.onSubmit(formValues);
   };
@@ -33,14 +53,18 @@ class MultiplayerJoinForm extends React.Component {
         onSubmit={this.props.handleSubmit(this.onSubmit)}
         className="ui form error"
       >
-        <h3>Join a game!</h3>
+        <h3>Start a new game!</h3>
         <Field
-          name="gameId"
+          name="rounds"
           component={this.renderInput}
-          label="Enter game ID"
+          label="How many rounds shall we play?"
         />
-        <Field name="name" component={this.renderInput} label="Your name!" />
-        <button className="ui button primary">Join</button>
+        <Field
+          name="nsfw"
+          component={this.renderRadio}
+          label="Feeling brave?"
+        />
+        <button className="ui button primary">New Game</button>
       </form>
     );
   }
@@ -49,18 +73,14 @@ class MultiplayerJoinForm extends React.Component {
 const validate = formValues => {
   const errors = {};
 
-  if (!formValues.gameId) {
-    errors.gameId = 'You must enter a game ID';
-  }
-
-  if (!formValues.name) {
-    errors.name = 'You must enter a name';
+  if (!formValues.rounds) {
+    errors.name = 'You have to play at least one round...';
   }
 
   return errors;
 };
 
 export default reduxForm({
-  form: 'multiplayerJoinForm',
+  form: 'multiplayerCreateForm',
   validate
-})(MultiplayerJoinForm);
+})(MultiplayerCreateForm);

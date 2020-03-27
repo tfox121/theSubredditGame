@@ -3,19 +3,20 @@ import { connect } from 'react-redux';
 
 import { createMultiplayerGame } from '../actions';
 
+import MultiplayerCreateForm from './MultiplayerCreateForm';
+
 class MultiplayerCreate extends React.Component {
-  onClick = async () => {
-    this.props.createMultiplayerGame();
+  onSubmit = async formValues => {
+    this.props.createMultiplayerGame(formValues);
   };
 
   render() {
     return (
       <div>
-        <h3>Create</h3>
-        <button className="ui button primary" onClick={this.onClick}>
-          New Game
-        </button>
-        <div>{this.props.currentGame}</div>
+        <MultiplayerCreateForm
+          onSubmit={this.onSubmit}
+          initialValues={{ rounds: 5 }}
+        />
       </div>
     );
   }

@@ -5,16 +5,36 @@ import './MultiplayerScoresheet.css';
 const MultiplayerScoresheet = props => {
   const { game, currentPlayer } = props;
 
+  const numberFormat = num => {
+    return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+  };
+
+  const sortByScore = () => {
+    game.players.sort((a, b) => {
+      if (a.score < b.score) {
+        return 1;
+      }
+      if (a.score > b.score) {
+        return -1;
+      }
+      return 0;
+    });
+  };
+
   const guessRender = player => {
+    const formattedGuess = numberFormat(player.currentGuess);
     if (player.name === currentPlayer) {
-      return player.currentGuess || 'Waiting...';
+      return formattedGuess || 'Waiting...';
+    } else if (game.roundComplete) {
+      return formattedGuess;
     } else {
-      return player.currentGuess ? 'Submitted' : 'Waiting...';
+      return formattedGuess ? 'Submitted' : 'Waiting...';
     }
   };
 
   const renderPlayers = () => {
     if (game) {
+      sortByScore();
       return (
         <div className="ui three column internally celled grid">
           <div className="row">
@@ -39,7 +59,9 @@ const MultiplayerScoresheet = props => {
                   {player.name === currentPlayer && '>>>'} {player.name}
                 </div>
                 <div className="column">{guessRender(player)}</div>
-                <div className="column">{player.score}</div>
+                <div className="column">
+                  {player.score} (+{player.lastResult})
+                </div>
               </div>
             );
           })}

@@ -5,11 +5,11 @@ import { Link } from 'react-router-dom';
 import { fetchMultiplayerGames } from '../actions';
 
 const Multiplayer = props => {
-  const { fetchMultiplayerGames } = props;
-  useEffect(() => {
-    console.log('Fetching games');
-    fetchMultiplayerGames();
-  }, []);
+  // const { fetchMultiplayerGames } = props;
+  // useEffect(() => {
+  //   console.log('Fetching games');
+  //   fetchMultiplayerGames();
+  // }, []);
 
   return (
     <div className="ui list">

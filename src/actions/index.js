@@ -1,4 +1,4 @@
-import * as fetch from 'node-fetch';
+// import * as fetch from 'node-fetch';
 
 import history from '../history';
 import multiplayer from '../api/multiplayer';
@@ -12,8 +12,8 @@ import {
   MULTIPLAYER_SUBMIT_GUESS
 } from './types';
 
-export const createMultiplayerGame = () => async dispatch => {
-  const response = await multiplayer.post('/games', {});
+export const createMultiplayerGame = formValues => async dispatch => {
+  const response = await multiplayer.post('/games', formValues);
 
   dispatch({ type: CREATE_MULTIPLAYER_GAME, payload: response.data });
 
@@ -55,14 +55,9 @@ export const joinMultiplayerGame = (id, newPlayer) => async dispatch => {
   history.push(`/multiplayer/${id}`);
 };
 
-export const generateSubreddit = id => async dispatch => {
-  const subData = await fetch(
-    'https://cors-anywhere.herokuapp.com/https://www.reddit.com/r/random/about.json'
-  );
-  const subDataJson = await subData.json();
-
-  const response = await multiplayer.patch(`/games/${id}`, {
-    currentSub: subDataJson.data
+export const generateSubreddit = (id, player) => async dispatch => {
+  const response = await multiplayer.patch(`/games/${id}/new`, {
+    player
   });
 
   dispatch({
