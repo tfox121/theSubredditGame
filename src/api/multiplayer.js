@@ -5,5 +5,5 @@ import axios from 'axios';
 // });
 
 export default axios.create({
-  baseURL: 'https://subreddit-game.herokuapp.com/'
+  baseURL: 'https://subreddit-game-api.herokuapp.com/'
 });
