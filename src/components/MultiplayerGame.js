@@ -35,10 +35,6 @@ const MultiplayerGame = props => {
     fetchMultiplayerGame(id);
   }, []);
 
-  const loadingBarHandler = () => {
-    const loader = document.querySelector('#loader');
-  };
-
   const onSubmitHandler = () => {
     props.generateSubreddit(id, props.multiplayer.playerName);
   };
@@ -95,7 +91,7 @@ const MultiplayerGame = props => {
     if (game) {
       return (
         <Progress
-          value={game.currentRound}
+          value={game.gameStarted ? game.currentRound : 0}
           total={game.rounds}
           progress="percent"
           label={`Round: ${game.currentRound} of ${game.rounds}`}
@@ -108,7 +104,7 @@ const MultiplayerGame = props => {
   };
 
   return (
-    <div>
+    <div className="multiplayer-container ui app rasied segment">
       <div>
         {progressBarRender()}
         {/* \\ Begun?{' '}

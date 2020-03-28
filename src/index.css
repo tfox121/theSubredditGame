@@ -1,11 +1,15 @@
 body {
   text-align: center;
-  background-color: #FFFEF9;
+  background-color: #fffef9;
+}
+
+#root {
+  height: 100%;
 }
 
 .ui.button {
-  background-color: #FFFEF9;
-  -webkit-box-shadow: 2px 2px 0px 0px rgba(0,0,0,0.75);
-  -moz-box-shadow: 2px 2px 0px 0px rgba(0,0,0,0.75);
-  box-shadow: 2px 2px 0px 0px rgba(0,0,0,0.75);
+  background-color: #fffef9;
+  -webkit-box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: 2px 2px 0px 0px rgba(0, 0, 0, 0.75);
 }

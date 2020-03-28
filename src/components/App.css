@@ -1,17 +1,17 @@
 .app.ui.segment {
-  background-color: #89909F;
+  background-color: #89909f;
   max-width: 500px;
   margin: 5% auto;
   padding: 5%;
-  -webkit-box-shadow: 4px 4px 5px 0px rgba(0,0,0,0.75);
-  -moz-box-shadow: 4px 4px 5px 0px rgba(0,0,0,0.75);
-  box-shadow: 4px 4px 5px 0px rgba(0,0,0,0.75);
+  -webkit-box-shadow: 4px 4px 5px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 4px 4px 5px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: 4px 4px 5px 0px rgba(0, 0, 0, 0.75);
 }
 
 h1.ui.header {
   display: inline;
-  background-color: #2A7F62;
-  color: #FFFEF9;
+  background-color: #2a7f62;
+  color: #fffef9;
   -webkit-box-shadow: 7px 7px 0px 0px rgba(0, 0, 0, 0.75);
   -moz-box-shadow: 7px 7px 0px 0px rgba(0, 0, 0, 0.75);
   box-shadow: 7px 7px 0px 0px rgba(0, 0, 0, 0.75);

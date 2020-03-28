@@ -1,0 +1,36 @@
+input {
+  text-align: center !important;
+}
+
+div > .ui.container {
+  height: 100%;
+}
+
+div > .inline.field {
+  min-height: 110px;
+}
+
+.option-container .ui.button {
+  align-self: center;
+  margin-top: auto;
+  width: 70%;
+  height: 40px;
+}
+
+.option-container .ui.form {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+@media only screen and (max-width: 767px) {
+  div > .ui.center.aligned.basic.segment.vertical {
+    display: none;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  div > .ui.center.aligned.basic.segment.horizontal {
+    display: none;
+  }
+}

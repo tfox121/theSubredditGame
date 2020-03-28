@@ -17,7 +17,7 @@ export const createMultiplayerGame = formValues => async dispatch => {
 
   dispatch({ type: CREATE_MULTIPLAYER_GAME, payload: response.data });
 
-  history.push(`/multiplayer/join/${response.data._id}`);
+  // history.push(`/multiplayer/join/${response.data._id}`);
 };
 
 export const fetchMultiplayerGames = () => async dispatch => {

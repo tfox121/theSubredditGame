@@ -7,7 +7,7 @@ const Header = props => {
   return (
     <div className="ui secondary pointing menu">
       <Link to="/" className="item">
-        Subreddit Game
+        <i className="reddit icon"></i>The subreddit Game
       </Link>
       {props.multiplayer.currentGame && (
         <Link

@@ -17,7 +17,6 @@ class ResultBlock extends React.Component {
 
   result = percent => {
     let header = '';
-    console.log(typeof percent, percent);
     switch (true) {
       case percent === 0:
         header = "Well now you're just cheating...";

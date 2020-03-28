@@ -1,8 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Field, reduxForm } from 'redux-form';
 
-class MultiplayerCreateForm extends React.Component {
-  renderError = ({ error, touched }) => {
+import './MultiplayerCreateForm.css';
+
+import NsfwSlider from './NsfwSlider';
+
+const MultiplayerCreateForm = props => {
+  const [nsfw, setNsfw] = useState(0);
+
+  const onChange = value => {
+    setNsfw(value);
+  };
+
+  const renderError = ({ error, touched }) => {
     if (touched && error) {
       return (
         <div className="ui error message">
@@ -12,75 +22,76 @@ class MultiplayerCreateForm extends React.Component {
     }
   };
 
-  renderInput = ({ input, label, meta }) => {
+  const renderInput = ({ input, label, meta }) => {
     const className = `field ${meta.error && meta.touched ? 'error' : ''}`;
     return (
       <div className={className}>
         <label>{label}</label>
-        <input {...input} autoComplete="off" />
-        {this.renderError(meta)}
+        <input
+          {...input}
+          type="number"
+          min="1"
+          max="50"
+          step="1"
+          autoComplete="off"
+          required
+        />
+        {renderError(meta)}
       </div>
     );
   };
 
-  renderRadio = ({ input, label, meta }) => {
-    return (
-      <div className="inline field">
-        <p>{label}</p>
-        <br />
-        <div class="ui toggle checkbox">
-          <input
-            type="checkbox"
-            id="nsfw"
-            class="hidden"
-            name="nsfw"
-            tabindex="0"
-            {...input}
-          />
-          <label for="nsfw">NSFW</label>
-        </div>
-      </div>
-    );
+  const onSubmit = formValues => {
+    console.log(formValues);
+    props.onSubmit({ ...formValues, nsfw });
   };
 
-  onSubmit = formValues => {
-    this.props.onSubmit(formValues);
+  const handleClick = event => {
+    if (event) {
+      event.preventDefault();
+      const hiddenText = document.querySelector('.hidden.content');
+      const button = document.querySelector('.ui.button');
+      hiddenText.style.display = 'block';
+      button.classList.add('animated');
+      setTimeout(() => {
+        hiddenText.style.display = 'none';
+        button.classList.remove('animated');
+      }, 4000);
+    }
   };
 
-  render() {
-    return (
-      <form
-        onSubmit={this.props.handleSubmit(this.onSubmit)}
-        className="ui form error"
+  return (
+    <form onSubmit={props.handleSubmit(onSubmit)} className="ui form error">
+      <h3>Create a new game</h3>
+      <Field name="rounds" component={renderInput} label="How many rounds?" />
+      <NsfwSlider nsfw={nsfw} onChange={onChange} />
+      <button
+        onMouseDown={handleClick}
+        onKeyUp={e => {
+          if (e.keyCode === 13 || e.keyCode === 32) {
+            handleClick();
+          }
+        }}
+        className="ui button"
       >
-        <h3>Start a new game!</h3>
-        <Field
-          name="rounds"
-          component={this.renderInput}
-          label="How many rounds shall we play?"
-        />
-        <Field
-          name="nsfw"
-          component={this.renderRadio}
-          label="Feeling brave?"
-        />
-        <button className="ui button primary">New Game</button>
-      </form>
-    );
-  }
-}
-
-const validate = formValues => {
-  const errors = {};
-
-  if (!formValues.rounds) {
-    errors.name = 'You have to play at least one round...';
-  }
-
-  return errors;
+        <div className="visible content">Create</div>
+        <div className="hidden content create">Building...</div>
+      </button>
+    </form>
+  );
 };
 
+// const validate = formValues => {
+//   const errors = {};
+
+//   if (!formValues.rounds) {
+//     errors.name = 'You have to play at least one round...';
+//   }
+
+//   return errors;
+// };
+
 export default reduxForm({
-  form: 'multiplayerCreateForm',
-  validate
+  form: 'multiplayerCreateForm' /* ,
+  validate */
 })(MultiplayerCreateForm);

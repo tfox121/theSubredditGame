@@ -22,12 +22,4 @@ class MultiplayerCreate extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    currentGame: state.multiplayer.currentGame
-  };
-};
-
-export default connect(mapStateToProps, { createMultiplayerGame })(
-  MultiplayerCreate
-);
+export default connect(null, { createMultiplayerGame })(MultiplayerCreate);

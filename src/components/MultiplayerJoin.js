@@ -10,16 +10,20 @@ class MultiplayerJoin extends React.Component {
   };
   render() {
     return (
-      <div>
-        <MultiplayerJoinForm
-          onSubmit={this.onSubmit}
-          initialValues={{ gameId: this.props.match.params.id }}
-        />
-      </div>
+      <>
+        <MultiplayerJoinForm onSubmit={this.onSubmit} />
+      </>
     );
   }
 }
 
-export default connect(null, { fetchMultiplayerGame, joinMultiplayerGame })(
-  MultiplayerJoin
-);
+const mapStateToProps = state => {
+  return {
+    currentGame: state.multiplayer.currentGame
+  };
+};
+
+export default connect(mapStateToProps, {
+  fetchMultiplayerGame,
+  joinMultiplayerGame
+})(MultiplayerJoin);

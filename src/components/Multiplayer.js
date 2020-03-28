@@ -1,29 +1,35 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 
 import { fetchMultiplayerGames } from '../actions';
 
-const Multiplayer = props => {
-  // const { fetchMultiplayerGames } = props;
-  // useEffect(() => {
-  //   console.log('Fetching games');
-  //   fetchMultiplayerGames();
-  // }, []);
+import MultiplayerCreate from './MultiplayerCreate';
+import MultiplayerJoin from './MultiplayerJoin';
 
+import './Multiplayer.css';
+
+const Multiplayer = props => {
   return (
-    <div className="ui list">
-      <div className="item">
-        <Link to="/multiplayer/new" className="ui right labeled icon button">
-          <i className="right arrow icon"></i>
-          New
-        </Link>
-      </div>
-      <div className="item">
-        <Link to="/multiplayer/join" className="ui right labeled icon button">
-          <i className="right arrow icon"></i>
-          Join
-        </Link>
+    <div className="multiplayer-container ui app rasied segment">
+      <h2 className="ui header multiplayer">Multiplayer!</h2>
+      <div className="option-container">
+        <div className="ui center aligned basic segment vertical">
+          <div className="ui two column very relaxed stackable grid">
+            <div className="column">
+              <MultiplayerCreate />
+            </div>
+            <div className="column">
+              <MultiplayerJoin />
+            </div>
+          </div>
+          <div className="ui vertical divider">Or</div>
+        </div>
+        <div className="ui center aligned basic segment horizontal">
+          <MultiplayerCreate />
+          <br />
+          <div class="ui horizontal divider">Or</div>
+          <MultiplayerJoin />
+        </div>
       </div>
     </div>
   );
