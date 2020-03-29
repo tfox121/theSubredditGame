@@ -13,6 +13,7 @@ import GuessBlock from './GuessBlock';
 import ResultBlock from './ResultBlock';
 import MultiplayerScoresheet from './MultiplayerScoresheet';
 import MultiplayerNextRoundButton from './MultiplayerNextRoundButton';
+import Sounds from './Sounds';
 import SubredditBlock from './SubredditBlock';
 
 const MultiplayerGame = props => {
@@ -30,7 +31,7 @@ const MultiplayerGame = props => {
   useEffect(() => {
     console.log('Fetching games USEEFFECT', id);
     if (!props.multiplayer.playerName) {
-      history.push(`/multiplayer/join`);
+      history.push(`/multiplayer/${id}`);
     }
     fetchMultiplayerGame(id);
   }, []);
@@ -76,12 +77,15 @@ const MultiplayerGame = props => {
         .filter(player => player.name === props.multiplayer.playerName)
         .map(player => {
           return (
-            <span key={player._id}>
-              <ResultBlock
-                subredditInfo={props.multiplayer[id].currentSub}
-                guessNum={player.currentGuess}
-              />
-            </span>
+            <div className="ui vertical segment" key={player._id}>
+              {answerRender()}
+              <div>
+                <ResultBlock
+                  subredditInfo={props.multiplayer[id].currentSub}
+                  guessNum={player.currentGuess}
+                />
+              </div>
+            </div>
           );
         });
     }
@@ -105,22 +109,17 @@ const MultiplayerGame = props => {
 
   return (
     <div className="multiplayer-container ui app rasied segment">
-      <div>
-        {progressBarRender()}
-        {/* \\ Begun?{' '}
-        {game ? game.gameStarted.toString() : 'Loading'}{' '} */}
-      </div>
-      <MultiplayerScoresheet
-        game={game}
-        currentPlayer={props.multiplayer.playerName}
-      />
-      <div>
-        {/* Round Complete? {game ? game.roundComplete.toString() : 'Loading'} */}
+      <div className="ui vertical segment">{progressBarRender()}</div>
+      <div className="ui vertical segment">
+        <MultiplayerScoresheet
+          game={game}
+          currentPlayer={props.multiplayer.playerName}
+        />
       </div>
       <MultiplayerNextRoundButton onSubmit={onSubmitHandler} />
       {guessBlockRender()}
-      {answerRender()}
       {resultBlockRender()}
+      <Sounds />
     </div>
   );
 };

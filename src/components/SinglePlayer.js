@@ -2,7 +2,7 @@ import React from 'react';
 
 import './SinglePlayer.css';
 
-import reddit from '../api/reddit';
+// import reddit from '../api/reddit';
 
 import ClearButton from './ClearButton';
 import GuessBlock from './GuessBlock';
@@ -11,6 +11,12 @@ import RandomButtonBlock from './RandomButtonBlock';
 import ResultBlock from './ResultBlock';
 
 class SinglePlayer extends React.Component {
+  componentDidMount() {
+    const singleplayerLink = document.querySelector('.singleplayer.item');
+    const multiplayerLink = document.querySelector('.multiplayer.item');
+    singleplayerLink.classList.add('active');
+    multiplayerLink.classList.remove('active');
+  }
   state = {
     subredditInfo: {},
     guessNum: 0,
@@ -29,8 +35,8 @@ class SinglePlayer extends React.Component {
     }
     this.setState({ loading: true });
     try {
-      const response = await reddit.get('/r/random/about.json');
-      this.setState({ subredditInfo: response.data.data, loading: false });
+      // const response = await reddit.get('/r/random/about.json');
+      // this.setState({ subredditInfo: response.data.data, loading: false });
     } catch (err) {
       this.setState({ error: true, loading: false });
     }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import { fetchMultiplayerGames } from '../actions';
@@ -9,9 +9,16 @@ import MultiplayerJoin from './MultiplayerJoin';
 import './Multiplayer.css';
 
 const Multiplayer = props => {
+  useEffect(() => {
+    const singleplayerLink = document.querySelector('.singleplayer.item');
+    const multiplayerLink = document.querySelector('.multiplayer.item');
+    multiplayerLink.classList.add('active');
+    singleplayerLink.classList.remove('active');
+  }, []);
+
   return (
     <div className="multiplayer-container ui app rasied segment">
-      <h2 className="ui header multiplayer">Multiplayer!</h2>
+      <h1 className="ui header multiplayer">Multiplayer!</h1>
       <div className="option-container">
         <div className="ui center aligned basic segment vertical">
           <div className="ui two column very relaxed stackable grid">

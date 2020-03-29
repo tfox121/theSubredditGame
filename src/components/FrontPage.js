@@ -1,8 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { Link } from 'react-router-dom';
 
 const FrontPage = () => {
+  useEffect(() => {
+    const singleplayerLink = document.querySelector('.singleplayer.item');
+    const multiplayerLink = document.querySelector('.multiplayer.item');
+    multiplayerLink.classList.remove('active');
+    singleplayerLink.classList.remove('active');
+  }, []);
+
   return (
     <div className="ui list">
       <div className="item">

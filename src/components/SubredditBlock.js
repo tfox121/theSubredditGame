@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
 import decode from 'unescape';
 
 import './SubredditBlock.css';
@@ -9,7 +11,7 @@ const SubredditBlock = props => {
       props.subredditInfo.title &&
       props.subredditInfo.title !== props.subredditInfo.display_name
     ) {
-      return <h5 classname="ui header">{decode(props.subredditInfo.title)}</h5>;
+      return <h5 className="ui header">{decode(props.subredditInfo.title)}</h5>;
     }
   };
 
@@ -21,7 +23,15 @@ const SubredditBlock = props => {
 
   const imageRender = () => {
     if (props.subredditInfo.header_img) {
-      return <img src={props.subredditInfo.header_img} alt="subreddit " />;
+      return (
+        <div className="sub-header-img-block">
+          <img
+            className="sub-header-img"
+            src={props.subredditInfo.header_img}
+            alt="subreddit "
+          />
+        </div>
+      );
     }
   };
 
@@ -35,4 +45,8 @@ const SubredditBlock = props => {
   );
 };
 
-export default SubredditBlock;
+const mapStateToProps = state => {
+  return { multiplayer: state.multiplayer };
+};
+
+export default connect(mapStateToProps)(SubredditBlock);

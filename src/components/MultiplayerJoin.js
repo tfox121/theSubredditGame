@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import MultiplayerJoinForm from './MultiplayerJoinForm';
-import { fetchMultiplayerGame, joinMultiplayerGame } from '../actions';
+import { joinMultiplayerGame } from '../actions';
 
 class MultiplayerJoin extends React.Component {
   onSubmit = formValues => {
@@ -24,6 +24,5 @@ const mapStateToProps = state => {
 };
 
 export default connect(mapStateToProps, {
-  fetchMultiplayerGame,
   joinMultiplayerGame
 })(MultiplayerJoin);

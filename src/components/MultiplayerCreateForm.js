@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Field, reduxForm } from 'redux-form';
 
 import './MultiplayerCreateForm.css';
@@ -42,7 +42,6 @@ const MultiplayerCreateForm = props => {
   };
 
   const onSubmit = formValues => {
-    console.log(formValues);
     props.onSubmit({ ...formValues, nsfw });
   };
 

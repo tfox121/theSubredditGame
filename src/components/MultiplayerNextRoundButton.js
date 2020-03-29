@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import './MultiplayerNextRoundButton.css';
 
@@ -29,28 +30,27 @@ const MultiplayerNextRoundButton = props => {
     return 'Next Round!';
   };
 
-  const blockRender = () => {
-    if (game.rounds <= game.currentRound) {
-      return;
-    }
-    if (game.roundComplete || !game.gameStarted) {
+  const buttonRender = () => {
+    if (game.gameComplete) {
       return (
-        <form onSubmit={onSubmit} className="ui form">
-          <div className="field">{buttonRender()}</div>
-        </form>
+        <Link
+          to={`/multiplayer/${game._id}/results`}
+          className="ui right labeled icon button"
+        >
+          <i className="right arrow icon"></i>See Results!
+        </Link>
       );
     }
-  };
-
-  const buttonRender = () => {
-    if (!game.gameStarted) {
+    if (game && !game.gameStarted) {
       return <RoundStartModal onSubmit={onSubmit} />;
-    } else {
+    }
+    if (game && game.gameStarted) {
       return (
         <button
           className={`ui ${!player.readyForNext ? 'animated' : ''} button`}
           tabIndex="0"
           type="submit"
+          disabled={player.readyForNext}
         >
           <div className="visible content">{buttonText()}</div>
           {!player.readyForNext && (
@@ -61,11 +61,19 @@ const MultiplayerNextRoundButton = props => {
     }
   };
 
-  return (
-    <div className="ui vertical segment random-button-block">
-      {blockRender()}
-    </div>
-  );
+  const blockRender = () => {
+    if (game && (game.roundComplete || !game.gameStarted)) {
+      return (
+        <div className="ui vertical segment random-button-block">
+          <form onSubmit={onSubmit} className="ui form">
+            <div className="field">{buttonRender()}</div>
+          </form>
+        </div>
+      );
+    }
+  };
+
+  return <>{blockRender()}</>;
 };
 
 const mapStateToProps = state => {

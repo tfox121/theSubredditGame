@@ -6,7 +6,8 @@ import {
   FETCH_MULTIPLAYER_GAME,
   JOIN_MULTIPLAYER_GAME,
   MULTIPLAYER_GENERATE_SUBREDDIT,
-  MULTIPLAYER_SUBMIT_GUESS
+  MULTIPLAYER_SUBMIT_GUESS,
+  MULTIPLAYER_CLEAR_CURRENT_GAME
 } from '../actions/types';
 
 export default (state = { playerName: '', currentGame: '' }, action) => {
@@ -37,6 +38,12 @@ export default (state = { playerName: '', currentGame: '' }, action) => {
       return {
         ...state,
         [action.payload.game._id]: action.payload.game
+      };
+    case MULTIPLAYER_CLEAR_CURRENT_GAME:
+      // console.log('dispatcher clearing');
+      return {
+        ...state,
+        currentGame: ''
       };
     default:
       return state;

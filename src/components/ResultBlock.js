@@ -37,11 +37,7 @@ class ResultBlock extends React.Component {
     return (
       <div>
         <h2 className="ui header">{header}</h2>
-        <p>
-          {this.numberFormat(this.props.subredditInfo.display_name_prefixed)}{' '}
-          has {this.numberFormat(this.props.subredditInfo.subscribers)}{' '}
-          subscribers. You were {this.roundTo2(percent)}% out.
-        </p>
+        <p>You were {this.roundTo2(percent)}% out.</p>
       </div>
     );
   };

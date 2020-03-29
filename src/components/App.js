@@ -9,6 +9,7 @@ import Header from './Header';
 import FrontPage from './FrontPage';
 import Multiplayer from './Multiplayer';
 import MultiplayerGame from './MultiplayerGame';
+import MultiplayerGameEnd from './MultiplayerGameEnd';
 import SinglePlayer from './SinglePlayer';
 
 const App = () => {
@@ -19,9 +20,13 @@ const App = () => {
           <Header />
           <Switch>
             <Route path="/" exact component={FrontPage} />
-            <Route path="/singleplayer" component={SinglePlayer} />
+            <Route path="/singleplayer" exact component={SinglePlayer} />
             <Route path="/multiplayer" exact component={Multiplayer} />
-            <Route path="/multiplayer/:id" component={MultiplayerGame} />
+            <Route path="/multiplayer/:id" exact component={MultiplayerGame} />
+            <Route
+              path="/multiplayer/:id/results"
+              component={MultiplayerGameEnd}
+            />
           </Switch>
         </>
       </Router>

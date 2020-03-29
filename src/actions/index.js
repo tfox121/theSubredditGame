@@ -9,7 +9,8 @@ import {
   FETCH_MULTIPLAYER_GAME,
   JOIN_MULTIPLAYER_GAME,
   MULTIPLAYER_GENERATE_SUBREDDIT,
-  MULTIPLAYER_SUBMIT_GUESS
+  MULTIPLAYER_SUBMIT_GUESS,
+  MULTIPLAYER_CLEAR_CURRENT_GAME
 } from './types';
 
 export const createMultiplayerGame = formValues => async dispatch => {
@@ -79,5 +80,12 @@ export const submitGuess = (id, player, guess) => async dispatch => {
     payload: {
       game: response.data
     }
+  });
+};
+
+export const clearCurrentGame = () => async dispatch => {
+  console.log('CLEAING');
+  dispatch({
+    type: MULTIPLAYER_CLEAR_CURRENT_GAME
   });
 };
