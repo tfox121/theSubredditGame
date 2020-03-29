@@ -7,19 +7,15 @@ import { clearCurrentGame } from '../actions';
 
 import MultiplayerScoresheet from './MultiplayerScoresheet';
 
+import brass_finale from '../audio/brass_finale.mp3';
+
 const MultiplayerGameEnd = props => {
   const { id } = props.match.params;
   const game = props.multiplayer[id];
 
   const gameEndSound = () => {
     const myRef = React.createRef();
-    return (
-      <audio
-        ref={myRef}
-        src={'https://www.freesfx.co.uk/sound/16070_1460555778.mp3'}
-        autoPlay
-      />
-    );
+    return <audio ref={myRef} src={brass_finale} autoPlay />;
   };
 
   const roundTo2 = num => {
