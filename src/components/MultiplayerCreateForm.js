@@ -1,12 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { Field, reduxForm } from 'redux-form';
+import { connect } from 'react-redux';
 
+import { clearCurrentGame } from '../actions';
 import './MultiplayerCreateForm.css';
 
 import NsfwSlider from './NsfwSlider';
 
 const MultiplayerCreateForm = props => {
   const [nsfw, setNsfw] = useState(0);
+  const [disableButton, setDisableButton] = useState(false);
+  const [buttonText, setButtonText] = useState('Create');
+
+  const { currentGame } = props;
+  useEffect(() => {
+    if (currentGame) {
+      setButtonText('Created!');
+      setTimeout(() => {
+        setButtonText('Create');
+        setDisableButton(false);
+      }, 3800);
+    }
+  }, [currentGame]);
 
   const onChange = value => {
     setNsfw(value);
@@ -42,21 +57,9 @@ const MultiplayerCreateForm = props => {
   };
 
   const onSubmit = formValues => {
+    setButtonText('Creating...');
     props.onSubmit({ ...formValues, nsfw });
-  };
-
-  const handleClick = event => {
-    if (event) {
-      event.preventDefault();
-      const hiddenText = document.querySelector('.hidden.content');
-      const button = document.querySelector('.ui.button');
-      hiddenText.style.display = 'block';
-      button.classList.add('animated');
-      setTimeout(() => {
-        hiddenText.style.display = 'none';
-        button.classList.remove('animated');
-      }, 4000);
-    }
+    setDisableButton(true);
   };
 
   return (
@@ -64,33 +67,21 @@ const MultiplayerCreateForm = props => {
       <h3>Create a new game</h3>
       <Field name="rounds" component={renderInput} label="How many rounds?" />
       <NsfwSlider nsfw={nsfw} onChange={onChange} />
-      <button
-        onMouseDown={handleClick}
-        onKeyUp={e => {
-          if (e.keyCode === 13 || e.keyCode === 32) {
-            handleClick();
-          }
-        }}
-        className="ui button"
-      >
-        <div className="visible content">Create</div>
-        <div className="hidden content create">Building...</div>
+      <button className="ui button" disabled={disableButton}>
+        <div className="visible content">{buttonText}</div>
       </button>
     </form>
   );
 };
 
-// const validate = formValues => {
-//   const errors = {};
+const mapStateToProps = state => {
+  return {
+    currentGame: state.multiplayer.currentGame
+  };
+};
 
-//   if (!formValues.rounds) {
-//     errors.name = 'You have to play at least one round...';
-//   }
-
-//   return errors;
-// };
-
-export default reduxForm({
-  form: 'multiplayerCreateForm' /* ,
-  validate */
+const form = reduxForm({
+  form: 'multiplayerCreateForm'
 })(MultiplayerCreateForm);
+
+export default connect(mapStateToProps, { clearCurrentGame })(form);
