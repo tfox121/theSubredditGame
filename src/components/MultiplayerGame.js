@@ -1,5 +1,5 @@
 import { Progress } from 'semantic-ui-react';
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 
 import {
@@ -17,9 +17,13 @@ import Sounds from './Sounds';
 import SubredditBlock from './SubredditBlock';
 
 const MultiplayerGame = props => {
+  const [copySuccess, setCopySuccess] = useState('');
+
   const { id } = props.match.params;
   const game = props.multiplayer[id];
   const { fetchMultiplayerGame } = props;
+
+  const textAreaRef = useRef(null);
 
   useEffect(() => {
     setTimeout(() => {
@@ -30,11 +34,13 @@ const MultiplayerGame = props => {
 
   useEffect(() => {
     console.log('Fetching games USEEFFECT', id);
-    if (!props.multiplayer.playerName) {
-      history.push(`/multiplayer/${id}`);
-    }
     fetchMultiplayerGame(id);
   }, []);
+
+  if (!game || !props.multiplayer.playerName) {
+    history.push(`/multiplayer/join/${id}`);
+    return null;
+  }
 
   const onSubmitHandler = () => {
     props.generateSubreddit(id, props.multiplayer.playerName);
@@ -46,7 +52,7 @@ const MultiplayerGame = props => {
   };
 
   const guessBlockRender = () => {
-    if (game && game.currentSub && !game.roundComplete) {
+    if (game.currentSub && !game.roundComplete) {
       return (
         <div className="ui vertical segment">
           <SubredditBlock subredditInfo={props.multiplayer[id].currentSub} />
@@ -56,35 +62,17 @@ const MultiplayerGame = props => {
     }
   };
 
-  const numberFormat = num => {
-    return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
-  };
-
-  const answerRender = () => {
-    if (game && game.roundComplete) {
-      return (
-        <h2 className="ui header">
-          /r/{numberFormat(game.currentSub.display_name)} has{' '}
-          {numberFormat(game.currentSub.subscribers)} subscribers.{' '}
-        </h2>
-      );
-    }
-  };
-
   const resultBlockRender = () => {
-    if (game && game.roundComplete) {
+    if (game.roundComplete) {
       return game.players
         .filter(player => player.name === props.multiplayer.playerName)
         .map(player => {
           return (
             <div className="ui vertical segment" key={player._id}>
-              {answerRender()}
-              <div>
-                <ResultBlock
-                  subredditInfo={props.multiplayer[id].currentSub}
-                  guessNum={player.currentGuess}
-                />
-              </div>
+              <ResultBlock
+                subredditInfo={props.multiplayer[id].currentSub}
+                guessNum={player.currentGuess}
+              />
             </div>
           );
         });
@@ -92,8 +80,8 @@ const MultiplayerGame = props => {
   };
 
   const progressBarRender = () => {
-    if (game) {
-      return (
+    return (
+      <div className="ui vertical segment">
         <Progress
           value={game.gameStarted ? game.currentRound : 0}
           total={game.rounds}
@@ -103,24 +91,49 @@ const MultiplayerGame = props => {
           color="teal"
           active={game.currentRound !== game.rounds}
         />
+      </div>
+    );
+  };
+
+  const copyToClipboard = event => {
+    textAreaRef.current.select();
+    document.execCommand('copy');
+    event.target.focus();
+    setCopySuccess('Copied!');
+  };
+
+  const inviteRender = () => {
+    if (!game.gameStarted && document.queryCommandSupported('copy')) {
+      return (
+        <div className="ui vertical segment">
+          <div>
+            <h2 className="ui header">Invite a friend! Click to copy:</h2>
+          </div>
+          <br />
+          <textarea
+            onClick={copyToClipboard}
+            ref={textAreaRef}
+            value={`${window.location.origin}/multiplayer/join/${id}`}
+          />
+          <div>{copySuccess}</div>
+        </div>
       );
     }
   };
 
   return (
-    <div className="multiplayer-container ui app rasied segment">
-      <div className="ui vertical segment">{progressBarRender()}</div>
-      <div className="ui vertical segment">
-        <MultiplayerScoresheet
-          game={game}
-          currentPlayer={props.multiplayer.playerName}
-        />
-      </div>
+    <>
+      {progressBarRender()}
+      <MultiplayerScoresheet
+        game={game}
+        currentPlayer={props.multiplayer.playerName}
+      />
+      {inviteRender()}
       <MultiplayerNextRoundButton onSubmit={onSubmitHandler} />
       {guessBlockRender()}
       {resultBlockRender()}
       <Sounds />
-    </div>
+    </>
   );
 };
 

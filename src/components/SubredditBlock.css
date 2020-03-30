@@ -21,3 +21,7 @@ h2.ui.header {
   max-height: 100%;
   max-width: 100%;
 }
+
+.ui.subreddit-block > p {
+  overflow-wrap: break-word;
+}

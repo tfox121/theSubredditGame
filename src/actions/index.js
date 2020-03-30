@@ -84,7 +84,6 @@ export const submitGuess = (id, player, guess) => async dispatch => {
 };
 
 export const clearCurrentGame = () => async dispatch => {
-  console.log('CLEAING');
   dispatch({
     type: MULTIPLAYER_CLEAR_CURRENT_GAME
   });

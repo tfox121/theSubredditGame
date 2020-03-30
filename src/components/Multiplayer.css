@@ -2,10 +2,6 @@ input {
   text-align: center !important;
 }
 
-div > .ui.container {
-  height: 100%;
-}
-
 div > .inline.field {
   min-height: 110px;
 }

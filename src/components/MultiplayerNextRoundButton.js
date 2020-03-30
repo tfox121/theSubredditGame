@@ -65,7 +65,7 @@ const MultiplayerNextRoundButton = props => {
     if (game && (game.roundComplete || !game.gameStarted)) {
       return (
         <div className="ui vertical segment random-button-block">
-          <form onSubmit={onSubmit} className="ui form">
+          <form onSubmit={onSubmit}>
             <div className="field">{buttonRender()}</div>
           </form>
         </div>

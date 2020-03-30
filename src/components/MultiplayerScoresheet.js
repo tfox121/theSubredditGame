@@ -36,35 +36,37 @@ const MultiplayerScoresheet = props => {
     if (game) {
       sortByScore();
       return (
-        <div className="ui three column internally celled grid">
-          <div className="row">
-            <div className="column"></div>
-            <div className="column">Guess</div>
-            <div className="column">Score</div>
+        <div className="ui vertical segment">
+          <div className="ui three column internally celled grid">
+            <div className="row">
+              <div className="column"></div>
+              <div className="column">Guess</div>
+              <div className="column">Score</div>
+            </div>
+            {game.players.map(player => {
+              return (
+                <div
+                  className="row"
+                  key={player._id}
+                  style={
+                    player.name === currentPlayer
+                      ? {
+                          textDecoration: 'underline'
+                        }
+                      : {}
+                  }
+                >
+                  <div className="column">
+                    {player.name === currentPlayer && '>>>'} {player.name}
+                  </div>
+                  <div className="column">{guessRender(player)}</div>
+                  <div className="column">
+                    {player.score} (+{player.lastResult})
+                  </div>
+                </div>
+              );
+            })}
           </div>
-          {game.players.map(player => {
-            return (
-              <div
-                className="row"
-                key={player._id}
-                style={
-                  player.name === currentPlayer
-                    ? {
-                        textDecoration: 'underline'
-                      }
-                    : {}
-                }
-              >
-                <div className="column">
-                  {player.name === currentPlayer && '>>>'} {player.name}
-                </div>
-                <div className="column">{guessRender(player)}</div>
-                <div className="column">
-                  {player.score} (+{player.lastResult})
-                </div>
-              </div>
-            );
-          })}
         </div>
       );
     } else {

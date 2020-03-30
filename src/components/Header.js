@@ -3,6 +3,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import './Header.css';
+
 const Header = props => {
   const singlePlayerClick = event => {
     const link = document.querySelector('.singleplayer.item');
@@ -15,16 +17,15 @@ const Header = props => {
   };
 
   return (
-    <div className="ui secondary pointing menu">
-      <Link to="/" className="item">
-        <i className="reddit icon"></i>The subreddit Game
-      </Link>
+    <>
+      <h1 className="ui header top">The subreddit Game</h1>
       {/* {props.multiplayer.currentGame && (
         <div className="item">
           Current Game: {props.multiplayer.currentGame}
         </div>
       )} */}
-      <div className="right menu">
+
+      <div className="ui secondary two item pointing menu inverted">
         <Link
           to="/singleplayer"
           onClick={singlePlayerClick}
@@ -40,7 +41,7 @@ const Header = props => {
           Multiplayer
         </Link>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -21,7 +21,11 @@ export default (state = { playerName: '', currentGame: '' }, action) => {
     case FETCH_MULTIPLAYER_GAMES:
       return { ...state, ..._.mapKeys(action.payload, '_id') };
     case FETCH_MULTIPLAYER_GAME:
-      return { ...state, [action.payload._id]: action.payload };
+      return {
+        ...state,
+        [action.payload._id]: action.payload,
+        currentGame: action.payload._id
+      };
     case JOIN_MULTIPLAYER_GAME:
       return {
         ...state,
@@ -40,7 +44,6 @@ export default (state = { playerName: '', currentGame: '' }, action) => {
         [action.payload.game._id]: action.payload.game
       };
     case MULTIPLAYER_CLEAR_CURRENT_GAME:
-      // console.log('dispatcher clearing');
       return {
         ...state,
         currentGame: ''

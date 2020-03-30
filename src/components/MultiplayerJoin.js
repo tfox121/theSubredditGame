@@ -11,7 +11,10 @@ class MultiplayerJoin extends React.Component {
   render() {
     return (
       <>
-        <MultiplayerJoinForm onSubmit={this.onSubmit} />
+        <MultiplayerJoinForm
+          onSubmit={this.onSubmit}
+          initialValues={{ gameId: this.props.joinId }}
+        />
       </>
     );
   }

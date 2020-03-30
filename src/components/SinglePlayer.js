@@ -108,18 +108,15 @@ class SinglePlayer extends React.Component {
 
   render() {
     return (
-      <div className="ui container">
-        <div className="ui app rasied segment">
-          <h1 className="ui header">The subreddit Game!</h1>
-          <RandomButtonBlock onSubmit={this.randomSubGenerator} />
-          {this.loadingRender()}
-          {this.loadingRender()}
-          {this.errorRender()}
-          {this.guessBlockRender()}
-          {this.resultBlockRender()}
-          {this.clearButtonRender()}
-        </div>
-      </div>
+      <>
+        <RandomButtonBlock onSubmit={this.randomSubGenerator} />
+        {this.loadingRender()}
+        {this.loadingRender()}
+        {this.errorRender()}
+        {this.guessBlockRender()}
+        {this.resultBlockRender()}
+        {this.clearButtonRender()}
+      </>
     );
   }
 }

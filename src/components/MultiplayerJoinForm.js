@@ -58,7 +58,7 @@ const MultiplayerJoinForm = props => {
       >
         <div className="visible content">Go!</div>
         <div className="hidden content">
-          <i class="angle double right icon"></i>
+          <i className="angle double right icon"></i>
         </div>
       </button>
     </form>

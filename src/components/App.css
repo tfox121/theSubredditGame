@@ -16,3 +16,20 @@ h1.ui.header {
   -moz-box-shadow: 7px 7px 0px 0px rgba(0, 0, 0, 0.75);
   box-shadow: 7px 7px 0px 0px rgba(0, 0, 0, 0.75);
 }
+
+@media only screen and (max-width: 768px) {
+  .ui.container {
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0 !important;
+    overflow: auto;
+  }
+
+  .app.ui.segment {
+    margin: 0;
+    border-radius: 0;
+    height: 100%;
+    overflow: auto;
+  }
+}

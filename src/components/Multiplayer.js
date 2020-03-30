@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
-import { fetchMultiplayerGames } from '../actions';
+import { fetchMultiplayerGame } from '../actions';
 
 import MultiplayerCreate from './MultiplayerCreate';
 import MultiplayerJoin from './MultiplayerJoin';
@@ -9,6 +9,8 @@ import MultiplayerJoin from './MultiplayerJoin';
 import './Multiplayer.css';
 
 const Multiplayer = props => {
+  const { id } = props.match.params;
+
   useEffect(() => {
     const singleplayerLink = document.querySelector('.singleplayer.item');
     const multiplayerLink = document.querySelector('.multiplayer.item');
@@ -17,8 +19,7 @@ const Multiplayer = props => {
   }, []);
 
   return (
-    <div className="multiplayer-container ui app rasied segment">
-      <h1 className="ui header multiplayer">Multiplayer!</h1>
+    <>
       <div className="option-container">
         <div className="ui center aligned basic segment vertical">
           <div className="ui two column very relaxed stackable grid">
@@ -26,7 +27,7 @@ const Multiplayer = props => {
               <MultiplayerCreate />
             </div>
             <div className="column">
-              <MultiplayerJoin />
+              <MultiplayerJoin joinId={id} />
             </div>
           </div>
           <div className="ui vertical divider">Or</div>
@@ -34,12 +35,12 @@ const Multiplayer = props => {
         <div className="ui center aligned basic segment horizontal">
           <MultiplayerCreate />
           <br />
-          <div class="ui horizontal divider">Or</div>
-          <MultiplayerJoin />
+          <div className="ui horizontal divider">Or</div>
+          <MultiplayerJoin joinId={id} />
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
-export default connect(null, { fetchMultiplayerGames })(Multiplayer);
+export default connect(null, { fetchMultiplayerGame })(Multiplayer);
