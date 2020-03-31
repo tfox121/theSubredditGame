@@ -16,7 +16,7 @@ function NsfwSlider(props) {
   };
 
   const sliderText = value => {
-    let text = 'Hope for the best.';
+    let text = 'Fingers crossed.';
     if (value === 1) {
       text = 'Spicing it up...';
     }
