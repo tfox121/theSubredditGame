@@ -1,9 +1,17 @@
 import axios from 'axios';
 
+if (process.env.NODE_ENV === 'build') {
+  require('dotenv').config();
+}
 export const source = axios.CancelToken.source();
 
+const baseURL =
+  process.env.NODE_ENV === 'build'
+    ? process.env.API_URL_LOCAL
+    : process.env.API_URL_DEPLOYED;
+
 export const axiosDefault = axios.create({
-  baseURL: 'http://localhost:8000/games',
+  baseURL,
   cancelToken: source.token
 });
 

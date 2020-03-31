@@ -3,9 +3,11 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { clearCurrentGame } from '../actions';
-import MultiplayerGameEndScoresheet from './MultiplayerGameEndScoresheet';
 import brass_finale from '../audio/brass_finale.mp3';
 import history from '../history';
+import './MultiplayerGameEnd.css';
+
+import MultiplayerGameEndScoresheet from './MultiplayerGameEndScoresheet';
 
 const MultiplayerGameEnd = props => {
   const { id } = props.match.params;
@@ -47,8 +49,9 @@ const MultiplayerGameEnd = props => {
           game={game}
           currentPlayer={multiplayer.playerName}
         />
-        <div className="ui segment">
-          Best Guess: <b>{game.closestGuess.playerName}</b> - only{' '}
+        <div className="ui basic segment">
+          Best Guess:{' '}
+          <b className="best-guess">{game.closestGuess.playerName}</b> - only{' '}
           {roundTo2(game.closestGuess.percentage)}% out for{' '}
           {game.closestGuess.subName}!
         </div>
