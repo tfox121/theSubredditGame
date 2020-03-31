@@ -17,7 +17,7 @@ const RandomButtonBlock = props => {
   };
 
   return (
-    <div className="ui vertical segment random-button-block">
+    <div className="ui basic segment random-button-block">
       <form onSubmit={props.handleSubmit(onSubmit)} className="ui form">
         <div className="field">
           <button className="ui animated button" tabIndex="0" type="submit">

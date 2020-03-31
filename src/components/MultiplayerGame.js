@@ -73,12 +73,10 @@ const MultiplayerGame = props => {
         .filter(player => player.name === props.multiplayer.playerName)
         .map(player => {
           return (
-            <div className="ui vertical segment" key={player._id}>
-              <ResultBlock
-                subredditInfo={props.multiplayer[id].currentSub}
-                guessNum={player.currentGuess}
-              />
-            </div>
+            <ResultBlock
+              subredditInfo={props.multiplayer[id].currentSub}
+              guessNum={player.currentGuess}
+            />
           );
         });
     }
@@ -86,13 +84,13 @@ const MultiplayerGame = props => {
 
   const progressBarRender = () => {
     return (
-      <div className="ui vertical segment">
+      <div className="ui basic segment">
         <Progress
           value={game.gameStarted ? game.currentRound : 0}
           total={game.rounds}
           progress="percent"
           label={`Round: ${game.currentRound} of ${game.rounds}`}
-          size="large"
+          size="medium"
           color="teal"
           active={game.currentRound !== game.rounds}
         />
@@ -110,7 +108,7 @@ const MultiplayerGame = props => {
   const inviteRender = () => {
     if (!game.gameStarted && document.queryCommandSupported('copy')) {
       return (
-        <div className="ui vertical segment">
+        <div className="ui basic segment">
           <div>
             <h2 className="ui header">Invite a friend! Click to copy:</h2>
           </div>

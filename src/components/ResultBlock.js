@@ -37,7 +37,7 @@ const ResultBlock = props => {
   }, []);
 
   return (
-    <div className="ui results-block">
+    <div className="ui basic segment results-block">
       <div>
         <h2 className="ui header">{resultText}</h2>
         <h3 className="ui header">

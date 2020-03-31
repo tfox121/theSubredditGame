@@ -36,7 +36,7 @@ const MultiplayerScoresheet = props => {
     if (game) {
       sortByScore();
       return (
-        <div className="ui vertical segment">
+        <div className="ui basic segment">
           <div className="ui three column internally celled grid">
             <div className="row">
               <div className="column"></div>
