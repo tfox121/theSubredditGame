@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import './SinglePlayer.css';
-
-// import reddit from '../api/reddit';
+import { axiosDefault as multiplayer } from '../api/multiplayer';
 
 import ClearButton from './ClearButton';
 import GuessBlock from './GuessBlock';
@@ -10,53 +9,47 @@ import SubredditBlock from './SubredditBlock';
 import RandomButtonBlock from './RandomButtonBlock';
 import ResultBlock from './ResultBlock';
 
-class SinglePlayer extends React.Component {
-  componentDidMount() {
+const SinglePlayer = () => {
+  useEffect(() => {
     const singleplayerLink = document.querySelector('.singleplayer.item');
     const multiplayerLink = document.querySelector('.multiplayer.item');
     singleplayerLink.classList.add('active');
     multiplayerLink.classList.remove('active');
-  }
-  state = {
-    subredditInfo: {},
-    guessNum: 0,
-    loading: false,
-    error: false,
-    nsfw: 'randnsfw'
-  };
+  }, []);
 
-  randomSubGenerator = async () => {
-    if (
-      this.state.guessNum !== 0 ||
-      this.state.subredditInfo.display_name ||
-      this.state.error
-    ) {
-      this.clearState();
+  const [subredditInfo, setSubredditInfo] = useState({});
+  const [guessNum, setGuessNum] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+
+  const randomSubGenerator = async formValues => {
+    if (guessNum !== 0 || subredditInfo.display_name || error) {
+      clearState();
     }
-    this.setState({ loading: true });
+    setLoading(true);
     try {
-      // const response = await reddit.get('/r/random/about.json');
-      // this.setState({ subredditInfo: response.data.data, loading: false });
+      const response = await multiplayer.get(`/generate/${formValues.nsfw}`);
+      setSubredditInfo(response.data);
+      setLoading(false);
     } catch (err) {
-      this.setState({ error: true, loading: false });
+      setError(true);
+      setLoading(false);
     }
   };
 
-  onGuessSubmit = num => {
-    this.setState({ guessNum: num });
+  const onGuessSubmit = num => {
+    setGuessNum(num);
   };
 
-  clearState = () => {
-    this.setState({
-      subredditInfo: {},
-      guessNum: 0,
-      loading: false,
-      error: false
-    });
+  const clearState = () => {
+    setSubredditInfo({});
+    setGuessNum(0);
+    setLoading(false);
+    setError(false);
   };
 
-  loadingRender = () => {
-    if (this.state.loading) {
+  const loadingRender = () => {
+    if (loading) {
       return (
         <div className="ui vertical segment">
           <div className="ui active inverted loader"></div>
@@ -68,8 +61,8 @@ class SinglePlayer extends React.Component {
     }
   };
 
-  errorRender = () => {
-    if (this.state.error) {
+  const errorRender = () => {
+    if (error) {
       return (
         <div className="ui vertical segment">
           <h2 className="ui header">Uh oh, there's been a problem!</h2>
@@ -78,47 +71,40 @@ class SinglePlayer extends React.Component {
     }
   };
 
-  guessBlockRender = () => {
-    if (this.state.subredditInfo.display_name) {
+  const guessBlockRender = () => {
+    if (subredditInfo.display_name) {
       return (
         <div className="ui vertical segment">
-          <SubredditBlock subredditInfo={this.state.subredditInfo} />
-          <GuessBlock onSubmit={this.onGuessSubmit} />
+          <SubredditBlock subredditInfo={subredditInfo} />
+          <GuessBlock onSubmit={onGuessSubmit} />
         </div>
       );
     }
   };
 
-  resultBlockRender = () => {
-    if (this.state.guessNum > 0) {
-      return (
-        <ResultBlock
-          subredditInfo={this.state.subredditInfo}
-          guessNum={this.state.guessNum}
-        />
-      );
+  const resultBlockRender = () => {
+    if (guessNum > 0) {
+      return <ResultBlock subredditInfo={subredditInfo} guessNum={guessNum} />;
     }
   };
 
-  clearButtonRender = () => {
-    if (this.state.guessNum > 0) {
-      return <ClearButton clearState={this.clearState} />;
+  const clearButtonRender = () => {
+    if (guessNum > 0) {
+      return <ClearButton clearState={clearState} />;
     }
   };
 
-  render() {
-    return (
-      <>
-        <RandomButtonBlock onSubmit={this.randomSubGenerator} />
-        {this.loadingRender()}
-        {this.loadingRender()}
-        {this.errorRender()}
-        {this.guessBlockRender()}
-        {this.resultBlockRender()}
-        {this.clearButtonRender()}
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <RandomButtonBlock onSubmit={randomSubGenerator} />
+      {loadingRender()}
+      {loadingRender()}
+      {errorRender()}
+      {guessBlockRender()}
+      {resultBlockRender()}
+      {clearButtonRender()}
+    </>
+  );
+};
 
 export default SinglePlayer;

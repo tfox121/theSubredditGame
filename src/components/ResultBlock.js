@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
 
 import './ResultBlock.css';
 import resultCopy from '../data/resultCopy';
 
 const ResultBlock = props => {
-  const game = props.multiplayer[props.multiplayer.currentGame];
+  const { subredditInfo } = props;
 
   const [resultText, setResultText] = useState('');
   const [percent, setPercent] = useState(0);
@@ -23,12 +22,8 @@ const ResultBlock = props => {
   };
 
   useEffect(() => {
-    const percent = percentCalc(
-      props.guessNum,
-      props.subredditInfo.subscribers
-    );
+    const percent = percentCalc(props.guessNum, subredditInfo.subscribers);
     setPercent(percent);
-    console.log('percent:', percent);
     const percentRange = Object.keys(resultCopy).sort((a, b) => b - a);
     percentRange.forEach(resultPercent => {
       if (parseInt(resultPercent, 10) >= percent) {
@@ -46,8 +41,15 @@ const ResultBlock = props => {
       <div>
         <h2 className="ui header">{resultText}</h2>
         <h3 className="ui header">
-          /r/{numberFormat(game.currentSub.display_name)} has{' '}
-          {numberFormat(game.currentSub.subscribers)} subscribers.{' '}
+          <a
+            href={`https://reddit.com${subredditInfo.url}`}
+            className="sub-link"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            /r/{subredditInfo.display_name}
+          </a>{' '}
+          has {numberFormat(subredditInfo.subscribers)} subscribers.{' '}
         </h3>
         <p>You were {roundTo2(percent)}% out.</p>
       </div>
@@ -55,8 +57,4 @@ const ResultBlock = props => {
   );
 };
 
-const mapStateToProps = state => {
-  return { multiplayer: state.multiplayer };
-};
-
-export default connect(mapStateToProps)(ResultBlock);
+export default ResultBlock;

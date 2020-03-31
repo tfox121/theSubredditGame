@@ -1,20 +1,23 @@
 .app.ui.segment {
-  background-color: #89909f;
   max-width: 500px;
   margin: 5% auto;
   padding: 5%;
-  -webkit-box-shadow: 4px 4px 5px 0px rgba(0, 0, 0, 0.75);
-  -moz-box-shadow: 4px 4px 5px 0px rgba(0, 0, 0, 0.75);
-  box-shadow: 4px 4px 5px 0px rgba(0, 0, 0, 0.75);
 }
 
 h1.ui.header {
   display: inline;
-  background-color: #2a7f62;
+  background-color: #c3acce;
   color: #fffef9;
   -webkit-box-shadow: 7px 7px 0px 0px rgba(0, 0, 0, 0.75);
   -moz-box-shadow: 7px 7px 0px 0px rgba(0, 0, 0, 0.75);
   box-shadow: 7px 7px 0px 0px rgba(0, 0, 0, 0.75);
+  padding-left: 4px;
+  padding-right: 4px;
+  font-size: 2.5em;
+}
+
+.ui.form > .field > input {
+  border: 0.5px solid black;
 }
 
 @media only screen and (max-width: 768px) {
@@ -26,10 +29,10 @@ h1.ui.header {
     overflow: auto;
   }
 
-  .app.ui.segment {
+  /* .app.ui.segment {
     margin: 0;
     border-radius: 0;
     height: 100%;
     overflow: auto;
-  }
+  } */
 }

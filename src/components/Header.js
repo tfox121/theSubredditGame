@@ -25,7 +25,7 @@ const Header = props => {
         </div>
       )} */}
 
-      <div className="ui secondary two item pointing menu inverted">
+      <div className="ui secondary two item pointing menu">
         <Link
           to="/singleplayer"
           onClick={singlePlayerClick}

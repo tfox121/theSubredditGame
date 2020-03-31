@@ -15,7 +15,7 @@ const App = () => {
   return (
     <div className="ui container">
       <Router history={history}>
-        <div className="ui app rasied segment">
+        <div className="ui app basic segment">
           <Header />
           <Switch>
             <Route path="/" exact component={SinglePlayer} />

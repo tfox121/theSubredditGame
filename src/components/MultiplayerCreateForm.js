@@ -14,13 +14,19 @@ const MultiplayerCreateForm = props => {
 
   const { currentGame } = props;
   useEffect(() => {
-    if (currentGame) {
+    let mounted = true;
+    if (currentGame && mounted) {
+      console.log('SETTING STATE');
       setButtonText('Created!');
       setTimeout(() => {
         setButtonText('Create');
         setDisableButton(false);
       }, 3800);
     }
+    return () => {
+      mounted = false;
+      console.log('UNMOUNTED');
+    };
   }, [currentGame]);
 
   const onChange = value => {
@@ -66,7 +72,7 @@ const MultiplayerCreateForm = props => {
     <form onSubmit={props.handleSubmit(onSubmit)} className="ui form error">
       <h3>Create a new game</h3>
       <Field name="rounds" component={renderInput} label="How many rounds?" />
-      <NsfwSlider nsfw={nsfw} onChange={onChange} />
+      <NsfwSlider nsfw={nsfw} width="12" onChange={onChange} />
       <button className="ui button" disabled={disableButton}>
         <div className="visible content">{buttonText}</div>
       </button>

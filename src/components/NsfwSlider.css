@@ -1,3 +1,28 @@
 .slider > div.twelve.wide.column {
   padding: 8px;
 }
+
+.ui.green.label {
+  background-color: #bfedc1 !important;
+  border-color: #bfedc1 !important;
+  color: black !important;
+  padding: 1em;
+  box-shadow: 3.5px 3.5px 0px 0px rgba(0, 0, 0, 0.75);
+}
+
+.ui.orange.label {
+  background-color: #ffc09f !important;
+  border-color: #ffc09f !important;
+  color: black !important;
+  padding: 1em;
+  box-shadow: 3.5px 3.5px 0px 0px rgba(0, 0, 0, 0.75);
+}
+
+.ui.red.label {
+  padding: 1em;
+  box-shadow: 3.5px 3.5px 0px 0px rgba(0, 0, 0, 0.75);
+}
+
+.ui.grid > .slider-text.column:not(.row) {
+  padding: 0;
+}

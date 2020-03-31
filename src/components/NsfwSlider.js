@@ -16,7 +16,7 @@ function NsfwSlider(props) {
   };
 
   const sliderText = value => {
-    let text = 'Wholesome';
+    let text = 'Hope for the best.';
     if (value === 1) {
       text = 'Spicing it up...';
     }
@@ -41,15 +41,15 @@ function NsfwSlider(props) {
     return (
       <div className="inline field">
         <Grid className="slider">
-          <Grid.Column width={12}>
+          <Grid.Column width={props.width}>
             <Slider
               discrete
               value={props.nsfw}
-              color={sliderColor(props.nsfw)}
+              color="black"
               settings={settings}
             />
           </Grid.Column>
-          <Grid.Column width={12}>
+          <Grid.Column width={props.width} className="slider-text">
             <Label color={sliderColor(props.nsfw)}>
               NSFW Level: {sliderText(props.nsfw)}
             </Label>

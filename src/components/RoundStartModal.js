@@ -38,7 +38,7 @@ const RoundStartModal = props => {
     }
     return (
       <Modal
-        trigger={<Button onClick={handleOpen}>Begin!</Button>}
+        trigger={<Button onClick={handleOpen}>Ready!</Button>}
         open={modalOpen}
         onClose={handleClose}
         basic

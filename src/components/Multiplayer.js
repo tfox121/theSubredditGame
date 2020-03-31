@@ -1,7 +1,4 @@
 import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
-
-import { fetchMultiplayerGame } from '../actions';
 
 import MultiplayerCreate from './MultiplayerCreate';
 import MultiplayerJoin from './MultiplayerJoin';
@@ -43,4 +40,4 @@ const Multiplayer = props => {
   );
 };
 
-export default connect(null, { fetchMultiplayerGame })(Multiplayer);
+export default Multiplayer;

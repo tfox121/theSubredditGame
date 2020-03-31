@@ -47,15 +47,12 @@ const MultiplayerNextRoundButton = props => {
     if (game && game.gameStarted) {
       return (
         <button
-          className={`ui ${!player.readyForNext ? 'animated' : ''} button`}
+          className="ui button"
           tabIndex="0"
           type="submit"
           disabled={player.readyForNext}
         >
-          <div className="visible content">{buttonText()}</div>
-          {!player.readyForNext && (
-            <div className="hidden content">Woooooooo!</div>
-          )}
+          {buttonText()}
         </button>
       );
     }

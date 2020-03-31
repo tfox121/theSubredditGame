@@ -1,24 +1,32 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
-import MultiplayerJoinForm from './MultiplayerJoinForm';
+import { source } from '../api/multiplayer';
 import { joinMultiplayerGame } from '../actions';
 
-class MultiplayerJoin extends React.Component {
-  onSubmit = formValues => {
-    this.props.joinMultiplayerGame(formValues.gameId, formValues.name);
+import MultiplayerJoinForm from './MultiplayerJoinForm';
+
+const MultiplayerJoin = props => {
+  useEffect(() => {
+    return () => {
+      console.log('UNMOUNTED JOIN COMPONENT');
+      // source.cancel();
+    };
+  }, []);
+
+  const onSubmit = formValues => {
+    props.joinMultiplayerGame(formValues.gameId, formValues.name);
   };
-  render() {
-    return (
-      <>
-        <MultiplayerJoinForm
-          onSubmit={this.onSubmit}
-          initialValues={{ gameId: this.props.joinId }}
-        />
-      </>
-    );
-  }
-}
+
+  return (
+    <>
+      <MultiplayerJoinForm
+        onSubmit={onSubmit}
+        initialValues={{ gameId: props.joinId }}
+      />
+    </>
+  );
+};
 
 const mapStateToProps = state => {
   return {

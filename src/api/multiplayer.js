@@ -1,9 +1,12 @@
 import axios from 'axios';
 
-// export default axios.create({
-//   baseURL: 'http://localhost:8000'
-// });
+export const source = axios.CancelToken.source();
 
-export default axios.create({
-  baseURL: 'https://subreddit-game-api.herokuapp.com/'
+export const axiosDefault = axios.create({
+  baseURL: 'http://localhost:8000/games',
+  cancelToken: source.token
 });
+
+// export default axios.create({
+//   baseURL: 'https://subreddit-game-api.herokuapp.com/'
+// });

@@ -3,15 +3,16 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { clearCurrentGame } from '../actions';
-import MultiplayerScoresheet from './MultiplayerScoresheet';
+import MultiplayerGameEndScoresheet from './MultiplayerGameEndScoresheet';
 import brass_finale from '../audio/brass_finale.mp3';
 import history from '../history';
 
 const MultiplayerGameEnd = props => {
   const { id } = props.match.params;
-  const game = props.multiplayer[id];
+  const { multiplayer } = props;
+  const game = multiplayer[id];
 
-  if (!game || !props.multiplayer.playerName) {
+  if (!game || !multiplayer.playerName) {
     history.push(`/multiplayer/join/${id}`);
     return null;
   }
@@ -29,17 +30,25 @@ const MultiplayerGameEnd = props => {
     props.clearCurrentGame();
   };
 
+  const winnerMessage = () => {
+    if (game.players[0].name === multiplayer.playerName) {
+      return 'You win!';
+    } else {
+      return 'Better luck next time...';
+    }
+  };
+
   return (
     <>
-      <h2 className="ui header">Game Complete!</h2>
+      <h2 className="ui header">{winnerMessage()}</h2>
       <br />
       <div className="ui vertical segment">
-        <MultiplayerScoresheet
+        <MultiplayerGameEndScoresheet
           game={game}
-          currentPlayer={props.multiplayer.playerName}
+          currentPlayer={multiplayer.playerName}
         />
         <div className="ui segment">
-          Best Guess: {game.closestGuess.playerName} - only{' '}
+          Best Guess: <b>{game.closestGuess.playerName}</b> - only{' '}
           {roundTo2(game.closestGuess.percentage)}% out for{' '}
           {game.closestGuess.subName}!
         </div>

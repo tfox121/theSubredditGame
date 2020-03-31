@@ -7,6 +7,7 @@ import {
   generateSubreddit,
   submitGuess
 } from '../actions';
+import { source } from '../api/multiplayer';
 import history from '../history';
 
 import GuessBlock from './GuessBlock';
@@ -35,6 +36,10 @@ const MultiplayerGame = props => {
   useEffect(() => {
     console.log('Fetching games USEEFFECT', id);
     fetchMultiplayerGame(id);
+    return () => {
+      console.log('UNMOUNTED GAME COMPONENT');
+      // source.cancel();
+    };
   }, []);
 
   if (!game || !props.multiplayer.playerName) {
@@ -114,6 +119,7 @@ const MultiplayerGame = props => {
             onClick={copyToClipboard}
             ref={textAreaRef}
             value={`${window.location.origin}/multiplayer/join/${id}`}
+            readOnly
           />
           <div>{copySuccess}</div>
         </div>
@@ -129,9 +135,9 @@ const MultiplayerGame = props => {
         currentPlayer={props.multiplayer.playerName}
       />
       {inviteRender()}
-      <MultiplayerNextRoundButton onSubmit={onSubmitHandler} />
       {guessBlockRender()}
       {resultBlockRender()}
+      <MultiplayerNextRoundButton onSubmit={onSubmitHandler} />
       <Sounds />
     </>
   );
