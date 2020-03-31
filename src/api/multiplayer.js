@@ -1,14 +1,14 @@
 import axios from 'axios';
 
-if (process.env.NODE_ENV === 'build') {
+if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
 export const source = axios.CancelToken.source();
 
 const baseURL =
-  process.env.NODE_ENV === 'build'
-    ? process.env.API_URL_LOCAL
-    : process.env.API_URL_DEPLOYED;
+  process.env.NODE_ENV !== 'production'
+    ? 'http://localhost:8000/games'
+    : 'https://subreddit-game-api.herokuapp.com/games';
 
 export const axiosDefault = axios.create({
   baseURL,
