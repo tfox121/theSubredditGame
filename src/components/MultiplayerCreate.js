@@ -8,7 +8,6 @@ import MultiplayerCreateForm from './MultiplayerCreateForm';
 
 const MultiplayerCreate = props => {
   useEffect(() => {
-    console.log('MOUNTED');
     return () => {
       console.log('UNMOUNTED CREATE COMPONENT');
 
