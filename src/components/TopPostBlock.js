@@ -70,7 +70,9 @@ const TopPostBlock = props => {
         <img
           className="top-post-img"
           src={
-            !topPost.thumbnail || topPost.thumbnail === 'self'
+            !topPost.thumbnail ||
+            topPost.thumbnail === 'self' ||
+            topPost.thumbnail === ''
               ? placeholder
               : topPost.thumbnail
           }

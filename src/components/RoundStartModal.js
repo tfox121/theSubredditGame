@@ -28,7 +28,6 @@ const RoundStartModal = props => {
   };
 
   const buttonRender = player => {
-    console.log(player.readyForNext);
     if (player.readyForNext) {
       return (
         <button className="ui button" disabled>
