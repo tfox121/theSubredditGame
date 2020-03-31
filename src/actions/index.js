@@ -10,7 +10,8 @@ import {
   JOIN_MULTIPLAYER_GAME,
   MULTIPLAYER_GENERATE_SUBREDDIT,
   MULTIPLAYER_SUBMIT_GUESS,
-  MULTIPLAYER_CLEAR_CURRENT_GAME
+  MULTIPLAYER_CLEAR_CURRENT_GAME,
+  SERVE_ERROR
 } from './types';
 
 export const createMultiplayerGame = formValues => async dispatch => {
@@ -21,7 +22,7 @@ export const createMultiplayerGame = formValues => async dispatch => {
     if (axios.isCancel(err)) {
       console.log('Caught cancelled request');
     } else {
-      throw err;
+      console.error(err);
     }
   }
   // history.push(`/multiplayer/join/${response.data._id}`);
@@ -36,7 +37,7 @@ export const fetchMultiplayerGames = () => async dispatch => {
     if (axios.isCancel(err)) {
       console.log('Caught cancelled request');
     } else {
-      throw err;
+      console.error(err);
     }
   }
 };
@@ -50,7 +51,7 @@ export const fetchMultiplayerGame = id => async dispatch => {
     if (axios.isCancel(err)) {
       console.log('Caught cancelled request');
     } else {
-      throw err;
+      console.error(err);
     }
   }
 };
@@ -65,6 +66,12 @@ export const joinMultiplayerGame = (id, newPlayer) => async dispatch => {
 
     if (!response.data) {
       console.log('Game already started');
+      dispatch({
+        type: SERVE_ERROR,
+        payload: {
+          errorMsg: 'Game already started'
+        }
+      });
       return;
     }
     dispatch({
@@ -79,7 +86,7 @@ export const joinMultiplayerGame = (id, newPlayer) => async dispatch => {
     if (axios.isCancel(err)) {
       console.log('Caught cancelled request');
     } else {
-      throw err;
+      console.error(err);
     }
   }
 };
@@ -100,7 +107,7 @@ export const generateSubreddit = (id, player) => async dispatch => {
     if (axios.isCancel(err)) {
       console.log('Caught cancelled request');
     } else {
-      throw err;
+      console.error(err);
     }
   }
 };
@@ -122,7 +129,7 @@ export const submitGuess = (id, player, guess) => async dispatch => {
     if (axios.isCancel(err)) {
       console.log('Caught cancelled request');
     } else {
-      throw err;
+      console.error(err);
     }
   }
 };

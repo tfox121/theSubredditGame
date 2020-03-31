@@ -47,6 +47,7 @@ const MultiplayerJoinForm = props => {
       <h3>Join a game</h3>
       <Field name="gameId" component={renderInput} label="Enter game ID" />
       <Field name="name" component={renderInput} label="Your name!" />
+      <div id="error-msg">{props.errorMsg}</div>
       <button
         onMouseDown={handleClick}
         onKeyUp={e => {
@@ -81,7 +82,8 @@ const validate = formValues => {
 
 const mapStateToProps = state => {
   return {
-    currentGame: state.multiplayer.currentGame
+    currentGame: state.multiplayer.currentGame,
+    errorMsg: state.multiplayer.error
   };
 };
 
