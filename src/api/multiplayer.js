@@ -7,7 +7,7 @@ export const source = axios.CancelToken.source();
 //   cancelToken: source.token
 // });
 
-export default axios.create({
+export const axiosDefault = axios.create({
   baseURL: 'https://subreddit-game-api.herokuapp.com/games',
   cancelToken: source.token
 });
