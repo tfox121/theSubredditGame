@@ -1,12 +1,12 @@
 import axios from 'axios';
 
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV === 'development') {
   require('dotenv').config();
 }
 export const source = axios.CancelToken.source();
 
 const baseURL =
-  process.env.NODE_ENV !== 'production'
+  process.env.NODE_ENV === 'development'
     ? 'http://localhost:8000/games'
     : 'https://subreddit-game-api.herokuapp.com/games';
 
