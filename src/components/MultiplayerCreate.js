@@ -11,7 +11,7 @@ const MultiplayerCreate = props => {
     return () => {
       console.log('UNMOUNTED CREATE COMPONENT');
 
-      createSource.cancel();
+      // createSource.cancel();
     };
   }, []);
 

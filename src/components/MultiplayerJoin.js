@@ -10,7 +10,7 @@ const MultiplayerJoin = props => {
   useEffect(() => {
     return () => {
       console.log('UNMOUNTED JOIN COMPONENT');
-      joinSource.cancel();
+      // joinSource.cancel();
     };
   }, []);
 
