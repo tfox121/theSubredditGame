@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
-import { source } from '../api/multiplayer';
-import { createMultiplayerGame } from '../actions';
+import { createSource } from '../actions';
+import { createGameMultiplayer } from '../actions';
 
 import MultiplayerCreateForm from './MultiplayerCreateForm';
 
@@ -11,12 +11,12 @@ const MultiplayerCreate = props => {
     return () => {
       console.log('UNMOUNTED CREATE COMPONENT');
 
-      // source.cancel();
+      createSource.cancel();
     };
   }, []);
 
   const onSubmit = async formValues => {
-    props.createMultiplayerGame(formValues);
+    await props.createGameMultiplayer(formValues);
   };
 
   return (
@@ -29,4 +29,4 @@ const MultiplayerCreate = props => {
   );
 };
 
-export default connect(null, { createMultiplayerGame })(MultiplayerCreate);
+export default connect(null, { createGameMultiplayer })(MultiplayerCreate);

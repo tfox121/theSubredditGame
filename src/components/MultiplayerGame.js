@@ -1,13 +1,12 @@
 import { Progress } from 'semantic-ui-react';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { connect } from 'react-redux';
 
 import {
-  fetchMultiplayerGame,
+  fetchGameMultiplayer,
   generateSubreddit,
-  submitGuess
+  submitGuessMultiplayer
 } from '../actions';
-import { source } from '../api/multiplayer';
 import history from '../history';
 
 import GuessBlock from './GuessBlock';
@@ -16,31 +15,16 @@ import MultiplayerScoresheet from './MultiplayerScoresheet';
 import MultiplayerNextRoundButton from './MultiplayerNextRoundButton';
 import Sounds from './Sounds';
 import SubredditBlock from './SubredditBlock';
+import ChatBox from './ChatBox';
 
 const MultiplayerGame = props => {
   const [copySuccess, setCopySuccess] = useState('');
 
   const { id } = props.match.params;
   const game = props.multiplayer[id];
-  const { fetchMultiplayerGame } = props;
+  const { fetchGameMultiplayer } = props;
 
   const textAreaRef = useRef(null);
-
-  useEffect(() => {
-    setTimeout(() => {
-      // console.log('Fetching games TIMEOUT', id);
-      fetchMultiplayerGame(id);
-    }, 5000);
-  });
-
-  useEffect(() => {
-    console.log('Fetching games USEEFFECT', id);
-    fetchMultiplayerGame(id);
-    return () => {
-      console.log('UNMOUNTED GAME COMPONENT');
-      // source.cancel();
-    };
-  }, []);
 
   if (!game || !props.multiplayer.playerName) {
     history.push(`/multiplayer/join/${id}`);
@@ -52,8 +36,8 @@ const MultiplayerGame = props => {
   };
 
   const onGuessSubmit = num => {
-    props.submitGuess(id, props.multiplayer.playerName, num);
-    fetchMultiplayerGame(id);
+    props.submitGuessMultiplayer(id, props.multiplayer.playerName, num);
+    fetchGameMultiplayer(id);
   };
 
   const guessBlockRender = () => {
@@ -73,10 +57,12 @@ const MultiplayerGame = props => {
         .filter(player => player.name === props.multiplayer.playerName)
         .map(player => {
           return (
-            <ResultBlock
-              subredditInfo={props.multiplayer[id].currentSub}
-              guessNum={player.currentGuess}
-            />
+            <React.Fragment key={player._id}>
+              <ResultBlock
+                subredditInfo={props.multiplayer[id].currentSub}
+                guessNum={player.currentGuess}
+              />
+            </React.Fragment>
           );
         });
     }
@@ -136,6 +122,7 @@ const MultiplayerGame = props => {
       {guessBlockRender()}
       {resultBlockRender()}
       <MultiplayerNextRoundButton onSubmit={onSubmitHandler} />
+      <ChatBox game={game} currentPlayer={props.multiplayer.playerName} />
       <Sounds />
     </>
   );
@@ -146,7 +133,7 @@ const mapStateToProps = state => {
 };
 
 export default connect(mapStateToProps, {
-  fetchMultiplayerGame,
+  fetchGameMultiplayer,
   generateSubreddit,
-  submitGuess
+  submitGuessMultiplayer
 })(MultiplayerGame);

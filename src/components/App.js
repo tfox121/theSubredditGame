@@ -1,8 +1,10 @@
 import React from 'react';
 import { Router, Route, Switch } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import history from '../history';
-
+import WebSocket from '../api/websocket';
+import { fetchGameMultiplayer, newMessageNotifier } from '../actions';
 import './App.css';
 
 import Header from './Header';
@@ -11,7 +13,21 @@ import MultiplayerGame from './MultiplayerGame';
 import MultiplayerGameEnd from './MultiplayerGameEnd';
 import SinglePlayer from './SinglePlayer';
 
-const App = () => {
+const App = props => {
+  WebSocket.onmessage = event => {
+    const data = JSON.parse(event.data);
+    switch (data.type) {
+      case 'UPDATE':
+        props.fetchGameMultiplayer(data.game);
+        break;
+      case 'MESSAGE':
+        props.newMessageNotifier();
+        break;
+      default:
+        return;
+    }
+  };
+
   return (
     <div className="ui container">
       <Router history={history}>
@@ -23,7 +39,6 @@ const App = () => {
             <Route path="/multiplayer" exact component={Multiplayer} />
             <Route path="/multiplayer/:id" exact component={MultiplayerGame} />
             <Route path="/multiplayer/join/:id" exact component={Multiplayer} />
-
             <Route
               path="/multiplayer/:id/results"
               component={MultiplayerGameEnd}
@@ -35,4 +50,7 @@ const App = () => {
   );
 };
 
-export default App;
+export default connect(null, {
+  fetchGameMultiplayer,
+  newMessageNotifier
+})(App);

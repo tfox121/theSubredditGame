@@ -8,11 +8,14 @@ import {
   MULTIPLAYER_GENERATE_SUBREDDIT,
   MULTIPLAYER_SUBMIT_GUESS,
   MULTIPLAYER_CLEAR_CURRENT_GAME,
+  MULTIPLAYER_CREATE_MESSAGE,
+  MULTIPLAYER_NEW_MESSAGE_RECEIVED,
+  MULTIPLAYER_DISMISS_NOTIFICATION,
   SERVE_ERROR
 } from '../actions/types';
 
 export default (
-  state = { playerName: '', currentGame: '', error: '' },
+  state = { playerName: '', currentGame: '', error: '', newMessage: false },
   action
 ) => {
   switch (action.type) {
@@ -56,6 +59,24 @@ export default (
       return {
         ...state,
         currentGame: '',
+        error: ''
+      };
+    case MULTIPLAYER_CREATE_MESSAGE:
+      return {
+        ...state,
+        [action.payload.game._id]: action.payload.game,
+        error: ''
+      };
+    case MULTIPLAYER_NEW_MESSAGE_RECEIVED:
+      return {
+        ...state,
+        newMessage: true,
+        error: ''
+      };
+    case MULTIPLAYER_DISMISS_NOTIFICATION:
+      return {
+        ...state,
+        newMessage: '',
         error: ''
       };
     case SERVE_ERROR:

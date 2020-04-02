@@ -1,0 +1,84 @@
+.ui.top.left.popup.transition.visible.chatbox {
+  width: 300px;
+  max-width: 300px;
+}
+
+.chatbox > .ui.segment {
+  background-color: #fffef9;
+  max-height: 300px;
+  height: 300px;
+  overflow: scroll;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.chatbox > .ui.form {
+  display: flex;
+  flex-direction: row;
+  padding-top: 0;
+}
+
+.ui.feed > .event.additional {
+  padding-top: 0;
+}
+
+.ui.feed > .event > .label + .content.additional {
+  margin-top: 0;
+}
+
+.ui.feed > .event > .label + .content.additional.right {
+  text-align: right;
+}
+
+.ui.feed > .event > .content .extra.text.additional {
+  margin-top: 0;
+}
+
+.horizontal-line {
+  width: 70%;
+  opacity: 50%;
+}
+
+.ui.feed > .event > .content .own.date {
+  margin-top: 1px;
+  font-size: 80%;
+}
+
+.ui.feed > .event > .content.additional.right > div > .extra.text {
+  text-align: left;
+  display: inline-block;
+}
+
+.chatbox > .ui.form > .field {
+  text-align: left !important;
+  resize: none;
+  overflow: scroll;
+  overflow: scroll;
+  overflow-x: hidden;
+  overflow-y: auto;
+  min-height: 3em;
+  height: 3em;
+  max-height: 3em;
+  margin-bottom: 0;
+  background-color: #fffef9;
+}
+
+.chatbox > .ui.form > .ui.button {
+  margin-left: 10px;
+}
+
+.ui.button.chatbox-expand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  min-width: 125px;
+  bottom: 0;
+  left: 0;
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+}
+
+.ui.button.chatbox-expand > i {
+  padding-left: 10px;
+}

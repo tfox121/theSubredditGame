@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Button, Header, Icon, Modal } from 'semantic-ui-react';
 
+import { updateCall } from '../actions/index.js';
+
 const RoundStartModal = props => {
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -25,6 +27,7 @@ const RoundStartModal = props => {
   const startRound = event => {
     setModalOpen(false);
     props.onSubmit(event);
+    updateCall('UPDATE', game._id);
   };
 
   const buttonRender = player => {
