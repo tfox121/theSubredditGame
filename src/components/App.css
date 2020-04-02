@@ -20,6 +20,35 @@ h1.ui.header {
   border: 0.5px solid black;
 }
 
+.websocket-error {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  color: red;
+  text-align: center;
+  z-index: 99999;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: black;
+  opacity: 80%;
+}
+
+.websocket-error > div {
+  margin: auto;
+}
+
+.websocket-error > div > div {
+  font-size: 40px;
+  line-height: 1.3em;
+}
+
+.websocket-error > div > p {
+  font-size: 20px;
+}
+
 @media only screen and (max-width: 768px) {
   .ui.container {
     height: 100%;

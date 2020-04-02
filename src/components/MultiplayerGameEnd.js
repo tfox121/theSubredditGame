@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -8,11 +8,18 @@ import history from '../history';
 import './MultiplayerGameEnd.css';
 
 import MultiplayerGameEndScoresheet from './MultiplayerGameEndScoresheet';
+import ChatBox from './ChatBox';
 
 const MultiplayerGameEnd = props => {
   const { id } = props.match.params;
-  const { multiplayer } = props;
+  const { multiplayer, clearCurrentGame } = props;
   const game = multiplayer[id];
+
+  useEffect(() => {
+    return () => {
+      clearCurrentGame();
+    };
+  }, [clearCurrentGame]);
 
   if (!game || !multiplayer.playerName) {
     history.push(`/multiplayer/join/${id}`);
@@ -64,6 +71,7 @@ const MultiplayerGameEnd = props => {
           Play Again<i className="right arrow icon"></i>
         </Link>
       </div>
+      <ChatBox game={game} currentPlayer={props.multiplayer.playerName} />
       {gameEndSound()}
     </>
   );

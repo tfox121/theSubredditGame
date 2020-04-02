@@ -1,5 +1,12 @@
-// const webSocket = new WebSocket('ws://localhost:8000');
+import ReconnectingWebSocket from 'reconnecting-websocket';
 
-const webSocket = new WebSocket('wss://subreddit-game-api.herokuapp.com');
+const connectSocket = () => {
+  const webSocket = new ReconnectingWebSocket('ws://localhost:8000');
+  // const webSocket = new ReconnectingWebSocket(
+  //   'wss://subreddit-game-api.herokuapp.com'
+  // );
 
-export default webSocket;
+  return webSocket;
+};
+
+export default connectSocket;

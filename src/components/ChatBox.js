@@ -70,7 +70,7 @@ const ChatBox = props => {
 
   const lineRender = (index, message) => {
     if (
-      index !== game.messages.length - 1 &&
+      index !== messageCount - 1 &&
       message.playerName !== game.messages[index + 1].playerName
     ) {
       return <hr className="horizontal-line" />;
@@ -141,7 +141,7 @@ const ChatBox = props => {
   };
 
   const messageRender = () => {
-    if (!game.messages.length) {
+    if (!messageCount) {
       return 'Chat here!';
     }
     return game.messages.map((message, index) => {

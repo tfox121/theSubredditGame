@@ -63,6 +63,7 @@ const MultiplayerCreateForm = props => {
   };
 
   const onSubmit = formValues => {
+    props.clearCurrentGame();
     setButtonText('Creating...');
     props.onSubmit({ ...formValues, nsfw });
     setDisableButton(true);

@@ -34,6 +34,7 @@ export const createGameMultiplayer = formValues => async dispatch => {
     WebSocket.send(socketData);
 
     dispatch({ type: CREATE_MULTIPLAYER_GAME, payload: response.data });
+    history.push(`/multiplayer/join/${response.data._id}`);
   } catch (err) {
     if (axios.isCancel(err)) {
       console.log('Caught cancelled request');
@@ -202,6 +203,7 @@ export const clearCurrentGame = () => async dispatch => {
   dispatch({
     type: MULTIPLAYER_CLEAR_CURRENT_GAME
   });
+  history.push(`/multiplayer`);
 };
 
 export const updateCall = (type, game) => {
