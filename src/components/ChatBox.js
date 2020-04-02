@@ -195,7 +195,7 @@ const ChatBox = props => {
           }`}
           onMouseDown={handleMouseDown}
         >
-          <div>Messages</div>
+          <div>Chat</div>
           {props.newMessage && !chatboxOpen && (
             <i className="comment outline icon"></i>
           )}
