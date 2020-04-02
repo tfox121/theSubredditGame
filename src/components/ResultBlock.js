@@ -4,7 +4,8 @@ import './ResultBlock.css';
 import resultCopy from '../data/resultCopy';
 
 const ResultBlock = props => {
-  const { subredditInfo } = props;
+  const { subredditInfo, guessNum } = props;
+  const { subscribers } = subredditInfo;
 
   const [resultText, setResultText] = useState('');
   const [percent, setPercent] = useState(0);
@@ -22,7 +23,7 @@ const ResultBlock = props => {
   };
 
   useEffect(() => {
-    const percent = percentCalc(props.guessNum, subredditInfo.subscribers);
+    const percent = percentCalc(guessNum, subscribers);
     setPercent(percent);
     const percentRange = Object.keys(resultCopy).sort((a, b) => b - a);
     percentRange.forEach(resultPercent => {
@@ -34,7 +35,7 @@ const ResultBlock = props => {
         return;
       }
     });
-  }, []);
+  }, [guessNum, subscribers]);
 
   return (
     <div className="ui basic segment results-block">

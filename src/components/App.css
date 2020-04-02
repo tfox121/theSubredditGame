@@ -28,11 +28,4 @@ h1.ui.header {
     margin: 0 !important;
     overflow: auto;
   }
-
-  /* .app.ui.segment {
-    margin: 0;
-    border-radius: 0;
-    height: 100%;
-    overflow: auto;
-  } */
 }

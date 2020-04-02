@@ -29,7 +29,7 @@ const MultiplayerJoinForm = props => {
     if (currentGame) {
       change('gameId', currentGame);
     }
-  }, [currentGame]);
+  }, [change, currentGame]);
 
   const onSubmit = formValues => {
     props.onSubmit(formValues);

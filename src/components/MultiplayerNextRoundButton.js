@@ -3,6 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import { updateCall } from '../actions/index.js';
 import './MultiplayerNextRoundButton.css';
 
 import RoundStartModal from './RoundStartModal';
@@ -20,6 +21,7 @@ const MultiplayerNextRoundButton = props => {
 
   const onSubmit = event => {
     event.preventDefault();
+    updateCall('UPDATE', game._id);
     props.onSubmit();
   };
 

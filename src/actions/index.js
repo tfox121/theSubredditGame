@@ -1,22 +1,38 @@
 import axios from 'axios';
 
 import history from '../history';
+import WebSocket from '../api/websocket';
 import { axiosDefault as multiplayer } from '../api/multiplayer';
 
 import {
   CREATE_MULTIPLAYER_GAME,
-  FETCH_MULTIPLAYER_GAMES,
+  // FETCH_MULTIPLAYER_GAMES,
   FETCH_MULTIPLAYER_GAME,
   JOIN_MULTIPLAYER_GAME,
   MULTIPLAYER_GENERATE_SUBREDDIT,
   MULTIPLAYER_SUBMIT_GUESS,
   MULTIPLAYER_CLEAR_CURRENT_GAME,
+  MULTIPLAYER_CREATE_MESSAGE,
+  MULTIPLAYER_NEW_MESSAGE_RECEIVED,
+  MULTIPLAYER_DISMISS_NOTIFICATION,
   SERVE_ERROR
 } from './types';
 
-export const createMultiplayerGame = formValues => async dispatch => {
+export const createSource = axios.CancelToken.source();
+export const joinSource = axios.CancelToken.source();
+
+export const createGameMultiplayer = formValues => async dispatch => {
   try {
-    const response = await multiplayer.post('/', formValues);
+    const response = await multiplayer.post('/', formValues, {
+      cancelToken: createSource.token
+    });
+    const socketData = JSON.stringify({
+      type: 'CREATE',
+      game: response.data._id
+    });
+
+    WebSocket.send(socketData);
+
     dispatch({ type: CREATE_MULTIPLAYER_GAME, payload: response.data });
   } catch (err) {
     if (axios.isCancel(err)) {
@@ -25,24 +41,23 @@ export const createMultiplayerGame = formValues => async dispatch => {
       console.error(err);
     }
   }
-  // history.push(`/multiplayer/join/${response.data._id}`);
 };
 
-export const fetchMultiplayerGames = () => async dispatch => {
-  try {
-    const response = await multiplayer.get(`/`);
-    console.log('ALL GAMES:', response);
-    dispatch({ type: FETCH_MULTIPLAYER_GAMES, payload: response.data });
-  } catch (err) {
-    if (axios.isCancel(err)) {
-      console.log('Caught cancelled request');
-    } else {
-      console.error(err);
-    }
-  }
-};
+// export const fetchGamesMultiplayer = () => async dispatch => {
+//   try {
+//     const response = await multiplayer.get(`/`);
+//     console.log('ALL GAMES:', response);
+//     dispatch({ type: FETCH_MULTIPLAYER_GAMES, payload: response.data });
+//   } catch (err) {
+//     if (axios.isCancel(err)) {
+//       console.log('Caught cancelled request');
+//     } else {
+//       console.error(err);
+//     }
+//   }
+// };
 
-export const fetchMultiplayerGame = id => async dispatch => {
+export const fetchGameMultiplayer = id => async dispatch => {
   try {
     const response = await multiplayer.get(`/${id}`);
     // console.log('FETCHED GAME:', response);
@@ -56,11 +71,17 @@ export const fetchMultiplayerGame = id => async dispatch => {
   }
 };
 
-export const joinMultiplayerGame = (id, newPlayer) => async dispatch => {
+export const joinGameMultiplayer = (id, newPlayer) => async dispatch => {
   try {
-    const response = await multiplayer.patch(`/${id}`, {
-      newPlayer
-    });
+    const response = await multiplayer.patch(
+      `/${id}`,
+      {
+        newPlayer
+      },
+      {
+        cancelToken: joinSource.token
+      }
+    );
 
     console.log('JOINING GAME:', response);
 
@@ -74,6 +95,12 @@ export const joinMultiplayerGame = (id, newPlayer) => async dispatch => {
       });
       return;
     }
+    const socketData = JSON.stringify({
+      type: 'JOIN',
+      game: id
+    });
+
+    WebSocket.send(socketData);
     dispatch({
       type: JOIN_MULTIPLAYER_GAME,
       payload: {
@@ -112,12 +139,14 @@ export const generateSubreddit = (id, player) => async dispatch => {
   }
 };
 
-export const submitGuess = (id, player, guess) => async dispatch => {
+export const submitGuessMultiplayer = (id, player, guess) => async dispatch => {
   try {
     const response = await multiplayer.patch(`/${id}`, {
       player,
       guess
     });
+
+    updateCall('UPDATE', id);
 
     dispatch({
       type: MULTIPLAYER_SUBMIT_GUESS,
@@ -134,8 +163,61 @@ export const submitGuess = (id, player, guess) => async dispatch => {
   }
 };
 
+export const createMessageMultiplayer = (
+  id,
+  playerName,
+  message
+) => async dispatch => {
+  try {
+    const response = await multiplayer.post(`/${id}/message`, {
+      playerName,
+      message
+    });
+    const socketData = JSON.stringify({
+      type: 'UPDATE',
+      game: response.data._id
+    });
+
+    WebSocket.send(socketData);
+
+    dispatch({
+      type: MULTIPLAYER_CREATE_MESSAGE,
+      payload: { game: response.data }
+    });
+  } catch (err) {
+    if (axios.isCancel(err)) {
+      console.log('Caught cancelled request');
+    } else {
+      console.error(err);
+    }
+  }
+};
+
 export const clearCurrentGame = () => async dispatch => {
+  const socketData = JSON.stringify({
+    type: 'CLEAR'
+  });
+
+  WebSocket.send(socketData);
   dispatch({
     type: MULTIPLAYER_CLEAR_CURRENT_GAME
+  });
+};
+
+export const updateCall = (type, game) => {
+  const socketData = JSON.stringify({ type, game });
+
+  WebSocket.send(socketData);
+};
+
+export const newMessageNotifier = () => async dispatch => {
+  dispatch({
+    type: MULTIPLAYER_NEW_MESSAGE_RECEIVED
+  });
+};
+
+export const dissmissNotification = () => async dispatch => {
+  dispatch({
+    type: MULTIPLAYER_DISMISS_NOTIFICATION
   });
 };

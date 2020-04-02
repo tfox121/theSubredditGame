@@ -18,13 +18,7 @@ const Header = props => {
 
   return (
     <>
-      <h1 className="ui header top">The subreddit Game</h1>
-      {/* {props.multiplayer.currentGame && (
-        <div className="item">
-          Current Game: {props.multiplayer.currentGame}
-        </div>
-      )} */}
-
+      <h1 className="ui header top">the subreddit game</h1>
       <div className="ui secondary two item pointing menu">
         <Link
           to="/singleplayer"
