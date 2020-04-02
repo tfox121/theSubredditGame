@@ -1,8 +1,11 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
-import { createSource } from '../actions';
-import { createGameMultiplayer } from '../actions';
+import {
+  clearCurrentGame,
+  createGameMultiplayer,
+  createSource
+} from '../actions';
 
 import MultiplayerCreateForm from './MultiplayerCreateForm';
 
@@ -29,4 +32,6 @@ const MultiplayerCreate = props => {
   );
 };
 
-export default connect(null, { createGameMultiplayer })(MultiplayerCreate);
+export default connect(null, { createGameMultiplayer, clearCurrentGame })(
+  MultiplayerCreate
+);

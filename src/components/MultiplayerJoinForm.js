@@ -26,9 +26,7 @@ const MultiplayerJoinForm = props => {
   const { currentGame, change } = props;
 
   useEffect(() => {
-    if (currentGame) {
-      change('gameId', currentGame);
-    }
+    change('gameId', currentGame);
   }, [change, currentGame]);
 
   const onSubmit = formValues => {
@@ -41,7 +39,6 @@ const MultiplayerJoinForm = props => {
     }
   };
 
-  console.log(props.currentGame);
   return (
     <form onSubmit={props.handleSubmit(onSubmit)} className="ui form error">
       <h3>Join a game</h3>

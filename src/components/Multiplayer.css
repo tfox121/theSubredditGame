@@ -22,15 +22,3 @@ div > .inline.field {
 div > .ui.center.aligned.basic.segment.horizontal {
   margin: 0px;
 }
-
-@media only screen and (max-width: 767px) {
-  div > .ui.center.aligned.basic.segment.vertical {
-    display: none;
-  }
-}
-
-@media only screen and (min-width: 768px) {
-  div > .ui.center.aligned.basic.segment.horizontal {
-    display: none;
-  }
-}

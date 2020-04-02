@@ -8,8 +8,8 @@
 }
 
 .top-post-img {
-  max-width: 70px;
-  max-height: 70px;
+  max-width: 85px;
+  max-height: 85px;
   object-fit: contain;
   margin: 1px;
   margin-right: 5px;
@@ -58,4 +58,10 @@ div.ui.hidden.divider {
 }
 .zoomIn:hover {
   transform: scale(2);
+}
+
+.camera.icon {
+  font-size: 1.3em;
+  padding: 3px;
+  margin: 0;
 }

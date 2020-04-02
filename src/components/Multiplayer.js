@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { Breakpoint } from 'react-socks';
 
 import MultiplayerCreate from './MultiplayerCreate';
 import MultiplayerJoin from './MultiplayerJoin';
@@ -16,8 +17,8 @@ const Multiplayer = props => {
   }, []);
 
   return (
-    <>
-      <div className="option-container">
+    <div className="option-container">
+      <Breakpoint medium up>
         <div className="ui center aligned basic segment vertical">
           <div className="ui two column very relaxed stackable grid">
             <div className="column">
@@ -29,15 +30,24 @@ const Multiplayer = props => {
           </div>
           <div className="ui vertical divider">Or</div>
         </div>
+      </Breakpoint>
+      <Breakpoint small down>
         <div className="ui center aligned basic segment horizontal">
           <MultiplayerCreate />
           <br />
           <div className="ui horizontal divider">Or</div>
           <MultiplayerJoin joinId={id} />
         </div>
-      </div>
-    </>
+      </Breakpoint>
+    </div>
   );
 };
+
+// const TestComponent = () => {
+//   useEffect(() => {
+//     console.log('RENDERED');
+//   }, []);
+//   return <div>TEST</div>;
+// };
 
 export default Multiplayer;
