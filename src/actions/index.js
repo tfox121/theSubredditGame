@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
 
 import history from '../history';
 import WebSocket from '../api/websocket';
@@ -15,6 +16,7 @@ import {
   MULTIPLAYER_CREATE_MESSAGE,
   MULTIPLAYER_NEW_MESSAGE_RECEIVED,
   MULTIPLAYER_DISMISS_NOTIFICATION,
+  MULTIPLAYER_SET_CLIENT_ID,
   SERVE_ERROR
 } from './types';
 
@@ -72,12 +74,17 @@ export const fetchGameMultiplayer = id => async dispatch => {
   }
 };
 
-export const joinGameMultiplayer = (id, newPlayer) => async dispatch => {
+export const joinGameMultiplayer = (
+  id,
+  newPlayer,
+  clientId
+) => async dispatch => {
   try {
     const response = await multiplayer.patch(
       `/${id}`,
       {
-        newPlayer
+        newPlayer,
+        clientId
       },
       {
         cancelToken: joinSource.token
@@ -86,7 +93,7 @@ export const joinGameMultiplayer = (id, newPlayer) => async dispatch => {
 
     console.log('JOINING GAME:', response);
 
-    if (!response.data) {
+    if (!response.data.game) {
       console.log('Game already started');
       dispatch({
         type: SERVE_ERROR,
@@ -105,8 +112,8 @@ export const joinGameMultiplayer = (id, newPlayer) => async dispatch => {
     dispatch({
       type: JOIN_MULTIPLAYER_GAME,
       payload: {
-        game: response.data,
-        player: newPlayer
+        game: response.data.game,
+        player: response.data.playerName || newPlayer
       }
     });
     history.push(`/multiplayer/${id}`);
@@ -221,5 +228,19 @@ export const newMessageNotifier = () => async dispatch => {
 export const dissmissNotification = () => async dispatch => {
   dispatch({
     type: MULTIPLAYER_DISMISS_NOTIFICATION
+  });
+};
+
+export const setClientId = localStorage => async dispatch => {
+  if (!localStorage.clientId) {
+    localStorage.clientId = uuidv4();
+    console.log('NEW ID GENERATED');
+  }
+  console.log(localStorage.clientId);
+  dispatch({
+    type: MULTIPLAYER_SET_CLIENT_ID,
+    payload: {
+      clientId: localStorage.clientId
+    }
   });
 };

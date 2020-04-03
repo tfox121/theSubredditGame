@@ -15,7 +15,11 @@ const MultiplayerJoin = props => {
   }, []);
 
   const onSubmit = formValues => {
-    props.joinGameMultiplayer(formValues.gameId, formValues.name);
+    props.joinGameMultiplayer(
+      formValues.gameId,
+      formValues.name,
+      props.clientId
+    );
   };
 
   return (
@@ -30,7 +34,8 @@ const MultiplayerJoin = props => {
 
 const mapStateToProps = state => {
   return {
-    currentGame: state.multiplayer.currentGame
+    currentGame: state.multiplayer.currentGame,
+    clientId: state.multiplayer.clientId
   };
 };
 

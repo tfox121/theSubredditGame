@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Router, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { BreakpointProvider } from 'react-socks';
-import { v4 as uuidv4 } from 'uuid';
 
 import history from '../history';
-import connectSocket from '../api/websocket';
-import { fetchGameMultiplayer, newMessageNotifier } from '../actions';
+import webSocket from '../api/websocket';
+import {
+  fetchGameMultiplayer,
+  newMessageNotifier,
+  setClientId
+} from '../actions';
 import './App.css';
 
 import Header from './Header';
@@ -17,9 +20,10 @@ import SinglePlayer from './SinglePlayer';
 
 const App = props => {
   const [webSocketClosed, setWebSocketClosed] = useState(false);
-  const webSocket = connectSocket();
 
-  document.cookie = `clientId=uuidv4()`;
+  useEffect(() => {
+    props.setClientId(localStorage);
+  }, []);
 
   webSocket.onopen = function(event) {
     console.log('Connected to server');
@@ -92,5 +96,6 @@ const App = props => {
 
 export default connect(null, {
   fetchGameMultiplayer,
-  newMessageNotifier
+  newMessageNotifier,
+  setClientId
 })(App);
