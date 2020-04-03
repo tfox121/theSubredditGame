@@ -27,7 +27,7 @@ const MultiplayerJoinForm = props => {
 
   useEffect(() => {
     change('gameId', currentGame);
-  }, [change, currentGame]);
+  }, [currentGame]);
 
   const onSubmit = formValues => {
     props.onSubmit(formValues);

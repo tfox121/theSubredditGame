@@ -37,6 +37,7 @@ h1.ui.header {
 }
 
 .websocket-error > div {
+  padding: 5px;
   margin: auto;
 }
 

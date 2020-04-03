@@ -11,11 +11,18 @@ import {
   MULTIPLAYER_CREATE_MESSAGE,
   MULTIPLAYER_NEW_MESSAGE_RECEIVED,
   MULTIPLAYER_DISMISS_NOTIFICATION,
+  MULTIPLAYER_SET_CLIENT_ID,
   SERVE_ERROR
 } from '../actions/types';
 
 export default (
-  state = { playerName: '', currentGame: '', error: '', newMessage: false },
+  state = {
+    playerName: '',
+    currentGame: '',
+    error: '',
+    newMessage: false,
+    clientId: ''
+  },
   action
 ) => {
   switch (action.type) {
@@ -78,6 +85,11 @@ export default (
         ...state,
         newMessage: '',
         error: ''
+      };
+    case MULTIPLAYER_SET_CLIENT_ID:
+      return {
+        ...state,
+        clientId: action.payload.clientId
       };
     case SERVE_ERROR:
       return {
