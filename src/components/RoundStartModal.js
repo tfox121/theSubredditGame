@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Button, Header, Icon, Modal } from 'semantic-ui-react';
 
@@ -7,15 +7,30 @@ import { updateCall } from '../actions/index.js';
 const RoundStartModal = props => {
   const [modalOpen, setModalOpen] = useState(false);
 
-  const game =
-    props.multiplayer.currentGame &&
-    props.multiplayer[props.multiplayer.currentGame];
+  const { multiplayer } = props;
 
-  const player =
+  const game = multiplayer.currentGame && multiplayer[multiplayer.currentGame];
+
+  let player =
     game &&
     game.players.filter(player => {
-      return player.name === props.multiplayer.playerName;
+      return player.name === multiplayer.playerName;
     })[0];
+
+  useEffect(() => {
+    if (!player) {
+      player =
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        game &&
+        game.players.filter(player => {
+          return player.name === multiplayer.playerName;
+        })[0];
+    }
+  }, [multiplayer]);
+
+  if (!player) {
+    return null;
+  }
 
   const handleOpen = event => {
     event.preventDefault();

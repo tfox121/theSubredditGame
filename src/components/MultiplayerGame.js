@@ -1,11 +1,13 @@
 import { Progress } from 'semantic-ui-react';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 
 import {
   fetchGameMultiplayer,
   generateSubreddit,
-  submitGuessMultiplayer
+  submitGuessMultiplayer,
+  joinGameMultiplayer,
+  setCurrentPlayer
 } from '../actions';
 import history from '../history';
 
@@ -21,30 +23,82 @@ const MultiplayerGame = props => {
   const [copySuccess, setCopySuccess] = useState('');
 
   const { id } = props.match.params;
-  const game = props.multiplayer[id];
-  const { fetchGameMultiplayer } = props;
+  const {
+    fetchGameMultiplayer,
+    multiplayer,
+    playerName,
+    setCurrentPlayer,
+    clientId
+  } = props;
+
+  let gameRef = useRef(multiplayer[id]);
+  const markerRef = useRef([]);
+  if (multiplayer[id] && multiplayer[id] !== gameRef.current) {
+    markerRef.current = multiplayer[id].players.map(React.createRef);
+    gameRef.current = multiplayer[id];
+  }
+
+  useEffect(() => {
+    if (!multiplayer[id] && !playerName) {
+      console.log('NO GAME');
+      // const fetchData = async () => {
+      //   console.log('ID', id);
+      //   const gameRef = await fetchGameMultiplayer(id);
+      //   console.log('GAME', gameRef);
+      //   gameRef.players.forEach(player => {
+      //     if (player.clientId === props.clientId) {
+      //       props.setCurrentPlayer(player.name);
+      //     }
+      //   });
+      // };
+      // fetchData();
+    }
+  }, []);
 
   const textAreaRef = useRef(null);
 
-  if (!game || !props.multiplayer.playerName) {
-    history.push(`/multiplayer/join/${id}`);
+  useEffect(() => {
+    if (!gameRef || !playerName) {
+      console.log('FETCHING GAME');
+      const fetchData = async () => {
+        await fetchGameMultiplayer(id);
+      };
+      fetchData();
+    }
+    if (gameRef && !playerName) {
+      let playerFound;
+      gameRef.current = multiplayer[id];
+      gameRef.current.players.forEach(player => {
+        if (player.clientId === clientId) {
+          setCurrentPlayer(player.name);
+          playerFound = true;
+        }
+      });
+      if (!playerFound) {
+        history.push(`/multiplayer/join/${id}`);
+      }
+    }
+  });
+
+  if (!gameRef || !playerName) {
+    gameRef = multiplayer[id];
     return null;
   }
 
   const onSubmitHandler = () => {
-    props.generateSubreddit(id, props.multiplayer.playerName);
+    props.generateSubreddit(id, playerName);
   };
 
   const onGuessSubmit = num => {
-    props.submitGuessMultiplayer(id, props.multiplayer.playerName, num);
+    props.submitGuessMultiplayer(id, playerName, num);
     fetchGameMultiplayer(id);
   };
 
   const guessBlockRender = () => {
-    if (game.currentSub && !game.roundComplete) {
+    if (gameRef.current.currentSub && !gameRef.current.roundComplete) {
       return (
         <div className="ui vertical segment">
-          <SubredditBlock subredditInfo={props.multiplayer[id].currentSub} />
+          <SubredditBlock subredditInfo={multiplayer[id].currentSub} />
           <GuessBlock onSubmit={onGuessSubmit} />
         </div>
       );
@@ -52,14 +106,14 @@ const MultiplayerGame = props => {
   };
 
   const resultBlockRender = () => {
-    if (game.roundComplete) {
-      return game.players
-        .filter(player => player.name === props.multiplayer.playerName)
+    if (gameRef.current.roundComplete) {
+      return gameRef.current.players
+        .filter(player => player.name === playerName)
         .map(player => {
           return (
             <React.Fragment key={player._id}>
               <ResultBlock
-                subredditInfo={props.multiplayer[id].currentSub}
+                subredditInfo={multiplayer[id].currentSub}
                 guessNum={player.currentGuess}
               />
             </React.Fragment>
@@ -72,13 +126,13 @@ const MultiplayerGame = props => {
     return (
       <div className="ui basic segment">
         <Progress
-          value={game.gameStarted ? game.currentRound : 0}
-          total={game.rounds}
+          value={gameRef.current.gameStarted ? gameRef.current.currentRound : 0}
+          total={gameRef.current.rounds}
           progress="percent"
-          label={`Round: ${game.currentRound} of ${game.rounds}`}
+          label={`Round: ${gameRef.current.currentRound} of ${gameRef.current.rounds}`}
           size="medium"
           color="teal"
-          active={game.currentRound !== game.rounds}
+          active={gameRef.current.currentRound !== gameRef.current.rounds}
         />
       </div>
     );
@@ -92,7 +146,10 @@ const MultiplayerGame = props => {
   };
 
   const inviteRender = () => {
-    if (!game.gameStarted && document.queryCommandSupported('copy')) {
+    if (
+      !gameRef.current.gameStarted &&
+      document.queryCommandSupported('copy')
+    ) {
       return (
         <div className="ui basic segment">
           <div>
@@ -115,25 +172,31 @@ const MultiplayerGame = props => {
     <>
       {progressBarRender()}
       <MultiplayerScoresheet
-        game={game}
-        currentPlayer={props.multiplayer.playerName}
+        game={gameRef.current}
+        currentPlayer={playerName}
       />
       {inviteRender()}
       {guessBlockRender()}
       {resultBlockRender()}
       <MultiplayerNextRoundButton onSubmit={onSubmitHandler} />
-      <ChatBox game={game} currentPlayer={props.multiplayer.playerName} />
+      <ChatBox game={gameRef.current} currentPlayer={playerName} />
       <Sounds />
     </>
   );
 };
 
 const mapStateToProps = state => {
-  return { multiplayer: state.multiplayer };
+  return {
+    multiplayer: state.multiplayer,
+    clientId: state.multiplayer.clientId,
+    playerName: state.multiplayer.playerName
+  };
 };
 
 export default connect(mapStateToProps, {
   fetchGameMultiplayer,
   generateSubreddit,
-  submitGuessMultiplayer
+  joinGameMultiplayer,
+  submitGuessMultiplayer,
+  setCurrentPlayer
 })(MultiplayerGame);

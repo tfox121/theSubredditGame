@@ -1,5 +1,8 @@
 import React, { useEffect } from 'react';
 import { Breakpoint } from 'react-socks';
+import { connect } from 'react-redux';
+
+import { fetchGameMultiplayer } from '../actions';
 
 import MultiplayerCreate from './MultiplayerCreate';
 import MultiplayerJoin from './MultiplayerJoin';
@@ -14,6 +17,10 @@ const Multiplayer = props => {
     const multiplayerLink = document.querySelector('.multiplayer.item');
     multiplayerLink.classList.add('active');
     singleplayerLink.classList.remove('active');
+
+    if (id) {
+      props.fetchGameMultiplayer(id);
+    }
   }, []);
 
   return (
@@ -43,11 +50,4 @@ const Multiplayer = props => {
   );
 };
 
-// const TestComponent = () => {
-//   useEffect(() => {
-//     console.log('RENDERED');
-//   }, []);
-//   return <div>TEST</div>;
-// };
-
-export default Multiplayer;
+export default connect(null, { fetchGameMultiplayer })(Multiplayer);

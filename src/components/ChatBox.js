@@ -53,7 +53,7 @@ const ChatBox = props => {
     event.preventDefault();
     await props.createMessageMultiplayer(game._id, currentPlayer, text);
     setText('');
-    updateCall('MESSAGE', game._id);
+    // updateCall('MESSAGE', game._id);
   };
 
   const handleKeyDown = event => {
