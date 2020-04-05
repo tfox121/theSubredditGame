@@ -6,10 +6,11 @@ import WebSocket from '../api/websocket';
 import { axiosDefault as multiplayer } from '../api/multiplayer';
 
 import {
-  CREATE_MULTIPLAYER_GAME,
-  // FETCH_MULTIPLAYER_GAMES,
-  FETCH_MULTIPLAYER_GAME,
-  JOIN_MULTIPLAYER_GAME,
+  MULTIPLAYER_CREATE_GAME,
+  // MULTIPLAYER_FETCH_GAMES,
+  MULTIPLAYER_FETCH_GAME,
+  MULTIPLAYER_JOIN_GAME,
+  MULTIPLAYER_SET_CURRENT_PLAYER,
   MULTIPLAYER_GENERATE_SUBREDDIT,
   MULTIPLAYER_SUBMIT_GUESS,
   MULTIPLAYER_CLEAR_CURRENT_GAME,
@@ -35,7 +36,7 @@ export const createGameMultiplayer = formValues => async dispatch => {
 
     WebSocket.send(socketData);
 
-    dispatch({ type: CREATE_MULTIPLAYER_GAME, payload: response.data });
+    dispatch({ type: MULTIPLAYER_CREATE_GAME, payload: response.data });
     history.push(`/multiplayer/join/${response.data._id}`);
   } catch (err) {
     if (axios.isCancel(err)) {
@@ -50,7 +51,7 @@ export const createGameMultiplayer = formValues => async dispatch => {
 //   try {
 //     const response = await multiplayer.get(`/`);
 //     console.log('ALL GAMES:', response);
-//     dispatch({ type: FETCH_MULTIPLAYER_GAMES, payload: response.data });
+//     dispatch({ type: MULTIPLAYER_FETCH_GAMES, payload: response.data });
 //   } catch (err) {
 //     if (axios.isCancel(err)) {
 //       console.log('Caught cancelled request');
@@ -64,7 +65,7 @@ export const fetchGameMultiplayer = id => async dispatch => {
   try {
     const response = await multiplayer.get(`/${id}`);
     // console.log('FETCHED GAME:', response);
-    dispatch({ type: FETCH_MULTIPLAYER_GAME, payload: response.data });
+    dispatch({ type: MULTIPLAYER_FETCH_GAME, payload: response.data });
   } catch (err) {
     if (axios.isCancel(err)) {
       console.log('Caught cancelled request');
@@ -110,7 +111,7 @@ export const joinGameMultiplayer = (
 
     WebSocket.send(socketData);
     dispatch({
-      type: JOIN_MULTIPLAYER_GAME,
+      type: MULTIPLAYER_JOIN_GAME,
       payload: {
         game: response.data.game,
         player: response.data.playerName || newPlayer
@@ -182,7 +183,7 @@ export const createMessageMultiplayer = (
       message
     });
     const socketData = JSON.stringify({
-      type: 'UPDATE',
+      type: 'MESSAGE',
       game: response.data._id
     });
 
@@ -228,6 +229,15 @@ export const newMessageNotifier = () => async dispatch => {
 export const dissmissNotification = () => async dispatch => {
   dispatch({
     type: MULTIPLAYER_DISMISS_NOTIFICATION
+  });
+};
+
+export const setCurrentPlayer = playerName => async dispatch => {
+  dispatch({
+    type: MULTIPLAYER_SET_CURRENT_PLAYER,
+    payload: {
+      playerName
+    }
   });
 };
 

@@ -23,6 +23,7 @@ const App = props => {
 
   useEffect(() => {
     props.setClientId(localStorage);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   webSocket.onopen = function(event) {

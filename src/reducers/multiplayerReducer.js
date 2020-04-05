@@ -1,17 +1,18 @@
 import _ from 'lodash';
 
 import {
-  CREATE_MULTIPLAYER_GAME,
-  FETCH_MULTIPLAYER_GAMES,
-  FETCH_MULTIPLAYER_GAME,
-  JOIN_MULTIPLAYER_GAME,
+  MULTIPLAYER_CREATE_GAME,
+  MULTIPLAYER_FETCH_GAMES,
+  MULTIPLAYER_FETCH_GAME,
+  MULTIPLAYER_JOIN_GAME,
+  MULTIPLAYER_SET_CURRENT_PLAYER,
+  MULTIPLAYER_SET_CLIENT_ID,
   MULTIPLAYER_GENERATE_SUBREDDIT,
   MULTIPLAYER_SUBMIT_GUESS,
   MULTIPLAYER_CLEAR_CURRENT_GAME,
   MULTIPLAYER_CREATE_MESSAGE,
   MULTIPLAYER_NEW_MESSAGE_RECEIVED,
   MULTIPLAYER_DISMISS_NOTIFICATION,
-  MULTIPLAYER_SET_CLIENT_ID,
   SERVE_ERROR
 } from '../actions/types';
 
@@ -26,23 +27,23 @@ export default (
   action
 ) => {
   switch (action.type) {
-    case CREATE_MULTIPLAYER_GAME:
+    case MULTIPLAYER_CREATE_GAME:
       return {
         ...state,
         [action.payload._id]: action.payload,
         currentGame: action.payload._id,
         error: ''
       };
-    case FETCH_MULTIPLAYER_GAMES:
+    case MULTIPLAYER_FETCH_GAMES:
       return { ...state, ..._.mapKeys(action.payload, '_id') };
-    case FETCH_MULTIPLAYER_GAME:
+    case MULTIPLAYER_FETCH_GAME:
       return {
         ...state,
         [action.payload._id]: action.payload,
         currentGame: action.payload._id,
         error: ''
       };
-    case JOIN_MULTIPLAYER_GAME:
+    case MULTIPLAYER_JOIN_GAME:
       return {
         ...state,
         [action.payload.game._id]: action.payload.game,
@@ -90,6 +91,11 @@ export default (
       return {
         ...state,
         clientId: action.payload.clientId
+      };
+    case MULTIPLAYER_SET_CURRENT_PLAYER:
+      return {
+        ...state,
+        playerName: action.payload.playerName
       };
     case SERVE_ERROR:
       return {

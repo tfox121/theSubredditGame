@@ -26,7 +26,7 @@ const MultiplayerJoin = props => {
     <>
       <MultiplayerJoinForm
         onSubmit={onSubmit}
-        initialValues={{ gameId: props.joinId }}
+        initialValues={{ gameId: props.currentGame }}
       />
     </>
   );
