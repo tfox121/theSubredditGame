@@ -16,14 +16,7 @@ const ChatBox = (props) => {
   const [text, setText] = useState('');
   const [chatboxOpen, setChatboxOpen] = useState(false);
 
-  const {
-    game,
-    currentPlayer,
-    fetchGameMultiplayer,
-    newMessage,
-    newMessageCount,
-  } = props;
-  const { _id } = game;
+  const { game, currentPlayer, fetchGameMultiplayer, newMessageCount } = props;
 
   const messageCount = game.messages.length;
 
@@ -36,9 +29,9 @@ const ChatBox = (props) => {
     updateScroll();
   }, [messageCount, chatboxOpen]);
 
-  useEffect(() => {
-    fetchGameMultiplayer(_id);
-  }, [_id, fetchGameMultiplayer, newMessageCount]);
+  // useEffect(() => {
+  //   fetchGameMultiplayer(_id);
+  // }, [_id, fetchGameMultiplayer, newMessageCount]);
 
   const openHandler = () => {
     setChatboxOpen(true);
