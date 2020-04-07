@@ -8,6 +8,7 @@ import {
   createMessageMultiplayer,
   // updateCall,
   dissmissNotification,
+  fetchGameMultiplayer,
 } from '../actions';
 import './ChatBox.css';
 
@@ -15,7 +16,8 @@ const ChatBox = (props) => {
   const [text, setText] = useState('');
   const [chatboxOpen, setChatboxOpen] = useState(false);
 
-  const { game, currentPlayer } = props;
+  const { game, currentPlayer, fetchGameMultiplayer, newMessage } = props;
+  const { _id } = game;
 
   const messageCount = game.messages.length;
 
@@ -27,6 +29,10 @@ const ChatBox = (props) => {
   useEffect(() => {
     updateScroll();
   }, [messageCount, chatboxOpen]);
+
+  useEffect(() => {
+    fetchGameMultiplayer(_id);
+  }, [_id, fetchGameMultiplayer, newMessage]);
 
   const openHandler = () => {
     setChatboxOpen(true);
@@ -212,10 +218,13 @@ const ChatBox = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  return { newMessage: state.multiplayer.newMessage };
+  return {
+    newMessage: state.multiplayer.newMessage,
+  };
 };
 
 export default connect(mapStateToProps, {
   createMessageMultiplayer,
   dissmissNotification,
+  fetchGameMultiplayer,
 })(ChatBox);

@@ -15,7 +15,7 @@ const store = createStore(
   composeEnhancers(applyMiddleware(reduxThunk))
 );
 
-console.log('TEST', process.env.NODE_ENV);
+console.log('ENV:', process.env.NODE_ENV);
 
 ReactDOM.render(
   <Provider store={store}>
