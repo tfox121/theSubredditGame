@@ -5,14 +5,14 @@ import './RandomButtonBlock.css';
 
 import NsfwSlider from './NsfwSlider';
 
-const RandomButtonBlock = props => {
+const RandomButtonBlock = (props) => {
   const [nsfw, setNsfw] = useState(0);
 
-  const onSubmit = formValues => {
+  const onSubmit = (formValues) => {
     props.onSubmit({ ...formValues, nsfw });
   };
 
-  const onChange = value => {
+  const onChange = (value) => {
     setNsfw(value);
   };
 
@@ -21,8 +21,8 @@ const RandomButtonBlock = props => {
       <form onSubmit={props.handleSubmit(onSubmit)} className="ui form">
         <div className="field">
           <button className="ui animated button" tabIndex="0" type="submit">
-            <div className="visible content">Generate subreddit</div>
-            <div className="hidden content">Woooooooo!</div>
+            <div className="visible content">generate subreddit</div>
+            <div className="hidden content">woooooooo!</div>
           </button>
           <NsfwSlider nsfw={nsfw} width="6" onChange={onChange} />
         </div>
@@ -32,5 +32,5 @@ const RandomButtonBlock = props => {
 };
 
 export default reduxForm({
-  form: 'singeplayerGenerateForm'
+  form: 'singeplayerGenerateForm',
 })(RandomButtonBlock);

@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react';
 
 class ClearButton extends React.Component {
-  onClick = event => {
+  onClick = (event) => {
     event.preventDefault();
 
     this.props.clearState();
@@ -9,8 +9,12 @@ class ClearButton extends React.Component {
 
   render() {
     return (
-      <button onClick={this.onClick} className="ui button clear-button" type="submit">
-        Clear
+      <button
+        onClick={this.onClick}
+        className="ui button clear-button"
+        type="submit"
+      >
+        clear
       </button>
     );
   }

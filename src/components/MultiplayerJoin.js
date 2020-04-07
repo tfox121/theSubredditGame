@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
-import { joinSource } from '../actions';
+// import { joinSource } from '../actions';
 import { joinGameMultiplayer } from '../actions';
 
 import MultiplayerJoinForm from './MultiplayerJoinForm';
 
-const MultiplayerJoin = props => {
+const MultiplayerJoin = (props) => {
   useEffect(() => {
     return () => {
       console.log('UNMOUNTED JOIN COMPONENT');
@@ -14,7 +14,7 @@ const MultiplayerJoin = props => {
     };
   }, []);
 
-  const onSubmit = formValues => {
+  const onSubmit = (formValues) => {
     props.joinGameMultiplayer(
       formValues.gameId,
       formValues.name,
@@ -32,13 +32,13 @@ const MultiplayerJoin = props => {
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     currentGame: state.multiplayer.currentGame,
-    clientId: state.multiplayer.clientId
+    clientId: state.multiplayer.clientId,
   };
 };
 
 export default connect(mapStateToProps, {
-  joinGameMultiplayer
+  joinGameMultiplayer,
 })(MultiplayerJoin);

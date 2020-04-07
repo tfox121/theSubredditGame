@@ -10,23 +10,23 @@ function NsfwSlider(props) {
     min: 0,
     max: 2,
     step: 1,
-    onChange: value => {
+    onChange: (value) => {
       props.onChange(value);
-    }
+    },
   };
 
-  const sliderText = value => {
-    let text = 'Fingers crossed.';
+  const sliderText = (value) => {
+    let text = 'fingers crossed.';
     if (value === 1) {
-      text = 'Spicing it up...';
+      text = 'spicing it up...';
     }
     if (value === 2) {
-      text = 'Dicks. Dicks everywhere.';
+      text = 'dicks. dicks everywhere.';
     }
     return text;
   };
 
-  const sliderColor = value => {
+  const sliderColor = (value) => {
     let color = 'green';
     if (value === 1) {
       color = 'orange';
@@ -51,7 +51,7 @@ function NsfwSlider(props) {
           </Grid.Column>
           <Grid.Column width={props.width} className="slider-text">
             <Label color={sliderColor(props.nsfw)}>
-              NSFW Level: {sliderText(props.nsfw)}
+              NSFW level: {sliderText(props.nsfw)}
             </Label>
           </Grid.Column>
         </Grid>

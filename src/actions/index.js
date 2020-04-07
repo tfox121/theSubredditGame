@@ -7,7 +7,7 @@ import { axiosDefault as multiplayer } from '../api/multiplayer';
 
 import {
   MULTIPLAYER_CREATE_GAME,
-  // MULTIPLAYER_FETCH_GAMES,
+  MULTIPLAYER_FETCH_GAMES_BY_CLIENT,
   MULTIPLAYER_FETCH_GAME,
   MULTIPLAYER_JOIN_GAME,
   MULTIPLAYER_SET_CURRENT_PLAYER,
@@ -18,20 +18,20 @@ import {
   MULTIPLAYER_NEW_MESSAGE_RECEIVED,
   MULTIPLAYER_DISMISS_NOTIFICATION,
   MULTIPLAYER_SET_CLIENT_ID,
-  SERVE_ERROR
+  SERVE_ERROR,
 } from './types';
 
 export const createSource = axios.CancelToken.source();
 export const joinSource = axios.CancelToken.source();
 
-export const createGameMultiplayer = formValues => async dispatch => {
+export const createGameMultiplayer = (formValues) => async (dispatch) => {
   try {
     const response = await multiplayer.post('/', formValues, {
-      cancelToken: createSource.token
+      cancelToken: createSource.token,
     });
     const socketData = JSON.stringify({
       type: 'CREATE',
-      game: response.data._id
+      game: response.data._id,
     });
 
     WebSocket.send(socketData);
@@ -47,21 +47,24 @@ export const createGameMultiplayer = formValues => async dispatch => {
   }
 };
 
-// export const fetchGamesMultiplayer = () => async dispatch => {
-//   try {
-//     const response = await multiplayer.get(`/`);
-//     console.log('ALL GAMES:', response);
-//     dispatch({ type: MULTIPLAYER_FETCH_GAMES, payload: response.data });
-//   } catch (err) {
-//     if (axios.isCancel(err)) {
-//       console.log('Caught cancelled request');
-//     } else {
-//       console.error(err);
-//     }
-//   }
-// };
+export const fetchGamesByClientMultiplayer = (clientId) => async (dispatch) => {
+  try {
+    const response = await multiplayer.get(`/current/${clientId}`);
+    console.log('GAMES:', response);
+    dispatch({
+      type: MULTIPLAYER_FETCH_GAMES_BY_CLIENT,
+      payload: response.data,
+    });
+  } catch (err) {
+    if (axios.isCancel(err)) {
+      console.log('Caught cancelled request');
+    } else {
+      console.error(err);
+    }
+  }
+};
 
-export const fetchGameMultiplayer = id => async dispatch => {
+export const fetchGameMultiplayer = (id) => async (dispatch) => {
   try {
     const response = await multiplayer.get(`/${id}`);
     // console.log('FETCHED GAME:', response);
@@ -75,20 +78,18 @@ export const fetchGameMultiplayer = id => async dispatch => {
   }
 };
 
-export const joinGameMultiplayer = (
-  id,
-  newPlayer,
-  clientId
-) => async dispatch => {
+export const joinGameMultiplayer = (id, newPlayer, clientId) => async (
+  dispatch
+) => {
   try {
     const response = await multiplayer.patch(
       `/${id}`,
       {
         newPlayer,
-        clientId
+        clientId,
       },
       {
-        cancelToken: joinSource.token
+        cancelToken: joinSource.token,
       }
     );
 
@@ -99,14 +100,14 @@ export const joinGameMultiplayer = (
       dispatch({
         type: SERVE_ERROR,
         payload: {
-          errorMsg: 'Game already started'
-        }
+          errorMsg: 'Game already started',
+        },
       });
       return;
     }
     const socketData = JSON.stringify({
       type: 'JOIN',
-      game: id
+      game: id,
     });
 
     WebSocket.send(socketData);
@@ -114,8 +115,8 @@ export const joinGameMultiplayer = (
       type: MULTIPLAYER_JOIN_GAME,
       payload: {
         game: response.data.game,
-        player: response.data.playerName || newPlayer
-      }
+        player: response.data.playerName || newPlayer,
+      },
     });
     history.push(`/multiplayer/${id}`);
   } catch (err) {
@@ -127,17 +128,17 @@ export const joinGameMultiplayer = (
   }
 };
 
-export const generateSubreddit = (id, player) => async dispatch => {
+export const generateSubreddit = (id, player) => async (dispatch) => {
   try {
     const response = await multiplayer.patch(`/${id}/new`, {
-      player
+      player,
     });
+
+    console.log(response.data);
 
     dispatch({
       type: MULTIPLAYER_GENERATE_SUBREDDIT,
-      payload: {
-        game: response.data
-      }
+      payload: response.data,
     });
   } catch (err) {
     if (axios.isCancel(err)) {
@@ -148,20 +149,21 @@ export const generateSubreddit = (id, player) => async dispatch => {
   }
 };
 
-export const submitGuessMultiplayer = (id, player, guess) => async dispatch => {
+export const submitGuessMultiplayer = (id, player, guess) => async (
+  dispatch
+) => {
   try {
     const response = await multiplayer.patch(`/${id}`, {
       player,
-      guess
+      guess,
     });
 
     updateCall('UPDATE', id);
 
+    console.log('RESPONSE:', response.data);
     dispatch({
       type: MULTIPLAYER_SUBMIT_GUESS,
-      payload: {
-        game: response.data
-      }
+      payload: response.data,
     });
   } catch (err) {
     if (axios.isCancel(err)) {
@@ -172,26 +174,24 @@ export const submitGuessMultiplayer = (id, player, guess) => async dispatch => {
   }
 };
 
-export const createMessageMultiplayer = (
-  id,
-  playerName,
-  message
-) => async dispatch => {
+export const createMessageMultiplayer = (id, playerName, message) => async (
+  dispatch
+) => {
   try {
     const response = await multiplayer.post(`/${id}/message`, {
       playerName,
-      message
+      message,
     });
     const socketData = JSON.stringify({
       type: 'MESSAGE',
-      game: response.data._id
+      game: response.data._id,
     });
 
     WebSocket.send(socketData);
 
     dispatch({
       type: MULTIPLAYER_CREATE_MESSAGE,
-      payload: { game: response.data }
+      payload: { game: response.data },
     });
   } catch (err) {
     if (axios.isCancel(err)) {
@@ -202,14 +202,14 @@ export const createMessageMultiplayer = (
   }
 };
 
-export const clearCurrentGame = () => async dispatch => {
+export const clearCurrentGame = () => async (dispatch) => {
   const socketData = JSON.stringify({
-    type: 'CLEAR'
+    type: 'CLEAR',
   });
 
   WebSocket.send(socketData);
   dispatch({
-    type: MULTIPLAYER_CLEAR_CURRENT_GAME
+    type: MULTIPLAYER_CLEAR_CURRENT_GAME,
   });
   history.push(`/multiplayer`);
 };
@@ -220,28 +220,28 @@ export const updateCall = (type, game) => {
   WebSocket.send(socketData);
 };
 
-export const newMessageNotifier = () => async dispatch => {
+export const newMessageNotifier = () => async (dispatch) => {
   dispatch({
-    type: MULTIPLAYER_NEW_MESSAGE_RECEIVED
+    type: MULTIPLAYER_NEW_MESSAGE_RECEIVED,
   });
 };
 
-export const dissmissNotification = () => async dispatch => {
+export const dissmissNotification = () => async (dispatch) => {
   dispatch({
-    type: MULTIPLAYER_DISMISS_NOTIFICATION
+    type: MULTIPLAYER_DISMISS_NOTIFICATION,
   });
 };
 
-export const setCurrentPlayer = playerName => async dispatch => {
+export const setCurrentPlayer = (playerName) => async (dispatch) => {
   dispatch({
     type: MULTIPLAYER_SET_CURRENT_PLAYER,
     payload: {
-      playerName
-    }
+      playerName,
+    },
   });
 };
 
-export const setClientId = localStorage => async dispatch => {
+export const setClientId = (localStorage) => async (dispatch) => {
   if (!localStorage.clientId) {
     localStorage.clientId = uuidv4();
     console.log('NEW ID GENERATED');
@@ -250,7 +250,7 @@ export const setClientId = localStorage => async dispatch => {
   dispatch({
     type: MULTIPLAYER_SET_CLIENT_ID,
     payload: {
-      clientId: localStorage.clientId
-    }
+      clientId: localStorage.clientId,
+    },
   });
 };

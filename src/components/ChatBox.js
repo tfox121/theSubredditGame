@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Button, Popup } from 'semantic-ui-react';
-import timeago from 'time-ago';
+import timeAgo from '../timeAgo';
 import TextareaAutosize from 'react-textarea-autosize';
 
 import {
   createMessageMultiplayer,
-  updateCall,
-  dissmissNotification
+  // updateCall,
+  dissmissNotification,
 } from '../actions';
 import './ChatBox.css';
 
-const ChatBox = props => {
+const ChatBox = (props) => {
   const [text, setText] = useState('');
   const [chatboxOpen, setChatboxOpen] = useState(false);
 
@@ -45,24 +45,24 @@ const ChatBox = props => {
     }
   };
 
-  const handleTextChange = event => {
+  const handleTextChange = (event) => {
     setText(event.target.value);
   };
 
-  const handleSubmit = async event => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     await props.createMessageMultiplayer(game._id, currentPlayer, text);
     setText('');
     // updateCall('MESSAGE', game._id);
   };
 
-  const handleKeyDown = event => {
+  const handleKeyDown = (event) => {
     if ((window.event ? event.keyCode : event.which) === 13) {
       handleSubmit(event);
     }
   };
 
-  const handleMouseDown = event => {
+  const handleMouseDown = (event) => {
     if (event) {
       event.preventDefault();
     }
@@ -77,32 +77,35 @@ const ChatBox = props => {
     }
   };
 
-  const originalMessageRender = message => {
+  const originalMessageRender = (message) => {
     return (
       <div key={message._id} className="event">
         <div className="label">
           <img
             style={{
-              display: message.playerName === currentPlayer && 'none'
+              display: message.playerName === currentPlayer && 'none',
             }}
             src={`https://avatars.dicebear.com/v2/identicon/${message.playerName}.svg`}
             alt="avatar"
           />
         </div>
         <div
-          className={`content additional ${message.playerName ===
-            currentPlayer && 'right'}`}
+          className={`content additional ${
+            message.playerName === currentPlayer && 'right'
+          }`}
         >
           <div className="summary">
             {message.playerName}
             {message.playerName !== currentPlayer && (
-              <div className="date">{timeago.ago(message.timeReceived)}</div>
+              <div className="date">
+                {timeAgo.format(Date.parse(message.timeReceived))}
+              </div>
             )}
           </div>
           {message.playerName === currentPlayer && (
             <>
               <div className="own date">
-                {timeago.ago(message.timeReceived)}
+                {timeAgo.format(Date.parse(message.timeReceived))}
               </div>
             </>
           )}
@@ -114,13 +117,14 @@ const ChatBox = props => {
     );
   };
 
-  const additionalMessagesRender = message => {
+  const additionalMessagesRender = (message) => {
     return (
       <div className="event additional">
         <div className="label"></div>
         <div
-          className={`content additional ${message.playerName ===
-            currentPlayer && 'right'}`}
+          className={`content additional ${
+            message.playerName === currentPlayer && 'right'
+          }`}
         >
           <div>
             <div className="extra text additional">{message.message}</div>
@@ -173,7 +177,7 @@ const ChatBox = props => {
             autoComplete="off"
             type="text"
           />
-          <button className="ui button">Send</button>
+          <button className="ui button">send</button>
         </form>
       </>
     );
@@ -195,7 +199,7 @@ const ChatBox = props => {
           }`}
           onMouseDown={handleMouseDown}
         >
-          <div>Chat</div>
+          <div>chat</div>
           {props.newMessage && !chatboxOpen && (
             <i className="comment outline icon"></i>
           )}
@@ -207,11 +211,11 @@ const ChatBox = props => {
   return PopupChat();
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return { newMessage: state.multiplayer.newMessage };
 };
 
 export default connect(mapStateToProps, {
   createMessageMultiplayer,
-  dissmissNotification
+  dissmissNotification,
 })(ChatBox);

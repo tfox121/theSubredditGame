@@ -13,7 +13,6 @@ function Sounds(props) {
   const [newMessageReadyToPlay, setNewMessageReadyToPlay] = useState(false);
 
   const game = props.multiplayer[props.multiplayer.currentGame];
-  const { messages } = game;
   const { newMessage } = props.multiplayer;
 
   useEffect(() => {
@@ -32,30 +31,30 @@ function Sounds(props) {
     if (game && !game.newMessage) {
       setNewMessageReadyToPlay(true);
     }
-  }, [game, newMessage, messages]);
+  }, [game, newMessage]);
 
-  const gameStartSound = gameStarted => {
+  const gameStartSound = (gameStarted) => {
     if (gameStartReadyToPlay && gameStarted) {
       const myRef = React.createRef();
       return <audio ref={myRef} src={arcade_game_tone} autoPlay />;
     }
   };
 
-  const roundStartSound = roundComplete => {
+  const roundStartSound = (roundComplete) => {
     if (roundStartReadyToPlay && !roundComplete) {
       const myRef = React.createRef();
       return <audio ref={myRef} src={pop} autoPlay />;
     }
   };
 
-  const roundEndSound = roundComplete => {
+  const roundEndSound = (roundComplete) => {
     if (roundEndReadyToPlay && roundComplete) {
       const myRef = React.createRef();
       return <audio ref={myRef} src={_8_bit_score_4} autoPlay />;
     }
   };
 
-  const newMessageSound = newMessage => {
+  const newMessageSound = (newMessage) => {
     if (newMessageReadyToPlay && newMessage) {
       const myRef = React.createRef();
       setTimeout(() => {
@@ -64,6 +63,10 @@ function Sounds(props) {
       return <audio ref={myRef} src={pong_sound} autoPlay />;
     }
   };
+
+  if (!game) {
+    return null;
+  }
 
   return (
     <div>
@@ -75,7 +78,7 @@ function Sounds(props) {
   );
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return { multiplayer: state.multiplayer };
 };
 

@@ -2,6 +2,7 @@ h2.ui.header {
   display: inline;
   background-color: #538083;
   color: #fffef9;
+  line-height: 1.6em;
   -webkit-box-shadow: 7px 7px 0px 0px rgba(0, 0, 0, 0.75);
   -moz-box-shadow: 7px 7px 0px 0px rgba(0, 0, 0, 0.75);
   box-shadow: 7px 7px 0px 0px rgba(0, 0, 0, 0.75);

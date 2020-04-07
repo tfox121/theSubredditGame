@@ -4,12 +4,12 @@ import { connect } from 'react-redux';
 import {
   clearCurrentGame,
   createGameMultiplayer,
-  createSource
+  // createSource
 } from '../actions';
 
 import MultiplayerCreateForm from './MultiplayerCreateForm';
 
-const MultiplayerCreate = props => {
+const MultiplayerCreate = (props) => {
   useEffect(() => {
     return () => {
       console.log('UNMOUNTED CREATE COMPONENT');
@@ -18,7 +18,7 @@ const MultiplayerCreate = props => {
     };
   }, []);
 
-  const onSubmit = async formValues => {
+  const onSubmit = async (formValues) => {
     await props.createGameMultiplayer(formValues);
   };
 

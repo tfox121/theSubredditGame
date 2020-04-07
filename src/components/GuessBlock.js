@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 
 import './GuessBlock.css';
 
-const GuessBlock = props => {
+const GuessBlock = (props) => {
   const [guessNum, setGuessNum] = useState('');
 
-  const onFormSubmit = event => {
+  const onFormSubmit = (event) => {
     event.preventDefault();
 
     props.onSubmit(guessNum);
@@ -15,19 +15,19 @@ const GuessBlock = props => {
     <div className="ui guess-block">
       <form onSubmit={onFormSubmit} className="ui form">
         <div className="field">
-          <label>How many subscribers do you think it has?</label>
+          <label>how many subscribers do you think it has?</label>
           <input
             type="number"
             min="0"
             placeholder=""
             value={guessNum}
-            onChange={e => {
+            onChange={(e) => {
               setGuessNum(e.target.value);
             }}
             required
           />
           <button className="ui button submit" type="submit">
-            Submit
+            submit
           </button>
         </div>
       </form>

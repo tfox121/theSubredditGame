@@ -7,19 +7,19 @@ import './MultiplayerCreateForm.css';
 
 import NsfwSlider from './NsfwSlider';
 
-const MultiplayerCreateForm = props => {
+const MultiplayerCreateForm = (props) => {
   const [nsfw, setNsfw] = useState(0);
   const [disableButton, setDisableButton] = useState(false);
-  const [buttonText, setButtonText] = useState('Create');
+  const [buttonText, setButtonText] = useState('create');
 
   const { currentGame } = props;
   useEffect(() => {
     let mounted = true;
     if (currentGame && mounted) {
       console.log('SETTING STATE');
-      setButtonText('Created!');
+      setButtonText('created!');
       setTimeout(() => {
-        setButtonText('Create');
+        setButtonText('create');
         setDisableButton(false);
       }, 3800);
     }
@@ -29,7 +29,7 @@ const MultiplayerCreateForm = props => {
     };
   }, [currentGame]);
 
-  const onChange = value => {
+  const onChange = (value) => {
     setNsfw(value);
   };
 
@@ -62,7 +62,7 @@ const MultiplayerCreateForm = props => {
     );
   };
 
-  const onSubmit = formValues => {
+  const onSubmit = (formValues) => {
     props.clearCurrentGame();
     setButtonText('Creating...');
     props.onSubmit({ ...formValues, nsfw });
@@ -71,8 +71,8 @@ const MultiplayerCreateForm = props => {
 
   return (
     <form onSubmit={props.handleSubmit(onSubmit)} className="ui form error">
-      <h3>Create a new game</h3>
-      <Field name="rounds" component={renderInput} label="How many rounds?" />
+      <h3>create a new game</h3>
+      <Field name="rounds" component={renderInput} label="how many rounds?" />
       <NsfwSlider nsfw={nsfw} width="12" onChange={onChange} />
       <button className="ui button" disabled={disableButton}>
         <div className="visible content">{buttonText}</div>
@@ -81,14 +81,14 @@ const MultiplayerCreateForm = props => {
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    currentGame: state.multiplayer.currentGame
+    currentGame: state.multiplayer.currentGame,
   };
 };
 
 const form = reduxForm({
-  form: 'multiplayerCreateForm'
+  form: 'multiplayerCreateForm',
 })(MultiplayerCreateForm);
 
 export default connect(mapStateToProps, { clearCurrentGame })(form);
