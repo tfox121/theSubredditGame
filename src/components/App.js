@@ -36,21 +36,6 @@ const App = (props) => {
     setWebSocketClosed(true);
   };
 
-  webSocket.onmessage = (event) => {
-    const data = JSON.parse(event.data);
-    switch (data.type) {
-      case 'UPDATE':
-        props.fetchGameMultiplayer(data.game);
-        break;
-      case 'MESSAGE':
-        props.newMessageNotifier();
-        props.fetchGameMultiplayer(data.game);
-        break;
-      default:
-        return;
-    }
-  };
-
   const webSocketErrorRender = () => {
     if (webSocketClosed) {
       return (
@@ -62,12 +47,13 @@ const App = (props) => {
         </div>
       );
     }
+    return null;
   };
 
   return (
     <BreakpointProvider>
-      <div className="ui container">
-        <Router history={history}>
+      <Router history={history}>
+        <div className="ui container">
           <div className="ui app basic segment">
             <Header />
             <Switch>
@@ -95,9 +81,9 @@ const App = (props) => {
               />
             </Switch>
           </div>
-        </Router>
-      </div>
-      {webSocketErrorRender()}
+        </div>
+        {webSocketErrorRender()}
+      </Router>
     </BreakpointProvider>
   );
 };
