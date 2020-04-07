@@ -2,7 +2,7 @@ import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
 import history from '../history';
-import WebSocket from '../api/websocket';
+import webSocket from '../api/websocket';
 import { axiosDefault as multiplayer } from '../api/multiplayer';
 
 import {
@@ -34,7 +34,7 @@ export const createGameMultiplayer = (formValues) => async (dispatch) => {
       game: response.data._id,
     });
 
-    WebSocket.send(socketData);
+    webSocket.send(socketData);
 
     dispatch({ type: MULTIPLAYER_CREATE_GAME, payload: response.data });
     history.push(`/multiplayer/join/${response.data._id}`);
@@ -110,7 +110,7 @@ export const joinGameMultiplayer = (id, newPlayer, clientId) => async (
       game: id,
     });
 
-    WebSocket.send(socketData);
+    webSocket.send(socketData);
     dispatch({
       type: MULTIPLAYER_JOIN_GAME,
       payload: {
@@ -187,7 +187,7 @@ export const createMessageMultiplayer = (id, playerName, message) => async (
       game: response.data._id,
     });
 
-    WebSocket.send(socketData);
+    webSocket.send(socketData);
 
     dispatch({
       type: MULTIPLAYER_CREATE_MESSAGE,
@@ -207,7 +207,7 @@ export const clearCurrentGame = () => async (dispatch) => {
     type: 'CLEAR',
   });
 
-  WebSocket.send(socketData);
+  webSocket.send(socketData);
   dispatch({
     type: MULTIPLAYER_CLEAR_CURRENT_GAME,
   });
@@ -217,7 +217,7 @@ export const clearCurrentGame = () => async (dispatch) => {
 export const updateCall = (type, game) => {
   const socketData = JSON.stringify({ type, game });
 
-  WebSocket.send(socketData);
+  webSocket.send(socketData);
 };
 
 export const newMessageNotifier = () => async (dispatch) => {
