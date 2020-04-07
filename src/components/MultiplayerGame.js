@@ -78,7 +78,6 @@ const MultiplayerGame = (props) => {
 
   useLayoutEffect(() => {
     if (id) {
-      console.log('setting game ID');
       webSocket.onopen = (event) => {
         const socketData = JSON.stringify({
           type: 'JOIN',
@@ -97,8 +96,8 @@ const MultiplayerGame = (props) => {
         props.fetchGameMultiplayer(data.game);
         break;
       case 'MESSAGE':
-        props.newMessageNotifier();
         props.fetchGameMultiplayer(data.game);
+        props.newMessageNotifier();
         break;
       default:
         return;

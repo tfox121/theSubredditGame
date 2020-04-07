@@ -52,7 +52,7 @@ export default {
   ],
   1000000000: [
     'Did you accidentally fall asleep on your keyboard?',
-    "So if you go ahead and divide it by two, it'd still be a shit guess.",
+    "So if you go ahead and divide that by two, it'd still be a shit guess.",
     "Shall we just pretend that didn't happen? Haha - joking - we'll never forget.",
     'That makes about as much sense as a screen door on a submarine.',
   ],
