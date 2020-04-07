@@ -48,7 +48,7 @@ const MultiplayerScoresheet = (props) => {
                 <div className="row" key={player._id}>
                   <div className="column">
                     {player.name === currentPlayer && (
-                      <i class="angle double right large icon"></i>
+                      <i className="angle double right large icon"></i>
                     )}
                     {player.name}
                   </div>

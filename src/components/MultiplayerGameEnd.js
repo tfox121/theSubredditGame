@@ -40,6 +40,9 @@ const MultiplayerGameEnd = (props) => {
   };
 
   const winnerMessage = () => {
+    if (!game.players.length) {
+      return null;
+    }
     if (game.players[0].name === multiplayer.playerName) {
       return 'you win!';
     } else {

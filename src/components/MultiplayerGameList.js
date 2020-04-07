@@ -34,11 +34,11 @@ export const MultiplayerGameList = (props) => {
     if (gameListQuantity) {
       const games = _.chain(multiplayer).pickBy(_.isObject).values().value();
 
-      games.filter((game) => {
+      const filteredGames = games.filter((game) => {
         return !game.gameComplete;
       });
 
-      setGameList(games);
+      setGameList(filteredGames);
     }
   }, [multiplayer]);
 
@@ -104,7 +104,6 @@ export const MultiplayerGameList = (props) => {
   };
 
   const renderGames = () => {
-    console.log('GAMES RENDERING');
     return gameList
       .sort((a, b) => {
         if (Date.parse(a.lastAction) < Date.parse(b.lastAction)) {

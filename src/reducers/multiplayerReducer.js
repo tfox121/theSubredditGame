@@ -87,7 +87,7 @@ export default (
     case MULTIPLAYER_DISMISS_NOTIFICATION:
       return {
         ...state,
-        newMessage: '',
+        newMessage: false,
         error: '',
       };
     case MULTIPLAYER_SET_CLIENT_ID:
