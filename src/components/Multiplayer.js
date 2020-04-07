@@ -1,8 +1,7 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Breakpoint } from 'react-socks';
 import { connect } from 'react-redux';
 
-import webSocket from '../api/websocket';
 import { fetchGameMultiplayer } from '../actions';
 
 import MultiplayerCreate from './MultiplayerCreate';
@@ -13,34 +12,6 @@ import './Multiplayer.css';
 
 const Multiplayer = (props) => {
   const { id } = props.match.params;
-
-  useLayoutEffect(() => {
-    if (id) {
-      webSocket.onopen = (event) => {
-        const socketData = JSON.stringify({
-          type: 'JOIN',
-          game: id,
-        });
-
-        webSocket.send(socketData);
-      };
-    }
-  }, [id]);
-
-  webSocket.onmessage = (event) => {
-    const data = JSON.parse(event.data);
-    switch (data.type) {
-      case 'UPDATE':
-        props.fetchGameMultiplayer(data.game);
-        break;
-      case 'MESSAGE':
-        props.newMessageNotifier();
-        props.fetchGameMultiplayer(data.game);
-        break;
-      default:
-        return;
-    }
-  };
 
   useEffect(() => {
     const singleplayerLink = document.querySelector('.singleplayer.item');
