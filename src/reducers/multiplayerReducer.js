@@ -22,6 +22,7 @@ export default (
     currentGame: '',
     error: '',
     newMessage: false,
+    newMessageCount: 0,
     clientId: '',
   },
   action
@@ -82,6 +83,7 @@ export default (
       return {
         ...state,
         newMessage: true,
+        newMessageCount: state.messageCount++,
         error: '',
       };
     case MULTIPLAYER_DISMISS_NOTIFICATION:
