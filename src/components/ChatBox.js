@@ -4,11 +4,13 @@ import { Button, Popup } from 'semantic-ui-react';
 import timeAgo from '../timeAgo';
 import TextareaAutosize from 'react-textarea-autosize';
 
+import webSocket from '../api/websocket';
 import {
   createMessageMultiplayer,
   // updateCall,
   dissmissNotification,
   fetchGameMultiplayer,
+  newMessageNotifier,
 } from '../actions';
 import './ChatBox.css';
 
@@ -16,9 +18,21 @@ const ChatBox = (props) => {
   const [text, setText] = useState('');
   const [chatboxOpen, setChatboxOpen] = useState(false);
 
-  const { game, currentPlayer, fetchGameMultiplayer, newMessageCount } = props;
+  const { game, currentPlayer } = props;
 
   const messageCount = game.messages.length;
+
+  webSocket.onmessage = (event) => {
+    const data = JSON.parse(event.data);
+    switch (data.type) {
+      case 'MESSAGE':
+        props.newMessageNotifier();
+        props.fetchGameMultiplayer(data.game);
+        break;
+      default:
+        return;
+    }
+  };
 
   useEffect(() => {
     setChatboxOpen(true);
@@ -227,4 +241,5 @@ export default connect(mapStateToProps, {
   createMessageMultiplayer,
   dissmissNotification,
   fetchGameMultiplayer,
+  newMessageNotifier,
 })(ChatBox);
