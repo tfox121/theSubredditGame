@@ -80,10 +80,11 @@ export default (
         error: '',
       };
     case MULTIPLAYER_NEW_MESSAGE_RECEIVED:
+      console.log(state.newMessageCount);
       return {
         ...state,
         newMessage: true,
-        newMessageCount: state.newMessageCount++,
+        newMessageCount: state.newMessageCount + 1,
         error: '',
       };
     case MULTIPLAYER_DISMISS_NOTIFICATION:
