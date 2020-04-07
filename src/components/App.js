@@ -8,7 +8,7 @@ import webSocket from '../api/websocket';
 import {
   fetchGameMultiplayer,
   newMessageNotifier,
-  setClientId
+  setClientId,
 } from '../actions';
 import './App.css';
 
@@ -19,7 +19,7 @@ import MultiplayerGameEnd from './MultiplayerGameEnd';
 import MultiplayerGameList from './MultiplayerGameList';
 import SinglePlayer from './SinglePlayer';
 
-const App = props => {
+const App = (props) => {
   const [webSocketClosed, setWebSocketClosed] = useState(false);
 
   useEffect(() => {
@@ -27,16 +27,16 @@ const App = props => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  webSocket.onopen = function(event) {
+  webSocket.onopen = function (event) {
     console.log('Connected to server');
     setWebSocketClosed(false);
   };
 
-  webSocket.onerror = event => {
+  webSocket.onerror = (event) => {
     setWebSocketClosed(true);
   };
 
-  webSocket.onmessage = event => {
+  webSocket.onmessage = (event) => {
     const data = JSON.parse(event.data);
     switch (data.type) {
       case 'UPDATE':
@@ -44,6 +44,7 @@ const App = props => {
         break;
       case 'MESSAGE':
         props.newMessageNotifier();
+        props.fetchGameMultiplayer(data.game);
         break;
       default:
         return;
@@ -104,5 +105,5 @@ const App = props => {
 export default connect(null, {
   fetchGameMultiplayer,
   newMessageNotifier,
-  setClientId
+  setClientId,
 })(App);
