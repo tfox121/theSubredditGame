@@ -5,11 +5,12 @@ import { connect } from 'react-redux';
 import { fetchGameMultiplayer } from '../actions';
 
 import MultiplayerCreate from './MultiplayerCreate';
+import MultiplayerGameList from './MultiplayerGameList';
 import MultiplayerJoin from './MultiplayerJoin';
 
 import './Multiplayer.css';
 
-const Multiplayer = props => {
+const Multiplayer = (props) => {
   const { id } = props.match.params;
 
   useEffect(() => {
@@ -21,6 +22,7 @@ const Multiplayer = props => {
     if (id) {
       props.fetchGameMultiplayer(id);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -46,6 +48,7 @@ const Multiplayer = props => {
           <MultiplayerJoin joinId={id} />
         </div>
       </Breakpoint>
+      <MultiplayerGameList />
     </div>
   );
 };

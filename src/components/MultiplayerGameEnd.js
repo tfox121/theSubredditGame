@@ -10,7 +10,7 @@ import './MultiplayerGameEnd.css';
 import MultiplayerGameEndScoresheet from './MultiplayerGameEndScoresheet';
 import ChatBox from './ChatBox';
 
-const MultiplayerGameEnd = props => {
+const MultiplayerGameEnd = (props) => {
   const { id } = props.match.params;
   const { multiplayer, clearCurrentGame } = props;
   const game = multiplayer[id];
@@ -31,7 +31,7 @@ const MultiplayerGameEnd = props => {
     return <audio ref={myRef} src={brass_finale} autoPlay />;
   };
 
-  const roundTo2 = num => {
+  const roundTo2 = (num) => {
     return +(Math.round(num + 'e+2') + 'e-2');
   };
 
@@ -41,9 +41,9 @@ const MultiplayerGameEnd = props => {
 
   const winnerMessage = () => {
     if (game.players[0].name === multiplayer.playerName) {
-      return 'You win!';
+      return 'you win!';
     } else {
-      return 'Better luck next time...';
+      return 'better luck next time...';
     }
   };
 
@@ -57,7 +57,7 @@ const MultiplayerGameEnd = props => {
           currentPlayer={multiplayer.playerName}
         />
         <div className="ui basic segment">
-          Best Guess:{' '}
+          best guess:{' '}
           <b className="best-guess">{game.closestGuess.playerName}</b> - only{' '}
           {roundTo2(game.closestGuess.percentage)}% out for{' '}
           {game.closestGuess.subName}!
@@ -68,7 +68,7 @@ const MultiplayerGameEnd = props => {
           className="ui right labeled icon button"
           onClick={onClick}
         >
-          Play Again<i className="right arrow icon"></i>
+          play again<i className="right arrow icon"></i>
         </Link>
       </div>
       <ChatBox game={game} currentPlayer={props.multiplayer.playerName} />
@@ -77,7 +77,7 @@ const MultiplayerGameEnd = props => {
   );
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return { multiplayer: state.multiplayer };
 };
 

@@ -16,6 +16,7 @@ import Header from './Header';
 import Multiplayer from './Multiplayer';
 import MultiplayerGame from './MultiplayerGame';
 import MultiplayerGameEnd from './MultiplayerGameEnd';
+import MultiplayerGameList from './MultiplayerGameList';
 import SinglePlayer from './SinglePlayer';
 
 const App = props => {
@@ -72,6 +73,11 @@ const App = props => {
               <Route path="/" exact component={SinglePlayer} />
               <Route path="/singleplayer" exact component={SinglePlayer} />
               <Route path="/multiplayer" exact component={Multiplayer} />
+              <Route
+                path="/multiplayer/games"
+                exact
+                component={MultiplayerGameList}
+              />
               <Route
                 path="/multiplayer/:id"
                 exact

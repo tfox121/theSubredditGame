@@ -2,10 +2,10 @@ import React from 'react';
 
 import './MultiplayerScoresheet.css';
 
-const MultiplayerScoresheet = props => {
+const MultiplayerScoresheet = (props) => {
   const { game, currentPlayer } = props;
 
-  const numberFormat = num => {
+  const numberFormat = (num) => {
     return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
   };
 
@@ -21,14 +21,14 @@ const MultiplayerScoresheet = props => {
     });
   };
 
-  const guessRender = player => {
+  const guessRender = (player) => {
     const formattedGuess = numberFormat(player.currentGuess);
     if (player.name === currentPlayer) {
-      return formattedGuess || 'Waiting...';
+      return formattedGuess || 'waiting...';
     } else if (game.roundComplete) {
       return formattedGuess;
     } else {
-      return formattedGuess ? 'Submitted' : 'Waiting...';
+      return formattedGuess ? 'submitted' : 'waiting...';
     }
   };
 
@@ -40,24 +40,17 @@ const MultiplayerScoresheet = props => {
           <div className="ui three column internally celled grid">
             <div className="row">
               <div className="column"></div>
-              <div className="column">Guess</div>
-              <div className="column">Score</div>
+              <div className="column">guess</div>
+              <div className="column">score</div>
             </div>
-            {game.players.map(player => {
+            {game.players.map((player) => {
               return (
-                <div
-                  className="row"
-                  key={player._id}
-                  style={
-                    player.name === currentPlayer
-                      ? {
-                          textDecoration: 'underline'
-                        }
-                      : {}
-                  }
-                >
+                <div className="row" key={player._id}>
                   <div className="column">
-                    {player.name === currentPlayer && '>>>'} {player.name}
+                    {player.name === currentPlayer && (
+                      <i class="angle double right large icon"></i>
+                    )}
+                    {player.name}
                   </div>
                   <div className="column">{guessRender(player)}</div>
                   <div className="column">
