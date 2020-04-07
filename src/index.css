@@ -27,6 +27,7 @@ textarea {
   resize: none;
   width: 80%;
   height: 3em;
+  font-size: 12px;
   text-align: center;
   overflow-x: hidden;
   overflow-y: hidden;
