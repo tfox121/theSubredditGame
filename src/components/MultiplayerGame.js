@@ -1,5 +1,5 @@
 import { Progress } from 'semantic-ui-react';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 
 import {
@@ -9,6 +9,7 @@ import {
   setCurrentPlayer,
 } from '../actions';
 import history from '../history';
+import webSocket from '../api/websocket';
 
 import GuessBlock from './GuessBlock';
 import ResultBlock from './ResultBlock';
@@ -74,6 +75,35 @@ const MultiplayerGame = (props) => {
     playerName,
     setCurrentPlayer,
   ]);
+
+  useLayoutEffect(() => {
+    if (id) {
+      console.log('setting game ID');
+      webSocket.onopen = (event) => {
+        const socketData = JSON.stringify({
+          type: 'JOIN',
+          game: id,
+        });
+
+        webSocket.send(socketData);
+      };
+    }
+  }, [id]);
+
+  webSocket.onmessage = (event) => {
+    const data = JSON.parse(event.data);
+    switch (data.type) {
+      case 'UPDATE':
+        props.fetchGameMultiplayer(data.game);
+        break;
+      case 'MESSAGE':
+        props.newMessageNotifier();
+        props.fetchGameMultiplayer(data.game);
+        break;
+      default:
+        return;
+    }
+  };
 
   if (!gameRef || !playerName) {
     gameRef = multiplayer[id];
