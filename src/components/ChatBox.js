@@ -16,7 +16,13 @@ const ChatBox = (props) => {
   const [text, setText] = useState('');
   const [chatboxOpen, setChatboxOpen] = useState(false);
 
-  const { game, currentPlayer, fetchGameMultiplayer, newMessage } = props;
+  const {
+    game,
+    currentPlayer,
+    fetchGameMultiplayer,
+    newMessage,
+    newMessageCount,
+  } = props;
   const { _id } = game;
 
   const messageCount = game.messages.length;
@@ -32,7 +38,7 @@ const ChatBox = (props) => {
 
   useEffect(() => {
     fetchGameMultiplayer(_id);
-  }, [_id, fetchGameMultiplayer, newMessage]);
+  }, [_id, fetchGameMultiplayer, newMessageCount]);
 
   const openHandler = () => {
     setChatboxOpen(true);
@@ -220,6 +226,7 @@ const ChatBox = (props) => {
 const mapStateToProps = (state) => {
   return {
     newMessage: state.multiplayer.newMessage,
+    newMessageCount: state.multiplayer.newMessageCount,
   };
 };
 
