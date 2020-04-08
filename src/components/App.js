@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import publicIp from 'public-ip';
 import { Router, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { BreakpointProvider } from 'react-socks';
@@ -28,21 +27,9 @@ const App = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  (async () => {
-    console.log(await publicIp.v4());
-
-    console.log(await publicIp.v6());
-  })();
-
-  webSocket.onopen = async (event) => {
+  webSocket.onopen = function (event) {
     console.log('Connected to server');
     setWebSocketClosed(false);
-    const socketData = JSON.stringify({
-      type: 'CONNECT',
-      ip: 'none',
-    });
-
-    webSocket.send(socketData);
   };
 
   webSocket.onerror = (event) => {

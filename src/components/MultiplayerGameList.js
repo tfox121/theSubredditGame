@@ -153,8 +153,8 @@ export const MultiplayerGameList = (props) => {
           onClick={handleAccordianClick}
         >
           <h2 className="ui header">
-            <i class="dropdown icon"></i>your games
-            <i class="dropdown icon"></i>
+            <i className="dropdown icon"></i>your games
+            <i className="dropdown icon"></i>
           </h2>
         </Accordion.Title>
         <Accordion.Content active={activeIndex === 0}>
