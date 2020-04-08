@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
 
 import './SinglePlayer.css';
 import { axiosDefault as multiplayer } from '../api/multiplayer';
+import { axiosDefault as guesses } from '../api/guesses';
 
 import ClearButton from './ClearButton';
 import GuessBlock from './GuessBlock';
@@ -9,7 +11,7 @@ import SubredditBlock from './SubredditBlock';
 import RandomButtonBlock from './RandomButtonBlock';
 import ResultBlock from './ResultBlock';
 
-const SinglePlayer = () => {
+const SinglePlayer = (props) => {
   useEffect(() => {
     const singleplayerLink = document.querySelector('.singleplayer.item');
     const multiplayerLink = document.querySelector('.multiplayer.item');
@@ -22,7 +24,7 @@ const SinglePlayer = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
-  const randomSubGenerator = async formValues => {
+  const randomSubGenerator = async (formValues) => {
     if (guessNum !== 0 || subredditInfo.display_name || error) {
       clearState();
     }
@@ -37,8 +39,15 @@ const SinglePlayer = () => {
     }
   };
 
-  const onGuessSubmit = num => {
+  const onGuessSubmit = (num) => {
     setGuessNum(num);
+    guesses.post('/', {
+      subredditName: subredditInfo.display_name,
+      nsfw: subredditInfo.over18,
+      guess: num,
+      subscribers: subredditInfo.subscribers,
+      clientId: props.clientId,
+    });
   };
 
   const clearState = () => {
@@ -98,7 +107,6 @@ const SinglePlayer = () => {
     <>
       <RandomButtonBlock onSubmit={randomSubGenerator} />
       {loadingRender()}
-      {loadingRender()}
       {errorRender()}
       {guessBlockRender()}
       {resultBlockRender()}
@@ -107,4 +115,10 @@ const SinglePlayer = () => {
   );
 };
 
-export default SinglePlayer;
+const mapStateToProps = (state) => {
+  return {
+    clientId: state.multiplayer.clientId,
+  };
+};
+
+export default connect(mapStateToProps)(SinglePlayer);
