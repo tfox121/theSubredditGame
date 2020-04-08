@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import './ResultBlock.css';
+import { axiosDefault as guesses } from '../api/guesses';
 import resultCopy from '../data/resultCopy';
 
 const ResultBlock = (props) => {
@@ -9,6 +10,7 @@ const ResultBlock = (props) => {
 
   const [resultText, setResultText] = useState('');
   const [percent, setPercent] = useState(0);
+  const [average, setAverage] = useState('');
 
   const roundTo2 = (num) => {
     return +(Math.round(num + 'e+2') + 'e-2');
@@ -21,6 +23,27 @@ const ResultBlock = (props) => {
   const numberFormat = (num) => {
     return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
   };
+
+  const averageRender = () => {
+    if (average) {
+      return <p>The average guess for this subreddit is {average}% out.</p>;
+    }
+  };
+
+  useEffect(() => {
+    const averageResultPercentage = async () => {
+      const averageResponse = await guesses.get(
+        `/average/${subredditInfo.display_name}`
+      );
+      if (averageResponse) {
+        setAverage(averageResponse.data);
+      }
+    };
+    averageResultPercentage();
+    return () => {
+      setAverage('');
+    };
+  }, [subredditInfo]);
 
   useEffect(() => {
     const percent = percentCalc(guessNum, subscribers);
@@ -53,6 +76,7 @@ const ResultBlock = (props) => {
           has {numberFormat(subredditInfo.subscribers)} subscribers.{' '}
         </h3>
         <p>You were {roundTo2(percent)}% out.</p>
+        {averageRender()}
       </div>
     </div>
   );
