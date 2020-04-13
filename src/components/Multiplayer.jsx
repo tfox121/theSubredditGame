@@ -11,7 +11,8 @@ import MultiplayerJoin from './MultiplayerJoin';
 import './Multiplayer.css';
 
 const Multiplayer = (props) => {
-  const { id } = props.match.params;
+  const { match, fetchGameMultiplayer } = props;
+  const { id } = match.params;
 
   useEffect(() => {
     const singleplayerLink = document.querySelector('.singleplayer.item');
@@ -20,10 +21,9 @@ const Multiplayer = (props) => {
     singleplayerLink.classList.remove('active');
 
     if (id) {
-      props.fetchGameMultiplayer(id);
+      fetchGameMultiplayer(id);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [fetchGameMultiplayer, id]);
 
   return (
     <div className="option-container">

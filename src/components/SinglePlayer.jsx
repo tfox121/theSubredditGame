@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
 import './SinglePlayer.css';
-import { axiosDefault as multiplayer } from '../api/multiplayer';
-import { axiosDefault as guesses } from '../api/guesses';
+import multiplayer from '../api/multiplayer';
+import guesses from '../api/guesses';
 
 import ClearButton from './ClearButton';
 import GuessBlock from './GuessBlock';
@@ -23,6 +23,13 @@ const SinglePlayer = (props) => {
   const [guessNum, setGuessNum] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+
+  const clearState = () => {
+    setSubredditInfo({});
+    setGuessNum(0);
+    setLoading(false);
+    setError(false);
+  };
 
   const randomSubGenerator = async (formValues) => {
     if (guessNum !== 0 || subredditInfo.display_name || error) {
@@ -50,34 +57,30 @@ const SinglePlayer = (props) => {
     });
   };
 
-  const clearState = () => {
-    setSubredditInfo({});
-    setGuessNum(0);
-    setLoading(false);
-    setError(false);
-  };
 
   const loadingRender = () => {
     if (loading) {
       return (
         <div className="ui vertical segment">
-          <div className="ui active inverted loader"></div>
+          <div className="ui active inverted loader" />
           <p>
             <br />
           </p>
         </div>
       );
     }
+    return null;
   };
 
   const errorRender = () => {
     if (error) {
       return (
         <div className="ui vertical segment">
-          <h2 className="ui header">Uh oh, there's been a problem!</h2>
+          <h2 className="ui header">Uh oh, there&apos;s been a problem!</h2>
         </div>
       );
     }
+    return null;
   };
 
   const guessBlockRender = () => {
@@ -89,18 +92,21 @@ const SinglePlayer = (props) => {
         </div>
       );
     }
+    return null;
   };
 
   const resultBlockRender = () => {
     if (guessNum > 0) {
       return <ResultBlock subredditInfo={subredditInfo} guessNum={guessNum} />;
     }
+    return null;
   };
 
   const clearButtonRender = () => {
     if (guessNum > 0) {
       return <ClearButton clearState={clearState} />;
     }
+    return null;
   };
 
   return (
@@ -115,10 +121,8 @@ const SinglePlayer = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    clientId: state.multiplayer.clientId,
-  };
-};
+const mapStateToProps = (state) => ({
+  clientId: state.multiplayer.clientId,
+});
 
 export default connect(mapStateToProps)(SinglePlayer);

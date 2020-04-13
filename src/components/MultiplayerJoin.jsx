@@ -7,18 +7,18 @@ import { joinGameMultiplayer } from '../actions';
 import MultiplayerJoinForm from './MultiplayerJoinForm';
 
 const MultiplayerJoin = (props) => {
-  useEffect(() => {
-    return () => {
-      console.log('UNMOUNTED JOIN COMPONENT');
-      // joinSource.cancel();
-    };
+  const { currentGame } = props;
+
+  useEffect(() => () => {
+    console.log('UNMOUNTED JOIN COMPONENT');
+    // joinSource.cancel();
   }, []);
 
   const onSubmit = (formValues) => {
     props.joinGameMultiplayer(
       formValues.gameId,
       formValues.name,
-      props.clientId
+      props.clientId,
     );
   };
 
@@ -26,18 +26,16 @@ const MultiplayerJoin = (props) => {
     <>
       <MultiplayerJoinForm
         onSubmit={onSubmit}
-        initialValues={{ gameId: props.currentGame }}
+        initialValues={{ gameId: currentGame }}
       />
     </>
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    currentGame: state.multiplayer.currentGame,
-    clientId: state.multiplayer.clientId,
-  };
-};
+const mapStateToProps = (state) => ({
+  currentGame: state.multiplayer.currentGame,
+  clientId: state.multiplayer.clientId,
+});
 
 export default connect(mapStateToProps, {
   joinGameMultiplayer,

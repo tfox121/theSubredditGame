@@ -4,14 +4,14 @@ import { Label, Grid } from 'semantic-ui-react';
 
 import './NsfwSlider.css';
 
-function NsfwSlider(props) {
+function NsfwSlider({ width, nsfw, onChange }) {
   const settings = {
     start: 0,
     min: 0,
     max: 2,
     step: 1,
     onChange: (value) => {
-      props.onChange(value);
+      onChange(value);
     },
   };
 
@@ -37,27 +37,27 @@ function NsfwSlider(props) {
     return color;
   };
 
-  const renderSlider = () => {
-    return (
-      <div className="inline field">
-        <Grid className="slider">
-          <Grid.Column width={props.width}>
-            <Slider
-              discrete
-              value={props.nsfw}
-              color="black"
-              settings={settings}
-            />
-          </Grid.Column>
-          <Grid.Column width={props.width} className="slider-text">
-            <Label color={sliderColor(props.nsfw)}>
-              NSFW level: {sliderText(props.nsfw)}
-            </Label>
-          </Grid.Column>
-        </Grid>
-      </div>
-    );
-  };
+  const renderSlider = () => (
+    <div className="inline field">
+      <Grid className="slider">
+        <Grid.Column width={width}>
+          <Slider
+            discrete
+            value={nsfw}
+            color="black"
+            settings={settings}
+          />
+        </Grid.Column>
+        <Grid.Column width={width} className="slider-text">
+          <Label color={sliderColor(nsfw)}>
+            NSFW level:
+            {' '}
+            {sliderText(nsfw)}
+          </Label>
+        </Grid.Column>
+      </Grid>
+    </div>
+  );
 
   return <div>{renderSlider()}</div>;
 }

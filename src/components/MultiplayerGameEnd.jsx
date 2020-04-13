@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { clearCurrentGame } from '../actions';
-import brass_finale from '../audio/brass_finale.mp3';
+import { brass_finale as brassFinale } from '../audio/brass_finale.mp3';
 import history from '../history';
 import './MultiplayerGameEnd.css';
 
@@ -11,14 +11,12 @@ import MultiplayerGameEndScoresheet from './MultiplayerGameEndScoresheet';
 import ChatBox from './ChatBox';
 
 const MultiplayerGameEnd = (props) => {
-  const { id } = props.match.params;
-  const { multiplayer, clearCurrentGame } = props;
+  const { match, multiplayer, clearCurrentGame } = props;
+  const { id } = match.params;
   const game = multiplayer[id];
 
-  useEffect(() => {
-    return () => {
-      clearCurrentGame();
-    };
+  useEffect(() => () => {
+    clearCurrentGame();
   }, [clearCurrentGame]);
 
   if (!game || !multiplayer.playerName) {
@@ -28,12 +26,10 @@ const MultiplayerGameEnd = (props) => {
 
   const gameEndSound = () => {
     const myRef = React.createRef();
-    return <audio ref={myRef} src={brass_finale} autoPlay />;
+    return <audio ref={myRef} src={brassFinale} autoPlay />;
   };
 
-  const roundTo2 = (num) => {
-    return +(Math.round(num + 'e+2') + 'e-2');
-  };
+  const roundTo2 = (num) => +(`${Math.round(`${num}e+2`)}e-2`);
 
   const onClick = () => {
     props.clearCurrentGame();
@@ -45,9 +41,8 @@ const MultiplayerGameEnd = (props) => {
     }
     if (game.players[0].name === multiplayer.playerName) {
       return 'you win!';
-    } else {
-      return 'better luck next time...';
     }
+    return 'better luck next time...';
   };
 
   return (
@@ -60,10 +55,17 @@ const MultiplayerGameEnd = (props) => {
           currentPlayer={multiplayer.playerName}
         />
         <div className="ui basic segment">
-          best guess:{' '}
-          <b className="best-guess">{game.closestGuess.playerName}</b> - only{' '}
-          {roundTo2(game.closestGuess.percentage)}% out for{' '}
-          {game.closestGuess.subName}!
+          best guess:
+          {' '}
+          <b className="best-guess">{game.closestGuess.playerName}</b>
+          {' '}
+          - only
+          {' '}
+          {roundTo2(game.closestGuess.percentage)}
+          % out for
+          {' '}
+          {game.closestGuess.subName}
+          !
         </div>
 
         <Link
@@ -71,19 +73,18 @@ const MultiplayerGameEnd = (props) => {
           className="ui right labeled icon button"
           onClick={onClick}
         >
-          play again<i className="right arrow icon"></i>
+          play again
+          <i className="right arrow icon" />
         </Link>
       </div>
-      <ChatBox game={game} currentPlayer={props.multiplayer.playerName} />
+      <ChatBox game={game} currentPlayer={multiplayer.playerName} />
       {gameEndSound()}
     </>
   );
 };
 
-const mapStateToProps = (state) => {
-  return { multiplayer: state.multiplayer };
-};
+const mapStateToProps = (state) => ({ multiplayer: state.multiplayer });
 
 export default connect(mapStateToProps, { clearCurrentGame })(
-  MultiplayerGameEnd
+  MultiplayerGameEnd,
 );

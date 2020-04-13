@@ -3,30 +3,28 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { updateCall } from '../actions/index.js';
+import { updateCall } from '../actions';
 import './MultiplayerNextRoundButton.css';
 
 import RoundStartModal from './RoundStartModal';
 
-const MultiplayerNextRoundButton = props => {
-  const game =
-    props.multiplayer.currentGame &&
-    props.multiplayer[props.multiplayer.currentGame];
+const MultiplayerNextRoundButton = (props) => {
+  const { multiplayer } = props;
 
-  const player =
-    game &&
-    game.players.filter(player => {
-      return player.name === props.multiplayer.playerName;
-    })[0];
+  const game = multiplayer.currentGame
+    && multiplayer[multiplayer.currentGame];
 
-  const onSubmit = event => {
+  const playerObj = game
+    && game.players.filter((player) => player.name === props.multiplayer.playerName)[0];
+
+  const onSubmit = (event) => {
     event.preventDefault();
     updateCall('UPDATE', game._id);
     props.onSubmit();
   };
 
   const buttonText = () => {
-    if (player.readyForNext) {
+    if (playerObj.readyForNext) {
       return 'Waiting...';
     }
     return 'Next Round!';
@@ -39,7 +37,8 @@ const MultiplayerNextRoundButton = props => {
           to={`/multiplayer/${game._id}/results`}
           className="ui right labeled icon button"
         >
-          <i className="right arrow icon"></i>See Results!
+          <i className="right arrow icon" />
+          See Results!
         </Link>
       );
     }
@@ -52,12 +51,13 @@ const MultiplayerNextRoundButton = props => {
           className="ui button"
           tabIndex="0"
           type="submit"
-          disabled={player.readyForNext}
+          disabled={playerObj.readyForNext}
         >
           {buttonText()}
         </button>
       );
     }
+    return null;
   };
 
   const blockRender = () => {
@@ -70,13 +70,12 @@ const MultiplayerNextRoundButton = props => {
         </div>
       );
     }
+    return null;
   };
 
   return <>{blockRender()}</>;
 };
 
-const mapStateToProps = state => {
-  return { multiplayer: state.multiplayer };
-};
+const mapStateToProps = (state) => ({ multiplayer: state.multiplayer });
 
 export default connect(mapStateToProps)(MultiplayerNextRoundButton);

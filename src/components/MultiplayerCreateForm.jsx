@@ -12,7 +12,7 @@ const MultiplayerCreateForm = (props) => {
   const [disableButton, setDisableButton] = useState(false);
   const [buttonText, setButtonText] = useState('create');
 
-  const { currentGame } = props;
+  const { currentGame, handleSubmit } = props;
   useEffect(() => {
     let mounted = true;
     if (currentGame && mounted) {
@@ -41,15 +41,17 @@ const MultiplayerCreateForm = (props) => {
         </div>
       );
     }
+    return null;
   };
 
   const renderInput = ({ input, label, meta }) => {
     const className = `field ${meta.error && meta.touched ? 'error' : ''}`;
     return (
       <div className={className}>
-        <label>{label}</label>
+        <label htmlFor="rounds">{label}</label>
         <input
           {...input}
+          id="rounds"
           type="number"
           min="1"
           max="50"
@@ -70,22 +72,20 @@ const MultiplayerCreateForm = (props) => {
   };
 
   return (
-    <form onSubmit={props.handleSubmit(onSubmit)} className="ui form error">
+    <form onSubmit={handleSubmit(onSubmit)} className="ui form error">
       <h3>create a new game</h3>
       <Field name="rounds" component={renderInput} label="how many rounds?" />
       <NsfwSlider nsfw={nsfw} width="12" onChange={onChange} />
-      <button className="ui button" disabled={disableButton}>
+      <button type="submit" className="ui button" disabled={disableButton}>
         <div className="visible content">{buttonText}</div>
       </button>
     </form>
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    currentGame: state.multiplayer.currentGame,
-  };
-};
+const mapStateToProps = (state) => ({
+  currentGame: state.multiplayer.currentGame,
+});
 
 const form = reduxForm({
   form: 'multiplayerCreateForm',

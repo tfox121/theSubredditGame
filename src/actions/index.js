@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import history from '../history';
 import webSocket from '../api/websocket';
-import { axiosDefault as multiplayer } from '../api/multiplayer';
+import multiplayer from '../api/multiplayer';
 
 import {
   MULTIPLAYER_CREATE_GAME,
@@ -23,6 +23,12 @@ import {
 
 export const createSource = axios.CancelToken.source();
 export const joinSource = axios.CancelToken.source();
+
+export const updateCall = (type, game) => {
+  const socketData = JSON.stringify({ type, game });
+
+  webSocket.send(socketData);
+};
 
 export const createGameMultiplayer = (formValues) => async (dispatch) => {
   try {
@@ -79,7 +85,7 @@ export const fetchGameMultiplayer = (id) => async (dispatch) => {
 };
 
 export const joinGameMultiplayer = (id, newPlayer, clientId) => async (
-  dispatch
+  dispatch,
 ) => {
   try {
     const response = await multiplayer.patch(
@@ -90,7 +96,7 @@ export const joinGameMultiplayer = (id, newPlayer, clientId) => async (
       },
       {
         cancelToken: joinSource.token,
-      }
+      },
     );
 
     console.log('JOINING GAME:', response);
@@ -150,7 +156,7 @@ export const generateSubreddit = (id, player) => async (dispatch) => {
 };
 
 export const submitGuessMultiplayer = (id, player, guess) => async (
-  dispatch
+  dispatch,
 ) => {
   try {
     const response = await multiplayer.patch(`/${id}`, {
@@ -175,7 +181,7 @@ export const submitGuessMultiplayer = (id, player, guess) => async (
 };
 
 export const createMessageMultiplayer = (id, playerName, message) => async (
-  dispatch
+  dispatch,
 ) => {
   try {
     const response = await multiplayer.post(`/${id}/message`, {
@@ -211,13 +217,7 @@ export const clearCurrentGame = () => async (dispatch) => {
   dispatch({
     type: MULTIPLAYER_CLEAR_CURRENT_GAME,
   });
-  history.push(`/multiplayer`);
-};
-
-export const updateCall = (type, game) => {
-  const socketData = JSON.stringify({ type, game });
-
-  webSocket.send(socketData);
+  history.push('/multiplayer');
 };
 
 export const newMessageNotifier = () => async (dispatch) => {
@@ -241,12 +241,10 @@ export const setCurrentPlayer = (playerName) => async (dispatch) => {
   });
 };
 
-export const setClientId = (localStorage) => async (dispatch) => {
+export const setClientId = () => async (dispatch) => {
   if (!localStorage.clientId) {
     localStorage.clientId = uuidv4();
-    console.log('NEW ID GENERATED');
   }
-  console.log(localStorage.clientId);
   dispatch({
     type: MULTIPLAYER_SET_CLIENT_ID,
     payload: {

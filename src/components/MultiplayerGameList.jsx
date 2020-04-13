@@ -1,13 +1,13 @@
 import React, { useLayoutEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import timeAgo from '../timeAgo';
 import { Accordion } from 'semantic-ui-react';
+import timeAgo from '../timeAgo';
 
 import { fetchGamesByClientMultiplayer, joinGameMultiplayer } from '../actions';
 import './MultiplayerGameList.css';
 
-export const MultiplayerGameList = (props) => {
+const MultiplayerGameList = (props) => {
   const [gameList, setGameList] = useState([]);
   const [activeIndex, setActiveIndex] = useState(null);
 
@@ -34,18 +34,16 @@ export const MultiplayerGameList = (props) => {
     if (gameListQuantity) {
       const games = _.chain(multiplayer).pickBy(_.isObject).values().value();
 
-      const filteredGames = games.filter((game) => {
-        return !game.gameComplete;
-      });
+      const filteredGames = games.filter((game) => !game.gameComplete);
 
       setGameList(filteredGames);
     }
   }, [multiplayer]);
 
-  const findPlayerName = (gameId, clientId) => {
+  const findPlayerName = (gameId, client) => {
     let playerName;
     props.multiplayer[gameId].players.forEach((player) => {
-      if (player.clientId === clientId) {
+      if (player.clientId === client) {
         playerName = player.name;
       }
     });
@@ -67,7 +65,12 @@ export const MultiplayerGameList = (props) => {
     if (game.gameStarted) {
       return (
         <>
-          (Round {game.currentRound}/{game.rounds})
+          (Round
+          {' '}
+          {game.currentRound}
+          /
+          {game.rounds}
+          )
         </>
       );
     }
@@ -103,90 +106,87 @@ export const MultiplayerGameList = (props) => {
     return actionRequired;
   };
 
-  const renderGames = () => {
-    return gameList
-      .sort((a, b) => {
-        if (Date.parse(a.lastAction) < Date.parse(b.lastAction)) {
-          return 1;
-        }
-        if (Date.parse(a.lastAction) > Date.parse(b.lastAction)) {
-          return -1;
-        }
-        return 0;
-      })
-      .map((game) => {
-        return (
-          <tr key={game._id} className={actionCheck(game) && 'positive'}>
-            <td className="table-id">
-              {game._id}
-              <p className="table-round-info">{roundTextRender(game)}</p>
-            </td>
-            <td className="table-players">{game.players.length}</td>
-            <td className="table-last-action">
-              {timeAgo.format(Date.parse(game.lastAction), 'twitter') || '<1m'}
-              <br />
-              <p className="table-created-info">
-                (created{' '}
-                {timeAgo.format(Date.parse(game.timeCreated), 'twitter')} ago)
-              </p>
-            </td>
-            <td className="table-join">
-              <button
-                id={game._id}
-                onClick={onClickHandler}
-                className="ui button"
-              >
-                go!
-              </button>
-            </td>
-          </tr>
-        );
-      });
-  };
+  const renderGames = () => gameList
+    .sort((a, b) => {
+      if (Date.parse(a.lastAction) < Date.parse(b.lastAction)) {
+        return 1;
+      }
+      if (Date.parse(a.lastAction) > Date.parse(b.lastAction)) {
+        return -1;
+      }
+      return 0;
+    })
+    .map((game) => (
+      <tr key={game._id} className={actionCheck(game) ? 'positive' : ''}>
+        <td className="table-id">
+          {game._id}
+          <p className="table-round-info">{roundTextRender(game)}</p>
+        </td>
+        <td className="table-players">{game.players.length}</td>
+        <td className="table-last-action">
+          {timeAgo.format(Date.parse(game.lastAction), 'twitter') || '<1m'}
+          <br />
+          <p className="table-created-info">
+            (created
+            {' '}
+            {timeAgo.format(Date.parse(game.timeCreated), 'twitter')}
+            {' '}
+            ago)
+          </p>
+        </td>
+        <td className="table-join">
+          <button
+            type="button"
+            id={game._id}
+            onClick={onClickHandler}
+            className="ui button"
+          >
+            go!
+          </button>
+        </td>
+      </tr>
+    ));
 
-  const renderAccordian = () => {
-    return (
-      <Accordion fluid>
-        <Accordion.Title
-          active={activeIndex === 0}
-          index={0}
-          onClick={handleAccordianClick}
-        >
-          <h2 className="ui header">
-            <i className="dropdown icon"></i>your games
-            <i className="dropdown icon"></i>
-          </h2>
-        </Accordion.Title>
-        <Accordion.Content active={activeIndex === 0}>
-          <table className="ui selectable very basic selectable unstackable celled table">
-            <thead>
-              <tr>
-                <th className="table-id">ID</th>
-                <th className="table-players">players</th>
-                <th className="table-last-action">
-                  last
-                  <br />
-                  action
-                </th>
-                <th className="table-join">join</th>
-              </tr>
-            </thead>
-            <tbody>{renderGames()}</tbody>
-          </table>
-        </Accordion.Content>
-      </Accordion>
-    );
-  };
+  const renderAccordian = () => (
+    <Accordion fluid>
+      <Accordion.Title
+        active={activeIndex === 0}
+        index={0}
+        onClick={handleAccordianClick}
+      >
+        <h2 className="ui header my-games">
+          <i className="dropdown icon" />
+          your games
+          <i className="dropdown icon" />
+        </h2>
+      </Accordion.Title>
+      <Accordion.Content active={activeIndex === 0}>
+        <table className="ui selectable very basic selectable unstackable celled table">
+          <thead>
+            <tr>
+              <th className="table-id">ID</th>
+              <th className="table-players">players</th>
+              <th className="table-last-action">
+                last
+                <br />
+                action
+              </th>
+              <th className="table-join">join</th>
+            </tr>
+          </thead>
+          <tbody>{renderGames()}</tbody>
+        </table>
+      </Accordion.Content>
+    </Accordion>
+  );
 
   return renderAccordian();
 };
 
-const mapStateToProps = (state) => {
-  return {
-    clientId: state.multiplayer.clientId,
-    multiplayer: state.multiplayer,
-  };
-};
+const mapStateToProps = (state) => ({
+  clientId: state.multiplayer.clientId,
+  multiplayer: state.multiplayer,
+});
 
 export default connect(mapStateToProps, {
   fetchGamesByClientMultiplayer,

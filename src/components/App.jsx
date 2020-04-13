@@ -5,11 +5,7 @@ import { BreakpointProvider } from 'react-socks';
 
 import history from '../history';
 import webSocket from '../api/websocket';
-import {
-  fetchGameMultiplayer,
-  newMessageNotifier,
-  setClientId,
-} from '../actions';
+import { setClientId } from '../actions';
 import './App.css';
 
 import Header from './Header';
@@ -22,17 +18,18 @@ import SinglePlayer from './SinglePlayer';
 const App = (props) => {
   const [webSocketClosed, setWebSocketClosed] = useState(false);
 
-  useEffect(() => {
-    props.setClientId(localStorage);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const { setClientId } = props;
 
-  webSocket.onopen = function (event) {
+  useEffect(() => {
+    setClientId();
+  }, [setClientId]);
+
+  webSocket.onopen = () => {
     console.log('Connected to server');
     setWebSocketClosed(false);
   };
 
-  webSocket.onerror = (event) => {
+  webSocket.onerror = () => {
     setWebSocketClosed(true);
   };
 
@@ -89,7 +86,5 @@ const App = (props) => {
 };
 
 export default connect(null, {
-  fetchGameMultiplayer,
-  newMessageNotifier,
   setClientId,
 })(App);

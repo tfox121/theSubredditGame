@@ -15,18 +15,18 @@ const renderInput = ({ input, label, meta }) => {
   const className = `field ${meta.error && meta.touched ? 'error' : ''}`;
   return (
     <div className={className}>
-      <label>{label}</label>
-      <input {...input} autoComplete="off" required />
+      <label htmlFor={label}>{label}</label>
+      <input id={label} {...input} autoComplete="off" required />
       {/* {renderError(meta)} */}
     </div>
   );
 };
 
 const MultiplayerJoinForm = (props) => {
-  const { currentGame, change } = props;
+  const { currentGame, handleSubmit, errorMsg } = props;
 
   useEffect(() => {
-    change('gameId', currentGame);
+    props.change('gameId', currentGame);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentGame]);
 
@@ -41,12 +41,13 @@ const MultiplayerJoinForm = (props) => {
   };
 
   return (
-    <form onSubmit={props.handleSubmit(onSubmit)} className="ui form error">
+    <form onSubmit={handleSubmit(onSubmit)} className="ui form error">
       <h3>join a game</h3>
       <Field name="gameId" component={renderInput} label="enter game ID" />
       <Field name="name" component={renderInput} label="your name!" />
-      <div id="error-msg">{props.errorMsg}</div>
+      <div id="error-msg">{errorMsg}</div>
       <button
+        type="submit"
         onMouseDown={handleClick}
         onKeyUp={(e) => {
           if (e.keyCode === 13 || e.keyCode === 32) {
@@ -57,7 +58,7 @@ const MultiplayerJoinForm = (props) => {
       >
         <div className="visible content">go!</div>
         <div className="hidden content">
-          <i className="angle double right icon"></i>
+          <i className="angle double right icon" />
         </div>
       </button>
     </form>
@@ -78,16 +79,12 @@ const validate = (formValues) => {
   return errors;
 };
 
-const mapStateToProps = (state) => {
-  return {
-    currentGame: state.multiplayer.currentGame,
-    errorMsg: state.multiplayer.error,
-  };
-};
+const mapStateToProps = (state) => ({
+  currentGame: state.multiplayer.currentGame,
+  errorMsg: state.multiplayer.error,
+});
 
-const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({ change }, dispatch);
-};
+const mapDispatchToProps = (dispatch) => bindActionCreators({ change }, dispatch);
 
 const form = reduxForm({
   form: 'multiplayerJoinForm',

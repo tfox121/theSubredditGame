@@ -5,9 +5,9 @@ import { Divider, Image, Transition } from 'semantic-ui-react';
 import placeholder from '../images/placeholder.PNG';
 import './TopPostBlock.css';
 
-const TopPostBlock = props => {
+const TopPostBlock = ({ subredditInfo }) => {
   const [visible, setVisible] = useState(false);
-  const { topPost } = props.subredditInfo;
+  const { topPost } = subredditInfo;
 
   const toggleVisibility = () => {
     setVisible(!visible);
@@ -27,9 +27,10 @@ const TopPostBlock = props => {
         <img
           className="top-post-img"
           src={
-            !topPost.thumbnail ||
-            topPost.thumbnail === 'self' ||
-            topPost.thumbnail === ''
+            !topPost.thumbnail
+              || topPost.thumbnail === 'self'
+              || topPost.thumbnail === 'nsfw'
+              || topPost.thumbnail === ''
               ? placeholder
               : topPost.thumbnail
           }
@@ -47,11 +48,22 @@ const TopPostBlock = props => {
                 {topPost.title}
               </a>
               {'  '}
-              <span className="top-post-title-domain">({topPost.domain})</span>
+              <span className="top-post-title-domain">
+                (
+                {topPost.domain}
+                )
+              </span>
             </p>
             {previewImg && (
               <>
-                <i onClick={toggleVisibility} className="camera icon"></i>
+                <i
+                  onClick={toggleVisibility}
+                  onKeyDown={toggleVisibility}
+                  className="camera icon"
+                  role="button"
+                  aria-label="Expand thumbnail"
+                  tabIndex="0"
+                />
                 <Divider hidden />
                 <Transition
                   visible={visible}
@@ -71,8 +83,6 @@ const TopPostBlock = props => {
   );
 };
 
-const mapStateToProps = state => {
-  return { multiplayer: state.multiplayer };
-};
+const mapStateToProps = (state) => ({ multiplayer: state.multiplayer });
 
 export default connect(mapStateToProps)(TopPostBlock);
