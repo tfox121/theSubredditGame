@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import './ResultBlock.css';
-import { axiosDefault as guesses } from '../api/guesses';
+import guesses from '../api/guesses';
 import resultCopy from '../data/resultCopy';
 
 const ResultBlock = (props) => {
@@ -9,31 +9,29 @@ const ResultBlock = (props) => {
   const { subscribers } = subredditInfo;
 
   const [resultText, setResultText] = useState('');
-  const [percent, setPercent] = useState(0);
+  const [percent, setPercent] = useState('');
   const [average, setAverage] = useState('');
 
-  const roundTo2 = (num) => {
-    return +(Math.round(num + 'e+2') + 'e-2');
-  };
+  const roundTo2 = (num) => +`${Math.round(`${num}e+2`)}e-2`;
 
-  const percentCalc = (num1, num2) => {
-    return Math.abs(100 - (num1 / num2) * 100);
-  };
 
-  const numberFormat = (num) => {
-    return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
-  };
+  const numberFormat = (num) => num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
 
   const averageRender = () => {
-    if (average) {
-      return <p>The average guess for this subreddit is {average}% out.</p>;
+    if (average && average !== percent && !Number.isNaN(average)) {
+      return (
+        <p>
+          {`The average guess for this subreddit is ${average}% out.`}
+        </p>
+      );
     }
+    return null;
   };
 
   useEffect(() => {
     const averageResultPercentage = async () => {
       const averageResponse = await guesses.get(
-        `/average/${subredditInfo.display_name}`
+        `/average/${subredditInfo.display_name}`,
       );
       if (averageResponse) {
         setAverage(averageResponse.data);
@@ -46,18 +44,21 @@ const ResultBlock = (props) => {
   }, [subredditInfo]);
 
   useEffect(() => {
-    const percent = percentCalc(guessNum, subscribers);
-    setPercent(percent);
+    const percentCalc = (num1, num2) => roundTo2(Math.abs(100 - (num1 / num2) * 100)).toString();
+
+    const percentCalced = percentCalc(guessNum, subscribers);
+    setPercent(percentCalced);
+    let resultPercentSelected;
     const percentRange = Object.keys(resultCopy).sort((a, b) => b - a);
     percentRange.forEach((resultPercent) => {
-      if (parseInt(resultPercent, 10) >= percent) {
-        const copySelection = Math.floor(
-          Math.random() * (resultCopy[resultPercent].length - 1)
-        );
-        setResultText(resultCopy[resultPercent][copySelection].toLowerCase());
-        return;
+      if (parseFloat(resultPercent) >= parseFloat(percentCalced)) {
+        resultPercentSelected = parseInt(resultPercent, 10);
       }
     });
+    const copySelection = Math.floor(
+      Math.random() * (resultCopy[resultPercentSelected].length),
+    );
+    setResultText(resultCopy[resultPercentSelected][copySelection].toLowerCase());
   }, [guessNum, subscribers]);
 
   return (
@@ -71,11 +72,20 @@ const ResultBlock = (props) => {
             rel="noopener noreferrer"
             target="_blank"
           >
-            /r/{subredditInfo.display_name}
-          </a>{' '}
-          has {numberFormat(subredditInfo.subscribers)} subscribers.{' '}
+            /r/
+            {subredditInfo.display_name}
+          </a>
+          {' '}
+          has
+          {' '}
+          {numberFormat(subredditInfo.subscribers)}
+          {' '}
+          subscribers.
+          {' '}
         </h3>
-        <p>You were {roundTo2(percent)}% out.</p>
+        <p>
+          {`You were ${percent}% out.`}
+        </p>
         {averageRender()}
       </div>
     </div>

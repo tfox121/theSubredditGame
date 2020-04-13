@@ -10,12 +10,10 @@ import {
 import MultiplayerCreateForm from './MultiplayerCreateForm';
 
 const MultiplayerCreate = (props) => {
-  useEffect(() => {
-    return () => {
-      console.log('UNMOUNTED CREATE COMPONENT');
+  useEffect(() => () => {
+    console.log('UNMOUNTED CREATE COMPONENT');
 
-      // createSource.cancel();
-    };
+    // createSource.cancel();
   }, []);
 
   const onSubmit = async (formValues) => {
@@ -33,5 +31,5 @@ const MultiplayerCreate = (props) => {
 };
 
 export default connect(null, { createGameMultiplayer, clearCurrentGame })(
-  MultiplayerCreate
+  MultiplayerCreate,
 );

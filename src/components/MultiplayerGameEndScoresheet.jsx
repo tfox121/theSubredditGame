@@ -2,7 +2,7 @@ import React from 'react';
 
 import './MultiplayerGameEndScoresheet.css';
 
-const MultiplayerGameEndScoresheet = props => {
+const MultiplayerGameEndScoresheet = (props) => {
   const { game, currentPlayer } = props;
 
   const sortByScore = () => {
@@ -22,31 +22,30 @@ const MultiplayerGameEndScoresheet = props => {
       sortByScore();
       return (
         <div className="ui two column internally celled grid">
-          {game.players.map(player => {
-            return (
-              <div
-                className="row"
-                key={player._id}
-                style={
+          {game.players.map((player) => (
+            <div
+              className="row"
+              key={player._id}
+              style={
                   player.name === currentPlayer
                     ? {
-                        textDecoration: 'underline'
-                      }
+                      textDecoration: 'underline',
+                    }
                     : {}
                 }
-              >
-                <div className="column">
-                  {player.name === currentPlayer && '>>>'} {player.name}
-                </div>
-                <div className="column">{player.score}</div>
+            >
+              <div className="column">
+                {player.name === currentPlayer && '>>>'}
+                {' '}
+                {player.name}
               </div>
-            );
-          })}
+              <div className="column">{player.score}</div>
+            </div>
+          ))}
         </div>
       );
-    } else {
-      return <div>Loading...</div>;
     }
+    return <div>Loading...</div>;
   };
 
   return <div className="ui grid">{renderPlayers()}</div>;

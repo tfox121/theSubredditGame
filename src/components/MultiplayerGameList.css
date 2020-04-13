@@ -42,3 +42,7 @@ p.table-round-info {
 p.table-created-info {
   font-size: 75%;
 }
+
+h2.ui.header.my-games {
+  user-select: none;
+}

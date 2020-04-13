@@ -1,54 +1,47 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Button, Header, Icon, Modal } from 'semantic-ui-react';
+import {
+  Button, Header, Icon, Modal,
+} from 'semantic-ui-react';
 
-import { updateCall } from '../actions/index.js';
+import { updateCall } from '../actions';
 
-const RoundStartModal = props => {
+const RoundStartModal = (props) => {
   const [modalOpen, setModalOpen] = useState(false);
+  const [playerData, setPlayerData] = useState({});
 
   const { multiplayer } = props;
 
   const game = multiplayer.currentGame && multiplayer[multiplayer.currentGame];
 
-  let player =
-    game &&
-    game.players.filter(player => {
-      return player.name === multiplayer.playerName;
-    })[0];
-
   useEffect(() => {
-    if (!player) {
-      player =
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        game &&
-        game.players.filter(player => {
-          return player.name === multiplayer.playerName;
-        })[0];
+    if (!playerData) {
+      setPlayerData(game
+        && game.players.filter((player) => player.name === multiplayer.playerName)[0]);
     }
-  }, [multiplayer]);
+  }, [game, multiplayer, playerData]);
 
-  if (!player) {
+  if (!playerData) {
     return null;
   }
 
-  const handleOpen = event => {
+  const handleOpen = (event) => {
     event.preventDefault();
     setModalOpen(true);
   };
 
   const handleClose = () => setModalOpen(false);
 
-  const startRound = event => {
+  const startRound = (event) => {
     setModalOpen(false);
     props.onSubmit(event);
     updateCall('UPDATE', game._id);
   };
 
-  const buttonRender = player => {
+  const buttonRender = (player) => {
     if (player.readyForNext) {
       return (
-        <button className="ui button" disabled>
+        <button type="button" className="ui button" disabled>
           <div>Waiting...</div>
         </button>
       );
@@ -67,21 +60,22 @@ const RoundStartModal = props => {
         </Modal.Content>
         <Modal.Actions>
           <Button color="red" onClick={handleClose} inverted>
-            <Icon name="arrow left" /> Back
+            <Icon name="arrow left" />
+            {' '}
+            Back
           </Button>
           <Button color="green" onClick={startRound} inverted>
-            <Icon name="checkmark" /> Let's go!
+            <Icon name="checkmark" />
+            Let&apos;s go!
           </Button>
         </Modal.Actions>
       </Modal>
     );
   };
 
-  return buttonRender(player);
+  return buttonRender(playerData);
 };
 
-const mapStateToProps = state => {
-  return { multiplayer: state.multiplayer };
-};
+const mapStateToProps = (state) => ({ multiplayer: state.multiplayer });
 
 export default connect(mapStateToProps)(RoundStartModal);

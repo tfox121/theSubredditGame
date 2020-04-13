@@ -1,5 +1,7 @@
 import { Progress } from 'semantic-ui-react';
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, {
+  useEffect, useLayoutEffect, useRef, useState,
+} from 'react';
 import { connect } from 'react-redux';
 
 import {
@@ -22,16 +24,18 @@ import ChatBox from './ChatBox';
 const MultiplayerGame = (props) => {
   const [copySuccess, setCopySuccess] = useState('');
 
-  const { id } = props.match.params;
   const {
-    fetchGameMultiplayer,
+    match,
     multiplayer,
     playerName,
-    setCurrentPlayer,
     clientId,
+    fetchGameMultiplayer,
+    setCurrentPlayer,
   } = props;
 
-  let refreshRef = useRef(0);
+  const { id } = match.params;
+
+  const refreshRef = useRef(0);
   let gameRef = useRef(multiplayer[id]);
   const markerRef = useRef([]);
   if (multiplayer[id] && multiplayer[id] !== gameRef.current) {
@@ -51,7 +55,7 @@ const MultiplayerGame = (props) => {
         await fetchGameMultiplayer(id);
       };
       fetchData();
-      refreshRef.current++;
+      refreshRef.current += 1;
     }
     if (gameRef && !playerName) {
       let playerFound;
@@ -65,20 +69,13 @@ const MultiplayerGame = (props) => {
       if (!playerFound) {
         history.push(`/multiplayer/join/${id}`);
       }
-      refreshRef.current++;
+      refreshRef.current += 1;
     }
-  }, [
-    clientId,
-    fetchGameMultiplayer,
-    id,
-    multiplayer,
-    playerName,
-    setCurrentPlayer,
-  ]);
+  }, [clientId, fetchGameMultiplayer, id, multiplayer, playerName, setCurrentPlayer]);
 
   useLayoutEffect(() => {
     if (id) {
-      webSocket.onopen = (event) => {
+      webSocket.onopen = () => {
         const socketData = JSON.stringify({
           type: 'JOIN',
           game: id,
@@ -100,7 +97,6 @@ const MultiplayerGame = (props) => {
         props.newMessageNotifier();
         break;
       default:
-        return;
     }
   };
 
@@ -115,7 +111,7 @@ const MultiplayerGame = (props) => {
 
   const onGuessSubmit = (num) => {
     props.submitGuessMultiplayer(id, playerName, num);
-    fetchGameMultiplayer(id);
+    props.fetchGameMultiplayer(id);
   };
 
   const guessBlockRender = () => {
@@ -127,39 +123,37 @@ const MultiplayerGame = (props) => {
         </div>
       );
     }
+    return null;
   };
 
   const resultBlockRender = () => {
     if (gameRef.current.roundComplete) {
       return gameRef.current.players
         .filter((player) => player.name === playerName)
-        .map((player) => {
-          return (
-            <React.Fragment key={player._id}>
-              <ResultBlock
-                subredditInfo={multiplayer[id].currentSub}
-                guessNum={player.currentGuess}
-              />
-            </React.Fragment>
-          );
-        });
+        .map((player) => (
+          <React.Fragment key={player._id}>
+            <ResultBlock
+              subredditInfo={multiplayer[id].currentSub}
+              guessNum={player.currentGuess}
+            />
+          </React.Fragment>
+        ));
     }
+    return null;
   };
 
-  const progressBarRender = () => {
-    return (
-      <div className="ui basic segment">
-        <Progress
-          value={gameRef.current.gameStarted ? gameRef.current.currentRound : 0}
-          total={gameRef.current.rounds}
-          label={`round: ${gameRef.current.currentRound} of ${gameRef.current.rounds}`}
-          size="medium"
-          color="teal"
-          active={gameRef.current.currentRound !== gameRef.current.rounds}
-        />
-      </div>
-    );
-  };
+  const progressBarRender = () => (
+    <div className="ui basic segment">
+      <Progress
+        value={gameRef.current.gameStarted ? gameRef.current.currentRound : 0}
+        total={gameRef.current.rounds}
+        label={`round: ${gameRef.current.currentRound} of ${gameRef.current.rounds}`}
+        size="medium"
+        color="teal"
+        active={gameRef.current.currentRound !== gameRef.current.rounds}
+      />
+    </div>
+  );
 
   const copyToClipboard = (event) => {
     textAreaRef.current.select();
@@ -170,8 +164,8 @@ const MultiplayerGame = (props) => {
 
   const inviteRender = () => {
     if (
-      !gameRef.current.gameStarted &&
-      document.queryCommandSupported('copy')
+      !gameRef.current.gameStarted
+      && document.queryCommandSupported('copy')
     ) {
       return (
         <div className="ui basic segment">
@@ -189,6 +183,7 @@ const MultiplayerGame = (props) => {
         </div>
       );
     }
+    return null;
   };
 
   return (
@@ -208,13 +203,11 @@ const MultiplayerGame = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    multiplayer: state.multiplayer,
-    clientId: state.multiplayer.clientId,
-    playerName: state.multiplayer.playerName,
-  };
-};
+const mapStateToProps = (state) => ({
+  multiplayer: state.multiplayer,
+  clientId: state.multiplayer.clientId,
+  playerName: state.multiplayer.playerName,
+});
 
 export default connect(mapStateToProps, {
   fetchGameMultiplayer,

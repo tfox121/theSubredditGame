@@ -5,13 +5,13 @@ import { Link } from 'react-router-dom';
 
 import './Header.css';
 
-const Header = (props) => {
-  const singlePlayerClick = (event) => {
+const Header = () => {
+  const singlePlayerClick = () => {
     const link = document.querySelector('.singleplayer.item');
     link.classList.add('active');
   };
 
-  const multiPlayerClick = (event) => {
+  const multiPlayerClick = () => {
     const link = document.querySelector('.multiplayer.item');
     link.classList.add('active');
   };
@@ -41,8 +41,6 @@ const Header = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return { multiplayer: state.multiplayer };
-};
+const mapStateToProps = (state) => ({ multiplayer: state.multiplayer });
 
 export default connect(mapStateToProps, {})(Header);

@@ -5,22 +5,24 @@ import './SubredditBlock.css';
 
 import TopPostBlock from './TopPostBlock';
 
-const SubredditBlock = props => {
+const SubredditBlock = (props) => {
   const { subredditInfo } = props;
 
   const titleRender = () => {
     if (
-      subredditInfo.title &&
-      subredditInfo.title !== subredditInfo.display_name
+      subredditInfo.title
+      && subredditInfo.title !== subredditInfo.display_name
     ) {
       return <h5 className="ui header">{decode(subredditInfo.title)}</h5>;
     }
+    return null;
   };
 
   const descriptionRender = () => {
     if (subredditInfo.public_description) {
       return <p>{decode(subredditInfo.public_description)}</p>;
     }
+    return null;
   };
 
   const imageRender = () => {
@@ -35,6 +37,7 @@ const SubredditBlock = props => {
         </div>
       );
     }
+    return null;
   };
 
   return (

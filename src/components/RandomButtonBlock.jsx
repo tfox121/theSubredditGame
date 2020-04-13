@@ -5,11 +5,11 @@ import './RandomButtonBlock.css';
 
 import NsfwSlider from './NsfwSlider';
 
-const RandomButtonBlock = (props) => {
+const RandomButtonBlock = ({ handleSubmit, onSubmit }) => {
   const [nsfw, setNsfw] = useState(0);
 
-  const onSubmit = (formValues) => {
-    props.onSubmit({ ...formValues, nsfw });
+  const nsfwSubmitHandler = (formValues) => {
+    onSubmit({ ...formValues, nsfw });
   };
 
   const onChange = (value) => {
@@ -18,7 +18,7 @@ const RandomButtonBlock = (props) => {
 
   return (
     <div className="ui basic segment random-button-block">
-      <form onSubmit={props.handleSubmit(onSubmit)} className="ui form">
+      <form onSubmit={handleSubmit(nsfwSubmitHandler)} className="ui form">
         <div className="field">
           <button className="ui animated button" tabIndex="0" type="submit">
             <div className="visible content">generate subreddit</div>

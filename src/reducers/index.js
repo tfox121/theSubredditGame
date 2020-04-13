@@ -5,5 +5,5 @@ import multiplayerReducer from './multiplayerReducer';
 
 export default combineReducers({
   form: formReducer,
-  multiplayer: multiplayerReducer
+  multiplayer: multiplayerReducer,
 });

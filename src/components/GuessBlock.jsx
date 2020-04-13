@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState } from 'react';
 
 import './GuessBlock.css';
@@ -15,8 +16,11 @@ const GuessBlock = (props) => {
     <div className="ui guess-block">
       <form onSubmit={onFormSubmit} className="ui form">
         <div className="field">
-          <label>how many subscribers do you think it has?</label>
+          <label htmlFor="guesses">
+            how many subscribers do you think it has?
+          </label>
           <input
+            id="guesses"
             type="number"
             min="0"
             placeholder=""

@@ -25,7 +25,7 @@ export default (
     newMessageCount: 0,
     clientId: '',
   },
-  action
+  action,
 ) => {
   let updatedGame;
   switch (action.type) {
