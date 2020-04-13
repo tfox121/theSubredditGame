@@ -23,19 +23,11 @@ const MultiplayerGameEndScoresheet = (props) => {
       return (
         <div className="ui two column internally celled grid">
           {game.players.map((player) => (
-            <div
-              className="row"
-              key={player._id}
-              style={
-                  player.name === currentPlayer
-                    ? {
-                      textDecoration: 'underline',
-                    }
-                    : {}
-                }
-            >
+            <div className="row" key={player._id}>
               <div className="column">
-                {player.name === currentPlayer && '>>>'}
+                {player.name === currentPlayer && (
+                  <i className="angle double right large icon" />
+                )}
                 {' '}
                 {player.name}
               </div>

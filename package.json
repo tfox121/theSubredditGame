@@ -30,6 +30,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "build:heroku": "git push heroku master",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint-all": "npx eslint --fix \"{,!(node_modules)/**/}*.{js,jsx}\""
