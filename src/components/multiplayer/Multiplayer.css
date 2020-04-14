@@ -8,7 +8,6 @@ div > .inline.field {
 
 .option-container .basic.segment .ui.button {
   align-self: center;
-  margin-top: auto;
   width: 70%;
   height: 40px;
 }
@@ -17,6 +16,7 @@ div > .inline.field {
   height: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 }
 
 div > .ui.center.aligned.basic.segment.horizontal {
