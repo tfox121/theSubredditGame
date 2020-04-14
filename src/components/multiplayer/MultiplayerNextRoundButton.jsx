@@ -3,8 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { updateCall } from '../actions';
-import './MultiplayerNextRoundButton.css';
+import { updateCall } from '../../actions';
 
 import RoundStartModal from './RoundStartModal';
 

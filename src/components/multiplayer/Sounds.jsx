@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 
-import pop from '../audio/pop.mp3';
-import { arcade_game_tone as arcadeGameTone } from '../audio/arcade_game_tone.mp3';
-import { _8_bit_score_4 as eightBitScore } from '../audio/_8_bit_score_4.mp3';
-import { pong_sound as pongSond } from '../audio/pong_sound.mp3';
+import pop from '../../audio/pop.mp3';
+import { arcade_game_tone as arcadeGameTone } from '../../audio/arcade_game_tone.mp3';
+import { _8_bit_score_4 as eightBitScore } from '../../audio/_8_bit_score_4.mp3';
+import { pong_sound as pongSond } from '../../audio/pong_sound.mp3';
 
 function Sounds({ multiplayer }) {
   const [gameStartReadyToPlay, setGameStartReadyToPlay] = useState(false);

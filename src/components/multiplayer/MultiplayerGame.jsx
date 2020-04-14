@@ -9,16 +9,16 @@ import {
   generateSubreddit,
   submitGuessMultiplayer,
   setCurrentPlayer,
-} from '../actions';
-import history from '../history';
-import webSocket from '../api/websocket';
+} from '../../actions';
+import history from '../../history';
+import webSocket from '../../api/websocket';
 
-import GuessBlock from './GuessBlock';
-import ResultBlock from './ResultBlock';
+import GuessBlock from '../GuessBlock';
+import ResultBlock from '../ResultBlock';
 import MultiplayerScoresheet from './MultiplayerScoresheet';
 import MultiplayerNextRoundButton from './MultiplayerNextRoundButton';
 import Sounds from './Sounds';
-import SubredditBlock from './SubredditBlock';
+import SubredditBlock from '../SubredditBlock';
 import ChatBox from './ChatBox';
 
 const MultiplayerGame = (props) => {

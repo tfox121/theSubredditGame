@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Breakpoint } from 'react-socks';
 import { connect } from 'react-redux';
 
-import { fetchGameMultiplayer } from '../actions';
+import { fetchGameMultiplayer } from '../../actions';
 
 import MultiplayerCreate from './MultiplayerCreate';
 import MultiplayerGameList from './MultiplayerGameList';

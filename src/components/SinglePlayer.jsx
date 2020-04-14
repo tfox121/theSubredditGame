@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
-import './SinglePlayer.css';
 import multiplayer from '../api/multiplayer';
 import guesses from '../api/guesses';
 
-import ClearButton from './ClearButton';
 import GuessBlock from './GuessBlock';
 import SubredditBlock from './SubredditBlock';
 import RandomButtonBlock from './RandomButtonBlock';
@@ -62,7 +60,7 @@ const SinglePlayer = (props) => {
     if (loading) {
       return (
         <div className="ui vertical segment">
-          <div className="ui active inverted loader" />
+          <div className="ui active loader" />
           <p>
             <br />
           </p>
@@ -102,9 +100,9 @@ const SinglePlayer = (props) => {
     return null;
   };
 
-  const clearButtonRender = () => {
+  const newSubredditButtonRender = () => {
     if (guessNum > 0) {
-      return <ClearButton clearState={clearState} />;
+      return <RandomButtonBlock onSubmit={randomSubGenerator} />;
     }
     return null;
   };
@@ -116,7 +114,7 @@ const SinglePlayer = (props) => {
       {errorRender()}
       {guessBlockRender()}
       {resultBlockRender()}
-      {clearButtonRender()}
+      {newSubredditButtonRender()}
     </>
   );
 };

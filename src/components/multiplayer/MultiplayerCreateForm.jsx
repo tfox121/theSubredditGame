@@ -2,13 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 
-import { clearCurrentGame } from '../actions';
+import { clearCurrentGame } from '../../actions';
 import './MultiplayerCreateForm.css';
 
-import NsfwSlider from './NsfwSlider';
 
 const MultiplayerCreateForm = (props) => {
-  const [nsfw, setNsfw] = useState(0);
   const [disableButton, setDisableButton] = useState(false);
   const [buttonText, setButtonText] = useState('create');
 
@@ -28,10 +26,6 @@ const MultiplayerCreateForm = (props) => {
       console.log('UNMOUNTED');
     };
   }, [currentGame]);
-
-  const onChange = (value) => {
-    setNsfw(value);
-  };
 
   const renderError = ({ error, touched }) => {
     if (touched && error) {
@@ -67,7 +61,7 @@ const MultiplayerCreateForm = (props) => {
   const onSubmit = (formValues) => {
     props.clearCurrentGame();
     setButtonText('Creating...');
-    props.onSubmit({ ...formValues, nsfw });
+    props.onSubmit({ ...formValues, nsfw: 0 });
     setDisableButton(true);
   };
 
@@ -75,7 +69,6 @@ const MultiplayerCreateForm = (props) => {
     <form onSubmit={handleSubmit(onSubmit)} className="ui form error">
       <h3>create a new game</h3>
       <Field name="rounds" component={renderInput} label="how many rounds?" />
-      <NsfwSlider nsfw={nsfw} width="12" onChange={onChange} />
       <button type="submit" className="ui button" disabled={disableButton}>
         <div className="visible content">{buttonText}</div>
       </button>

@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { clearCurrentGame } from '../actions';
-import { brass_finale as brassFinale } from '../audio/brass_finale.mp3';
-import history from '../history';
+import { clearCurrentGame } from '../../actions';
+import { brass_finale as brassFinale } from '../../audio/brass_finale.mp3';
+import history from '../../history';
 import './MultiplayerGameEnd.css';
 
 import MultiplayerGameEndScoresheet from './MultiplayerGameEndScoresheet';

@@ -4,7 +4,7 @@ import {
   Button, Header, Icon, Modal,
 } from 'semantic-ui-react';
 
-import { updateCall } from '../actions';
+import { updateCall } from '../../actions';
 
 const RoundStartModal = (props) => {
   const [modalOpen, setModalOpen] = useState(false);
