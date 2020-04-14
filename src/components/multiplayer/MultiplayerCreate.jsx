@@ -21,12 +21,10 @@ const MultiplayerCreate = (props) => {
   };
 
   return (
-    <div>
-      <MultiplayerCreateForm
-        onSubmit={onSubmit}
-        initialValues={{ rounds: 5 }}
-      />
-    </div>
+    <MultiplayerCreateForm
+      onSubmit={onSubmit}
+      initialValues={{ rounds: 5 }}
+    />
   );
 };
 
