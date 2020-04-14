@@ -9,10 +9,10 @@ import { setClientId } from '../actions';
 import './App.css';
 
 import Header from './Header';
-import Multiplayer from './Multiplayer';
-import MultiplayerGame from './MultiplayerGame';
-import MultiplayerGameEnd from './MultiplayerGameEnd';
-import MultiplayerGameList from './MultiplayerGameList';
+import Multiplayer from './multiplayer/Multiplayer';
+import MultiplayerGame from './multiplayer/MultiplayerGame';
+import MultiplayerGameEnd from './multiplayer/MultiplayerGameEnd';
+import MultiplayerGameList from './multiplayer/MultiplayerGameList';
 import SinglePlayer from './SinglePlayer';
 
 const App = (props) => {

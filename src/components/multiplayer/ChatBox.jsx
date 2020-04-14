@@ -3,16 +3,16 @@ import { connect } from 'react-redux';
 import { Button, Popup } from 'semantic-ui-react';
 import TextareaAutosize from 'react-textarea-autosize';
 
-import timeAgo from '../timeAgo';
+import timeAgo from '../../timeAgo';
 
-import webSocket from '../api/websocket';
+import webSocket from '../../api/websocket';
 import {
   createMessageMultiplayer,
   // updateCall,
   dissmissNotification,
   fetchGameMultiplayer,
   newMessageNotifier,
-} from '../actions';
+} from '../../actions';
 import './ChatBox.css';
 
 const ChatBox = (props) => {

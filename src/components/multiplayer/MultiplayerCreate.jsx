@@ -5,7 +5,7 @@ import {
   clearCurrentGame,
   createGameMultiplayer,
   // createSource
-} from '../actions';
+} from '../../actions';
 
 import MultiplayerCreateForm from './MultiplayerCreateForm';
 

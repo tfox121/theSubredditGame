@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
 // import { joinSource } from '../actions';
-import { joinGameMultiplayer } from '../actions';
+import { joinGameMultiplayer } from '../../actions';
 
 import MultiplayerJoinForm from './MultiplayerJoinForm';
 

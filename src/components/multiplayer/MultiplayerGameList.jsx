@@ -2,9 +2,9 @@ import React, { useLayoutEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { Accordion } from 'semantic-ui-react';
-import timeAgo from '../timeAgo';
+import timeAgo from '../../timeAgo';
 
-import { fetchGamesByClientMultiplayer, joinGameMultiplayer } from '../actions';
+import { fetchGamesByClientMultiplayer, joinGameMultiplayer } from '../../actions';
 import './MultiplayerGameList.css';
 
 const MultiplayerGameList = (props) => {

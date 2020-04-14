@@ -1,19 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { reduxForm } from 'redux-form';
 
-import './RandomButtonBlock.css';
-
-import NsfwSlider from './NsfwSlider';
-
 const RandomButtonBlock = ({ handleSubmit, onSubmit }) => {
-  const [nsfw, setNsfw] = useState(0);
-
   const nsfwSubmitHandler = (formValues) => {
-    onSubmit({ ...formValues, nsfw });
-  };
-
-  const onChange = (value) => {
-    setNsfw(value);
+    onSubmit({ ...formValues, nsfw: 0 });
   };
 
   return (
@@ -24,7 +14,6 @@ const RandomButtonBlock = ({ handleSubmit, onSubmit }) => {
             <div className="visible content">generate subreddit</div>
             <div className="hidden content">woooooooo!</div>
           </button>
-          <NsfwSlider nsfw={nsfw} width="6" onChange={onChange} />
         </div>
       </form>
     </div>

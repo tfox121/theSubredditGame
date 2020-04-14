@@ -1,7 +1,5 @@
 import React from 'react';
 
-import './MultiplayerGameEndScoresheet.css';
-
 const MultiplayerGameEndScoresheet = (props) => {
   const { game, currentPlayer } = props;
 
