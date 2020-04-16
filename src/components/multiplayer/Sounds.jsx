@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import pop from '../../audio/pop.mp3';
-import { arcade_game_tone as arcadeGameTone } from '../../audio/arcade_game_tone.mp3';
-import { _8_bit_score_4 as eightBitScore } from '../../audio/_8_bit_score_4.mp3';
-import { pong_sound as pongSond } from '../../audio/pong_sound.mp3';
+import arcadeGameTone from '../../audio/arcadeGameTone.mp3';
+import eightBitScore from '../../audio/eightBitScore.mp3';
+import pongSound from '../../audio/pongSound.mp3';
 
 function Sounds({ multiplayer }) {
   const [gameStartReadyToPlay, setGameStartReadyToPlay] = useState(false);
@@ -63,7 +63,7 @@ function Sounds({ multiplayer }) {
       setTimeout(() => {
         setNewMessageReadyToPlay(false);
       }, 1500);
-      return <audio ref={myRef} src={pongSond} autoPlay />;
+      return <audio ref={myRef} src={pongSound} autoPlay />;
     }
     return null;
   };
