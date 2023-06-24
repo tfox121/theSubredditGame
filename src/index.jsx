@@ -15,11 +15,9 @@ const store = createStore(
   composeEnhancers(applyMiddleware(reduxThunk)),
 );
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production' && !process.env.REACT_APP_LOGGING_ENABLED) {
   console.log = () => { };
 }
-
-console.log('ENV:', process.env.NODE_ENV);
 
 ReactDOM.render(
   <Provider store={store}>
