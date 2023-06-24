@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { BreakpointProvider } from 'react-socks';
 
@@ -49,7 +49,7 @@ const App = (props) => {
 
   return (
     <BreakpointProvider>
-      <Router history={history} basename={process.env.REACT_APP_PUBLIC_URL}>
+      <BrowserRouter history={history} basename={process.env.REACT_APP_PUBLIC_URL}>
         <div className="ui container">
           <div className="ui app basic segment">
             <Header />
@@ -80,7 +80,7 @@ const App = (props) => {
           </div>
         </div>
         {webSocketErrorRender()}
-      </Router>
+      </BrowserRouter>
     </BreakpointProvider>
   );
 };
