@@ -73,7 +73,7 @@ export const fetchGamesByClientMultiplayer = (clientId) => async (dispatch) => {
 export const fetchGameMultiplayer = (id) => async (dispatch) => {
   try {
     const response = await multiplayer.get(`/${id}`);
-    // console.log('FETCHED GAME:', response);
+    console.log('FETCHED GAME:', response);
     dispatch({ type: MULTIPLAYER_FETCH_GAME, payload: response.data });
   } catch (err) {
     if (axios.isCancel(err)) {
