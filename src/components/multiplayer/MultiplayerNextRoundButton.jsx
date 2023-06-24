@@ -16,9 +16,9 @@ const MultiplayerNextRoundButton = (props) => {
 
   const buttonText = () => {
     if (playerObj.readyForNext) {
-      return 'Waiting...';
+      return 'waiting...';
     }
-    return 'Next Round!';
+    return 'next round!';
   };
 
   const buttonRender = () => {
