@@ -49,7 +49,7 @@ const App = (props) => {
 
   return (
     <BreakpointProvider>
-      <Router history={history}>
+      <Router history={history} basename={process.env.REACT_APP_PUBLIC_URL}>
         <div className="ui container">
           <div className="ui app basic segment">
             <Header />
