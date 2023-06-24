@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { clearCurrentGame } from '../../actions';
-import { brass_finale as brassFinale } from '../../audio/brass_finale.mp3';
 import history from '../../history';
 import './MultiplayerGameEnd.css';
 
@@ -23,11 +22,6 @@ const MultiplayerGameEnd = (props) => {
     history.push(`/multiplayer/join/${id}`);
     return null;
   }
-
-  const gameEndSound = () => {
-    const myRef = React.createRef();
-    return <audio ref={myRef} src={brassFinale} autoPlay />;
-  };
 
   const roundTo2 = (num) => +(`${Math.round(`${num}e+2`)}e-2`);
 
@@ -78,7 +72,6 @@ const MultiplayerGameEnd = (props) => {
         </Link>
       </div>
       <ChatBox game={game} currentPlayer={multiplayer.playerName} />
-      {gameEndSound()}
     </>
   );
 };
