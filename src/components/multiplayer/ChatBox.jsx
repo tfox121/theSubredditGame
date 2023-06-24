@@ -7,7 +7,6 @@ import timeAgo from '../../timeAgo';
 
 import {
   createMessageMultiplayer,
-  // updateCall,
   dissmissNotification,
   fetchGameMultiplayer,
   newMessageNotifier,
@@ -71,7 +70,6 @@ const ChatBox = (props) => {
     event.preventDefault();
     await props.createMessageMultiplayer(game._id, currentPlayer, text);
     setText('');
-    // updateCall('MESSAGE', game._id);
   };
 
   const handleKeyDown = (event) => {
