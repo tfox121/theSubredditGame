@@ -1,3 +1,7 @@
 .ui.grid {
   justify-content: center;
 }
+
+.ui.celled.grid>.column:not(.row), .ui.celled.grid>.row>.column {
+  padding: 0.5em;
+}
