@@ -9,6 +9,7 @@ import {
   generateSubreddit,
   submitGuessMultiplayer,
   setCurrentPlayer,
+  updateCall,
 } from '../../actions';
 import history from '../../history';
 import webSocket from '../../api/websocket';
@@ -112,7 +113,7 @@ const MultiplayerGame = (props) => {
 
   const onGuessSubmit = (num) => {
     props.submitGuessMultiplayer(id, playerName, num);
-    props.fetchGameMultiplayer(id);
+    props.updateCall('UPDATE', id);
   };
 
   const guessBlockRender = () => {
@@ -215,4 +216,5 @@ export default connect(mapStateToProps, {
   generateSubreddit,
   submitGuessMultiplayer,
   setCurrentPlayer,
+  updateCall,
 })(MultiplayerGame);

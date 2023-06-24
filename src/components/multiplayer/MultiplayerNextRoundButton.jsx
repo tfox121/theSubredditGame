@@ -3,24 +3,16 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { updateCall } from '../../actions';
-
 import RoundStartModal from './RoundStartModal';
 
 const MultiplayerNextRoundButton = (props) => {
-  const { multiplayer } = props;
+  const { multiplayer, onSubmit } = props;
 
   const game = multiplayer.currentGame
     && multiplayer[multiplayer.currentGame];
 
   const playerObj = game
     && game.players.filter((player) => player.name === props.multiplayer.playerName)[0];
-
-  const onSubmit = (event) => {
-    event.preventDefault();
-    updateCall('UPDATE', game._id);
-    props.onSubmit();
-  };
 
   const buttonText = () => {
     if (playerObj.readyForNext) {
