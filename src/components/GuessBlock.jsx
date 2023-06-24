@@ -23,6 +23,7 @@ const GuessBlock = (props) => {
             id="guesses"
             type="number"
             min="0"
+            step="1"
             placeholder=""
             value={guessNum}
             onChange={(e) => {
