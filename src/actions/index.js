@@ -164,8 +164,6 @@ export const submitGuessMultiplayer = (id, player, guess) => async (
       guess,
     });
 
-    updateCall('UPDATE', id);
-
     console.log('RESPONSE:', response.data);
     dispatch({
       type: MULTIPLAYER_SUBMIT_GUESS,
