@@ -81,7 +81,10 @@ const MultiplayerGame = (props) => {
           game: id,
         });
 
-        webSocket.send(socketData);
+        // For some reason without this timeout the message doesn't hit the backend
+        setTimeout(() => {
+          webSocket.send(socketData);
+        }, 1000);
       };
     }
   }, [id]);
