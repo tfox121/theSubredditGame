@@ -89,17 +89,17 @@ const MultiplayerGame = (props) => {
     }
   }, [id]);
 
-  webSocket.onmessage = (event) => {
-    const data = JSON.parse(event.data);
-    console.log('Prompt received from websocket: ', data.type);
-    switch (data.type) {
-      case 'UPDATE':
-        console.log('Updating game status...');
-        props.fetchGameMultiplayer(data.game);
-        break;
-      default:
-    }
-  };
+  // webSocket.onmessage = (event) => {
+  //   const data = JSON.parse(event.data);
+  //   console.log('Prompt received from websocket: ', data.type);
+  //   switch (data.type) {
+  //     case 'UPDATE':
+  //       console.log('Updating game status...');
+  //       props.fetchGameMultiplayer(data.game);
+  //       break;
+  //     default:
+  //   }
+  // };
 
   if (!gameRef || !playerName) {
     gameRef = multiplayer[id];

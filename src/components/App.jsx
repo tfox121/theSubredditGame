@@ -5,7 +5,7 @@ import { BreakpointProvider } from 'react-socks';
 
 import history from '../history';
 import webSocket from '../api/websocket';
-import { setClientId } from '../actions';
+import { setClientId, fetchGameMultiplayer, newMessageNotifier } from '../actions';
 import './App.css';
 
 import Header from './Header';
@@ -31,6 +31,27 @@ const App = (props) => {
 
   webSocket.onerror = () => {
     setWebSocketClosed(true);
+  };
+
+  webSocket.onmessage = (event) => {
+    const data = JSON.parse(event.data);
+    console.log('Prompt received from websocket: ', data.type);
+    switch (data.type) {
+      case 'UPDATE':
+        console.log('Updating game status...');
+        props.fetchGameMultiplayer(data.game);
+        break;
+      default:
+    }
+
+    switch (data.type) {
+      case 'MESSAGE':
+        console.log('New message received');
+        props.newMessageNotifier();
+        props.fetchGameMultiplayer(data.game);
+        break;
+      default:
+    }
   };
 
   const webSocketErrorRender = () => {
@@ -86,5 +107,7 @@ const App = (props) => {
 };
 
 export default connect(null, {
+  fetchGameMultiplayer,
+  newMessageNotifier,
   setClientId,
 })(App);

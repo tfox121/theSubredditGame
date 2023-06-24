@@ -5,7 +5,6 @@ import TextareaAutosize from 'react-textarea-autosize';
 
 import timeAgo from '../../timeAgo';
 
-import webSocket from '../../api/websocket';
 import {
   createMessageMultiplayer,
   // updateCall,
@@ -22,17 +21,17 @@ const ChatBox = (props) => {
 
   const messageCount = game.messages.length;
 
-  webSocket.onmessage = (event) => {
-    const data = JSON.parse(event.data);
-    switch (data.type) {
-      case 'MESSAGE':
-        console.log('New message received');
-        props.newMessageNotifier();
-        props.fetchGameMultiplayer(data.game);
-        break;
-      default:
-    }
-  };
+  // webSocket.onmessage = (event) => {
+  //   const data = JSON.parse(event.data);
+  //   switch (data.type) {
+  //     case 'MESSAGE':
+  //       console.log('New message received');
+  //       props.newMessageNotifier();
+  //       props.fetchGameMultiplayer(data.game);
+  //       break;
+  //     default:
+  //   }
+  // };
 
   const updateScroll = () => {
     const element = document.querySelector('#chatbox');

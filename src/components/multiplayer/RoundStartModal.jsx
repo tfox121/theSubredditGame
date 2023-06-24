@@ -5,7 +5,7 @@ import {
 } from 'semantic-ui-react';
 
 const RoundStartModal = (props) => {
-  const [ready, setReady] = useState(false)
+  const [ready, setReady] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [playerData, setPlayerData] = useState({});
 
