@@ -107,8 +107,10 @@ const MultiplayerGame = (props) => {
     return null;
   }
 
-  const onSubmitHandler = () => {
+  const onSubmitHandler = (evt) => {
+    evt.preventDefault();
     props.generateSubreddit(id, playerName);
+    props.updateCall('UPDATE', id);
   };
 
   const onGuessSubmit = (num) => {
