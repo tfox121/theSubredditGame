@@ -5,6 +5,7 @@ import {
 } from 'semantic-ui-react';
 
 const RoundStartModal = (props) => {
+  const [ready, setReady] = useState(false)
   const [modalOpen, setModalOpen] = useState(false);
   const [playerData, setPlayerData] = useState({});
 
@@ -32,6 +33,7 @@ const RoundStartModal = (props) => {
 
   const startRound = (event) => {
     setModalOpen(false);
+    setReady(true);
     props.onSubmit(event);
   };
 
@@ -45,7 +47,7 @@ const RoundStartModal = (props) => {
     }
     return (
       <Modal
-        trigger={<Button onClick={handleOpen}>Ready!</Button>}
+        trigger={<Button disabled={ready} onClick={handleOpen}>Ready!</Button>}
         open={modalOpen}
         onClose={handleClose}
         basic
