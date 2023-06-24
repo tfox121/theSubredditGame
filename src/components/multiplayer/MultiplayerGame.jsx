@@ -172,7 +172,7 @@ const MultiplayerGame = (props) => {
       return (
         <div className="ui basic segment">
           <div>
-            <h2 className="ui header">Invite a friend! Click to copy:</h2>
+            <h2 className="ui header">invite a friend! click to copy:</h2>
           </div>
           <br />
           <textarea
