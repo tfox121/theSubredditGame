@@ -26,6 +26,7 @@ const ChatBox = (props) => {
     const data = JSON.parse(event.data);
     switch (data.type) {
       case 'MESSAGE':
+        console.log('New message received');
         props.newMessageNotifier();
         props.fetchGameMultiplayer(data.game);
         break;

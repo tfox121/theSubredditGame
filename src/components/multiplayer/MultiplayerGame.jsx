@@ -97,11 +97,6 @@ const MultiplayerGame = (props) => {
         console.log('Updating game status...');
         props.fetchGameMultiplayer(data.game);
         break;
-      case 'MESSAGE':
-        console.log('New message received');
-        props.fetchGameMultiplayer(data.game);
-        props.newMessageNotifier();
-        break;
       default:
     }
   };
